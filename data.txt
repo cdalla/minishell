@@ -1,5 +1,50 @@
+LEXER
+
+- initialize datas (create structs, save enp in a linkedlist)
+- split input in tokens
+
+
+PARSER
+
+- recognize token type and update linked list (t_token->type)
+- heredoc managing (call a multiline input and merge it into a single line)
+
+
+EXPANDER
+
+- expand all the values
+- set redirection
+- set pipeline if present
+
+EXECUTER
+
+- check for single command or pipeline
+- create new process for every command
+- wait for commands exit status
+- make exit status available for other processes or inspection (error handling and message)
+
+
+
+
+typedef	struct s_data
+{
+	---pointer to linked list for env (easy to print and modify)
+	---pointer to tokens list
+	---bool for pipeline
+}				t_data;
+
+
+typedef struct s_token
+{
+	char		*word;
+	int 		type;
+	t_token		*next;
+}				t_token;
+
+
 Execute command per command independently
 heredoc >> all  (takes lead) + return error in parser
 
 builtin recogniton
 If a command specified to the shell contains a slash ``/'', the shell will not execute a builtin command
+
