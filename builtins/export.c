@@ -1,12 +1,4 @@
-#include "./test.h"
-
-typedef struct s_envp
-{
-    char *env;
-    char *value;
-    t_envp *next;
-    t_envp *last_node;
-}   t_envp;
+#include "./../minishell.h"
 
 int is_string_valid(char *str)
 {

@@ -1,3 +1,5 @@
+#include "./../minishell.h"
+
 void    env(t_envp *envp)
 {
     while(envp)

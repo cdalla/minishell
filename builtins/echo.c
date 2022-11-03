@@ -1,3 +1,5 @@
+#include "./../minishell.h"
+
 int    echo(char *options, char *str)
 {
     int status;

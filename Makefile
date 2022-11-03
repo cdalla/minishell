@@ -12,7 +12,9 @@ OBJECTS = ./builtins/cd.o \
 			./builtins/exit.o \
 			./builtins/export.o \
 			./builtins/pwd.o \
-			./builtins/unset.o 
+			./builtins/unset.o \
+								\
+			./TEST/builtins_test.o \
 
 .PHONY: all fclean clean re
 
