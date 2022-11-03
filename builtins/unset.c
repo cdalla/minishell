@@ -23,7 +23,7 @@ int unset(t_envp **envp, char *var)
     t_envp  **head;
 
     errno = 0;
-    vars = ft_split(var);
+    vars = ft_split(var, ' ');
     if(!vars)
         return(0);
     head = envp;

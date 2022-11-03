@@ -1,7 +1,7 @@
 #include "./tests.h"
 #include "./../minishell.h"
 
-int unset_tester(t_envp *envp)
+static int unset_tester(t_envp *envp)
 {
     t_envp *head;
     int count = 10;
@@ -14,7 +14,7 @@ int unset_tester(t_envp *envp)
     }
 }
 
-int set_env_array(char **env_array, char **env_values)
+static int set_env_array(char **env_array, char **env_values)
 {
     env_array[0] = "test";
     env_array[1] = "";
@@ -40,7 +40,7 @@ int set_env_array(char **env_array, char **env_values)
     env_values[9] = "test9";
     env_values[10] = 0;
 }
-int set_env_var(char **env_names, char **env_values)
+static int set_env_var(char **env_names, char **env_values)
 {
     t_envp  *head;
     t_envp  *envp;

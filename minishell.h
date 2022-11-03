@@ -10,24 +10,24 @@ typedef struct s_envp
 {
     char *env;
     char *value;
-    t_envp *next;
-    t_envp *prev;
-    t_envp *last_node;
+    struct s_envp *next;
+    struct s_envp *prev;
+    struct s_envp *last_node;
 }   t_envp;
 
 typedef struct s_token
 {
-    char		*word;
-    int 		type;
-    t_token		*next;
+    char		    *word;
+    int 		    type;
+    struct s_token  *next;
 }               t_token;
 
 typedef struct s_exit_code
 {
-    int         exit_code;
-    char        *exited_cmd;
-    t_exit_code *next;
-    t_exit_code *prev;
+    int                 exit_code;
+    char                *exited_cmd;
+    struct s_exit_code  *next;
+    struct s_exit_code  *prev;
 }   t_exit_code;
 
 typedef struct s_data
