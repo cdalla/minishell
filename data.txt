@@ -3,3 +3,11 @@ heredoc >> all  (takes lead) + return error in parser
 
 builtin recogniton
 If a command specified to the shell contains a slash ``/'', the shell will not execute a builtin command
+
+
+exit_status :
+value returned by the last call to waitpid : 0 - 255
+
+command not found : the child process  returns 127.
+command found (not executable) : the return status is 126.
+command error (expansion/redirection): >0.
