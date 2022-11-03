@@ -99,7 +99,6 @@ int cd(char *old_dir, t_envp *envp)
 }
 
 /*
-
 change current working directory to directory -- chdir
 If directory is not supplied, the value of the HOME shell variable is used. --getenv("HOME")
 If the shell variable CDPATH exists, it is used as a search path: each directory name in CDPATH is searched for directory, --look_for_path
