@@ -46,3 +46,4 @@ heredoc >> all  (takes lead) + return error in parser (I think that it's better 
 builtin recogniton
 If a command specified to the shell contains a slash ``/'', the shell will not execute a builtin command
 
+pouet
