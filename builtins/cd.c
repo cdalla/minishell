@@ -1,3 +1,5 @@
+//lot of small mistakes to correct.
+
 int look_for_path(char **cd_paths, char *dir)
 {
     int     error;
