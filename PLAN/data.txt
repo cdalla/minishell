@@ -2,13 +2,13 @@ LEXER
 
 - initialize datas (create structs, save enp in a linkedlist)
 - split input in tokens
-
+- lexical errors checking
 
 PARSER
 
 - recognize token type and update linked list (t_token->type)
 - heredoc managing (call a multiline input and merge it into a single line)
-
+- syntatctical errors
 
 EXPANDER
 
@@ -22,6 +22,7 @@ EXECUTER
 - create new process for non-builtins cmd
 - wait for commands exit status (0 - 255)
 - make exit status available for other processes or inspection (error handling and message)
+- check for execution errors
 
 typedef	struct s_data
 {

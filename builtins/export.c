@@ -1,10 +1,13 @@
 #include "./../minishell.h"
 
+
+//not sure in we need to include '/' '.' ':' '-' '_' in the valid characters
+//A word consisting solely of letters, numbers, and underscores, and beginning with a letter or underscore.
 int is_string_valid(char *str)
 {
     while(*str && (*str >= 'a' && *str <= 'z') 
         || (*str >= 'A' && *str <= 'Z')
-        || (*str >= '0' && *str <= '9'))
+        || (*str >= '0' && *str <= '9') || *str == '_')
         str++;
     if(*str)
         return(0);
@@ -29,7 +32,7 @@ void    fill_env_var(t_envp *new_node, char **str, int i)
         new_node->value = str[1];
 }
 
-void append_env(t_envp *envp, t_envp *new_node)
+void	append_env(t_envp *envp, t_envp *new_node)
 {
     envp->last_node->next = new_node;
     envp->last_node = new_node;
@@ -49,7 +52,7 @@ int    export(t_envp *envp, char *args)
         if(!is_string_valid(str[i++]))
             return(1);//errno, invalid name
     }
-    if(!str[0])
+    if(!str[0]) //not sure what we check here
         print_env_var(envp);
     else if(i == 1 || i == 2)
     {
@@ -61,6 +64,8 @@ int    export(t_envp *envp, char *args)
     }
     return(0);
 }
+
+//do the same as unset
 /*
     split =
     check_string validity

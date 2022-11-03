@@ -7,6 +7,7 @@ int pwd()
     int     errno;
 
     path  = getcwd(path, PATH_MAX);
+	//read it from the linked list
     if (path = NULL)
         return(errno);
     printf("%s", path);

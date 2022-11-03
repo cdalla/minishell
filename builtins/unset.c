@@ -18,7 +18,6 @@ static void    remove_node(t_envp *envp, t_envp **head)
     if(!envp->value)
         free(envp->value);
     free(envp);
-    
 }
 
 int unset(t_envp **envp, char *var)
@@ -48,6 +47,7 @@ int unset(t_envp **envp, char *var)
     }
     return(1);
 }
+//compare it with s_envp + remove unnecessary data
 
 /*Remove each variable or function name.
 If no options are supplied, each name refers to a variable;
