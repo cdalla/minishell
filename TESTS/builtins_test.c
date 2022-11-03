@@ -1,20 +1,18 @@
-#include "./tests.h"
 #include "./../minishell.h"
 
-static int unset_tester(t_envp *envp)
-{
-    t_envp *head;
-    int count = 10;
+// static void unset_tester(t_envp *envp)
+// {
+//     t_envp *head;
 
-    head = envp;
-    while(envp)
-    {
-        unset(head, envp->env);
-        envp = envp->next;
-    }
-}
+//     head = envp;
+//     while(envp)
+//     {
+//         unset(&head, envp->env);
+//         envp = envp->next;
+//     }
+// }
 
-static int set_env_array(char **env_array, char **env_values)
+static void set_env_array(char **env_array, char **env_values)
 {
     env_array[0] = "test";
     env_array[1] = "";
@@ -40,12 +38,12 @@ static int set_env_array(char **env_array, char **env_values)
     env_values[9] = "test9";
     env_values[10] = 0;
 }
-static int set_env_var(char **env_names, char **env_values)
+static t_envp *set_env_var(char **env_names, char **env_values)
 {
     t_envp  *head;
     t_envp  *envp;
     int count = 10;
-
+    int i = 0;
     envp = malloc(sizeof(t_envp));
     if(!envp)
         return(0);
@@ -61,7 +59,9 @@ static int set_env_var(char **env_names, char **env_values)
         envp->next = node;
         envp = envp->next;
         count--;
+        i++;
     }
+    return(head);
 }
 
 int main()

@@ -7,7 +7,7 @@ HEADER = ./minishell.h
 NAME = minishell.a
 
 OBJECTS =   ./builtins/unset.o \
-			./TEST/builtins_test.o 
+			./TESTS/builtins_test.o 
 
 #./builtins/cd.o \
 			./builtins/echo.o \
@@ -24,6 +24,7 @@ $(NAME): $(OBJECTS)
 	make -C ./libft
 	cp ./libft/libft.a ./minishell.a
 	ar rc $@ $^
+	$(CC) $(CFLAGS) -o $@ ./minishell.a
 
 $(OBJECTS): $(HEADER)
 

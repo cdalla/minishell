@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
+#include "./libft/libft.h"
 
 typedef struct s_envp
 {

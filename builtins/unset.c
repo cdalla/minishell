@@ -5,10 +5,15 @@ static void    remove_node(t_envp *envp, t_envp **head)
     if(!(envp->next && envp->prev))
     {
         if(envp->next)
+        {
             *head = envp->next;
+            (*head)->prev = NULL;
     }
-    envp->next->prev = envp->prev;
-    envp->prev->next = envp->next;
+    if(envp->prev)
+    {
+        envp->next->prev = envp->prev;
+        envp->prev->next = envp->next;
+    }
     free(envp->env);
     if(!envp->value)
         free(envp->value);
@@ -31,14 +36,14 @@ int unset(t_envp **envp, char *var)
     {
         while((*envp)->next)
         {
-            if(ft_strcmp((*envp)->env, var) == 0)
+            if(ft_strncmp((*envp)->env, var, ft_strlen(var)) == 0)
             {
                 remove_node(*envp, head);
                 break ;
             }
-            envp = (*envp)->next;
+            *envp = (*envp)->next;
         }
-        envp = head;
+        *envp = *head;
         vars++;
     }
     return(1);
