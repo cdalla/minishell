@@ -19,15 +19,13 @@ EXPANDER
 EXECUTER
 
 - check for single command or pipeline
-- create new process for every command
-- wait for commands exit status
+- create new process for non-builtins cmd
+- wait for commands exit status (0 - 255)
 - make exit status available for other processes or inspection (error handling and message)
-
-
-
 
 typedef	struct s_data
 {
+	---pointer to linked_list of exit_codes ?
 	---pointer to linked list for env (easy to print and modify)
 	---pointer to tokens list
 	---bool for pipeline
@@ -43,8 +41,9 @@ typedef struct s_token
 
 
 Execute command per command independently
-heredoc >> all  (takes lead) + return error in parser
+heredoc >> all  (takes lead) + return error in parser (I think that it's better to return an error outside, separating concerns is important)
 
 builtin recogniton
 If a command specified to the shell contains a slash ``/'', the shell will not execute a builtin command
 
+pouet

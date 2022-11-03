@@ -1,4 +1,4 @@
-//lot of small mistakes to correct.
+#include "./../minishell.h"
 
 int look_for_path(char **cd_paths, char *dir)
 {
@@ -58,7 +58,7 @@ char *get_env_var(t_envp *envp, char *env)
     return (NULL);
 }
 
-int configure_options(char  *dir, char **cdpath_split, t_envp *envp)
+int configure_options(char  *dir, char ***cdpath_split, t_envp *envp)
 {
     if (!*directory)
         directory = get_env_var(envp, "HOME");
@@ -75,9 +75,9 @@ int configure_options(char  *dir, char **cdpath_split, t_envp *envp)
         cdpath = get_env_var(envp, "CDPATH");
         if(!cdpath)
             return(0);
-        cdpath_split = ft_split(cdpath), ':';
-        if(!cdpath_split)
-            return(NULL);
+        *cdpath_split = ft_split(cdpath), ':';
+        if(!*cdpath_split)
+            return(0);
     }
     return(1);
 }
@@ -85,13 +85,13 @@ int configure_options(char  *dir, char **cdpath_split, t_envp *envp)
 int cd(char *old_dir, t_envp *envp)
 {
     char    *cdpath;
-    char    **cdpath_split;
+    char    ***cdpath_split;
     char    *new_dir;
-    cdpath_splitted = NULL;
+    cd_path_split = NULL;
 
     if(configure_options(old_dir, cdpath_split, envp)
     {
-        if (look_for_path(cdpath_split, directory))
+        if (look_for_path(*cdpath_split, directory))
         {
             success_config(new_dir, old_dir, envp);
             return (0);
@@ -101,7 +101,6 @@ int cd(char *old_dir, t_envp *envp)
 }
 
 /*
-
 change current working directory to directory -- chdir
 If directory is not supplied, the value of the HOME shell variable is used. --getenv("HOME")
 If the shell variable CDPATH exists, it is used as a search path: each directory name in CDPATH is searched for directory, --look_for_path
