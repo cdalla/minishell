@@ -7,6 +7,15 @@
 #include <stdbool.h>
 #include "./libft/libft.h"
 
+enum	type
+{
+	CMD = 1,
+	FILENAME = 2,
+	PIPE = 3,
+	ENV = 4,
+	
+};
+
 typedef struct s_envp
 {
     char *env;

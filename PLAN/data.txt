@@ -1,3 +1,12 @@
+!!!!!!!!HUGE PROBLEM!!!!!!!!!!
+	WE CAN PASS THE MAIN STRUCT EVERYWHERE OR USE IT AS THE ONE ALLOWED GLOBAL
+some people used the global only to propagate the error
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
 LEXER
 
 - initialize datas (create structs, save enp in a linkedlist)

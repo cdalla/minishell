@@ -100,6 +100,8 @@ int cd(char *old_dir, t_envp *envp)
     return (-1);
 }
 
+//using structs
+
 /*
 change current working directory to directory -- chdir
 If directory is not supplied, the value of the HOME shell variable is used. --getenv("HOME")
