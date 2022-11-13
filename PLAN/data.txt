@@ -17,6 +17,8 @@ PARSER
 
 - recognize token type and update linked list (t_token->type)
 - heredoc managing (call a multiline input and merge it into a single line)
+	if heredoc is found during parser, call the read line function and append new token in the list
+	then the executer will ignore token type heredoc and delim
 - syntatctical errors
 
 EXPANDER

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/04 12:28:25 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/13 17:05:03 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,54 @@ int	is_space(int c)
 	return (0);
 }
 
+int quote_check(int value)
+{
+	if (value == 0)
+		return (1);
+	else if (value == 1)
+		return (0);
+}
+
 /*
-	create an array of words and then put every word into a token list
-	or split input and put it directly into token list
+	move the str pointer further until beginning of word to trim
+	assign to w_len the correct lenght of the word
+	split words on spaces
+	unless quote or double quote is open
+
+	examples:
+
+	cat -e hello -> 3 tokens
+	cat -e "hello chico" -> 3 tokens
+	echo "ciao"Rafa"nice covid" -> 2 tokens
 */
-int tokenize(char *str, t_data *data)
+char	*trim_word(char **str, int *w_len)
+{
+	char	*word;
+	int		quote;
+	int		dquote;
+
+	quote = 0;
+	dquote = 0;
+	while (is_space(**str) && **str != '\0')
+		(*str)++;
+	while (!is_space(*str[*w_len]) || quote || dquote) 
+	{
+		if (*str[*w_len] == '\'')
+			quote = quote_check(quote);
+		if (*str[*w_len] == '\"')
+			dquote = quote_check(dquote);
+		(*w_len)++;
+	}
+	word = ft_substr(*str, 0, *w_len);
+	if (!word)
+		return (0);
+	return (word);
+}
+
+/*
+	split input into words and put it directly into token list
+*/
+int tokenize(char *str, t_data *data, int b_heredoc)
 {
 	int		w_len;
 	char	*word;
@@ -35,19 +78,18 @@ int tokenize(char *str, t_data *data)
 	while (*str)
 	{
 		w_len = 0;
-		while(is_space(*str) && *str != '\0')
-			str++;
-		while (!is_space(str[w_len]))
-			w_len++;
-		word = ft_substr(str, 0, w_len);
+		word = trim_word(&str, &w_len);
 		if (!word)
 			return (0); //failure error in substr
-		//here we can put a lexical checker for every word inside the previous if statement
-		add_token(&data->token, word, 0); // type not recognized yet, to change or to evaluate later
+		if (!add_token(&data->token, word, 0)) // type not recognized yet, to change or to evaluate later
+			return (0); //failed malloc
 		str += w_len;
+		free(word);
 	}
 	return (1); //success
 }
+
+
 
 /*
 	call the tokenize_f
@@ -56,5 +98,5 @@ int tokenize(char *str, t_data *data)
 */
 int	lexer (char	*input, t_data *data)
 {
-	tokenize(input, data);
+	tokenize(input, data, 0);
 }

@@ -9,11 +9,13 @@
 
 enum	type
 {
-	CMD = 1,
-	FILENAME = 2,
-	PIPE = 3,
-	ENV = 4,
-	
+	WORD = 1,
+	PIPE = 2,
+	REDI = 3, //redirection input
+	REDO = 4, //redirection output
+	REDOA = 5, //redirection out append
+	HERED = 6,
+	DELIM = 9,
 };
 
 typedef struct s_envp

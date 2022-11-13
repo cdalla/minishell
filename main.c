@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:47:04 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/04 12:23:52 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/13 17:03:13 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,5 @@ int	main(int argc, char **argv, char **envp)
 
 	env_save(&data.envp, envp);
 	prompt_call(&data);
-	return (0);	
+	return (0);
 }
