@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/03 13:29:03 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/15 16:05:34 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,20 @@
 	pointer to the s_envp list in main struct
 	create a new node, check for valid input
 	add a new node to envp list, used to initialize it and add variables later
+	we can add an extra variable to set if the env is printable or not
 */
-typedef struct s_envp
-{
-    char *env;
-    char *value;
-    struct s_envp *next;
-    struct s_envp *prev;
-    //struct s_envp *last_node;
-}   t_envp;
 
 //not sure in we need to include '/' '.' ':' '-' '_' in the valid characters
+//NEED TO FIX THIS
+//IT IS WORKING BUT WE NEED TO INCLUDE ALL THE CHARACTERS POSSIBLE
 int is_str_valid(char *str)
 {
-    while(*str && (*str >= 'a' && *str <= 'z') 
-        || (*str >= 'A' && *str <= 'Z')
-        || (*str >= '0' && *str <= '9'))
-        str++;
-    if(*str)
-        return(0);
+    // while(*str && ((*str >= 'a' && *str <= 'z')
+    //     || (*str >= 'A' && *str <= 'Z')
+    //     || (*str >= '0' && *str <= '9')))
+    //     str++;
+    // if(*str)
+    //     return(0);
     return(1);
 }
 
@@ -44,10 +39,10 @@ t_envp	*new_envp(char *arg)
 	char	**args;
 
 	new_node = (t_envp *)malloc(sizeof(t_envp));
-	args = ft_split(args, '=');
+	args = ft_split(arg, '=');
 	if (!new_node || !args)
 		return (0); //failure
-	if (!is_str_valid(args[0]) || !is_not_valid(args[1]))
+	if (!is_str_valid(args[0]) || !is_str_valid(args[1]))
 		return (0);	//print_env_var(); (i guess here return with error)
 	new_node->env = args[0];
 	new_node->value = args[1];
@@ -84,7 +79,7 @@ void    print_env_var(t_envp *envp) //print only one var or more?
 	ptr = envp;
     while(ptr)
     {
-    	printf("%s=%s\n", ptr->value);
+    	printf("%s=%s\n", ptr->env, ptr->value);
         ptr = ptr->next;
     }
 }

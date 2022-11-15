@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:39:35 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/15 13:31:08 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/15 16:02:11 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,8 @@
 	pointer to s_token list in main struct
 	create a new token
 	add a new token to the list
-
-	!!!CREATE AN ENUM LIST FOR TOKEN TYPES!!!
-
-	-we need a function who call token creation where after recognizing the type
-	and pass it as parameter
-	-or we do type-recognition in the node creation
 */
 
-//without recognition
 t_token	*new_token(char *word, int type)
 {
 	t_token	*new_token;
@@ -56,4 +49,32 @@ int add_token(t_token **token, char *word, int type)
 		ptr->next = new;
 	}
 	return (1); //success
+}
+
+void	free_tokens(t_data *data)
+{
+	t_token	*ptr;
+	t_token	*next;
+
+	ptr = data->token;
+	while (ptr)
+	{
+		next = ptr->next;
+		free(ptr->word);
+		free(ptr);
+		ptr = next;
+	}
+	data->token = NULL;
+}
+
+void    print_tokens(t_token *token) //print only one var or more? 
+{
+	t_token	*ptr;
+
+	ptr = token;
+    while(ptr)
+    {
+    	printf("\"%s\" type = %d\n", ptr->word, ptr->type);
+        ptr = ptr->next;
+    }
 }

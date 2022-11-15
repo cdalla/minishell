@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/04 12:16:37 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/15 16:03:25 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*get_rl(void)
 		free(line_read);
 		line_read = NULL;
 	}
-	line_read = readline("minishell>");
+	line_read = readline("pouetpolpet>");
 	if (line_read && *line_read)
 		add_history(line_read);
 	return (line_read);

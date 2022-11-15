@@ -2,4 +2,10 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 
 12/11
 	nothing done atm (10.50)
-	
+15/11 (CARLO)
+	lexer is correctly working
+		it divides the input sentence in tokens
+		set token type
+
+	to test it and see token division and type
+		gcc structures/s_envp.c main.c libft/ft_split.c libft/ft_strlcpy.c libft/ft_strlen.c libft/ft_memcpy.c structures/s_token.c lexer/lexer.c lexer/lexer_utils.c lexer/read_line.c libft/ft_strncmp.c libft/ft_substr.c libft/ft_strdup.c -lreadline

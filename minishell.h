@@ -10,12 +10,11 @@
 enum	type
 {
 	WORD = 1,
-	PIPE = 2,
-	REDI = 3, //redirection input
-	REDO = 4, //redirection output
-	REDOA = 5, //redirection out append
-	HERED = 6,
-	DELIM = 9,
+	PIPE = 2,	// ||
+	REDI = 3,	//redirection input <
+	REDO = 4,	//redirection output >
+	REDOA = 5,	//redirection out append >>
+	HERED = 6,	//heredoc <<
 };
 
 typedef struct s_envp
@@ -52,4 +51,13 @@ typedef struct s_data
 
 int unset(t_envp **envp, char *var);
 
+//LEXER
+int		prompt_call(t_data *data);
+char	*get_rl(void);
+int		lexer (char	*input, t_data *data);
+
+//STRUCT 
+int 	add_token(t_token **token, char *word, int type);
+void	free_tokens(t_data *data);
+void    print_tokens(t_token *token);
 #endif

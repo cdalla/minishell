@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:47:04 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/15 13:05:17 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/15 15:29:08 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 	EXPANDER
 	EXECUTER
 */
+
+int	add_env(t_envp **envp, char *args);
+void    print_env_var(t_envp *envp);
 
 int	env_save(t_envp **s_envp, char **envp)
 {
@@ -50,6 +53,8 @@ int	main(int argc, char **argv, char **envp)
 	data.token = NULL;
 	data.exit_code = NULL;
 	env_save(&data.envp, envp);
+	//print_env_var(data.envp); //WE SAVED CORRECTLY THE INITIAL CONF OF ENV
 	prompt_call(&data);
+	exit(0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/15 13:32:00 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/15 16:07:06 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,6 @@
 	read string input and divide into tokens
 	split by spaces
 */
-int	is_space(int c)
-{
-	if (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r' || c == ' ' || c == '\n')
-		return (1);
-	return (0);
-}
-
-int quote_check(int value)
-{
-	if (value == 0)
-		return (1);
-	return (0);
-}
-
 /*
 	move the str pointer further until beginning of word to trim
 	assign to w_len the correct lenght of the word
@@ -42,6 +28,11 @@ int quote_check(int value)
 	cat -e "hello chico" -> 3 tokens
 	echo "ciao"Rafa"nice covid" -> 2 tokens
 */
+
+int	is_space(int c);
+int quote_check(int value);
+int	type_recogn(char *word);
+
 char	*trim_word(char **str, int *w_len)
 {
 	char	*word;
@@ -67,7 +58,6 @@ char	*trim_word(char **str, int *w_len)
 		return (0);
 	return (word);
 }
-
 /*
 	split input into words and put it directly into token list
 */
@@ -75,6 +65,7 @@ int tokenize(char *str, t_data *data)
 {
 	int		w_len;
 	char	*word;
+	int		type;
 
 	while (*str)
 	{
@@ -82,21 +73,19 @@ int tokenize(char *str, t_data *data)
 		word = trim_word(&str, &w_len);
 		if (!word)
 			return (0); //failure error in substr
-		if (!add_token(&data->token, word, 0)) // type not recognized yet, to change or to evaluate later
+		type = type_recogn(word);
+		if (!add_token(&data->token, word, type))
 			return (0); //failed malloc
 		str += w_len;
 	}
 	return (1); //success
 }
 
-
-
-/*
-	call the tokenize_f
-	check for lexical errors after tokenize or inside it
-	LEXICAL ERRORS?????? WHAT ARE THE CASES????
-*/
 int	lexer (char	*input, t_data *data)
 {
 	tokenize(input, data);
+	print_tokens(data->token);
+	//call to the parser
+	free_tokens(data);
+	return (0);
 }
