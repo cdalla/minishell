@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/13 17:05:03 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/15 13:32:00 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int quote_check(int value)
 {
 	if (value == 0)
 		return (1);
-	else if (value == 1)
-		return (0);
+	return (0);
 }
 
 /*
@@ -53,15 +52,17 @@ char	*trim_word(char **str, int *w_len)
 	dquote = 0;
 	while (is_space(**str) && **str != '\0')
 		(*str)++;
-	while (!is_space(*str[*w_len]) || quote || dquote) 
+	while (((!is_space(*(*str + *w_len))) || quote || dquote)
+			&& *(*str + *w_len) != '\0')
 	{
-		if (*str[*w_len] == '\'')
+		if (*(*str + *w_len) == '\'')
 			quote = quote_check(quote);
-		if (*str[*w_len] == '\"')
+		if (*(*str + *w_len) == '\"')
 			dquote = quote_check(dquote);
 		(*w_len)++;
 	}
-	word = ft_substr(*str, 0, *w_len);
+	if (*w_len)
+		word = ft_substr(*str, 0, *w_len);
 	if (!word)
 		return (0);
 	return (word);
@@ -70,7 +71,7 @@ char	*trim_word(char **str, int *w_len)
 /*
 	split input into words and put it directly into token list
 */
-int tokenize(char *str, t_data *data, int b_heredoc)
+int tokenize(char *str, t_data *data)
 {
 	int		w_len;
 	char	*word;
@@ -84,7 +85,6 @@ int tokenize(char *str, t_data *data, int b_heredoc)
 		if (!add_token(&data->token, word, 0)) // type not recognized yet, to change or to evaluate later
 			return (0); //failed malloc
 		str += w_len;
-		free(word);
 	}
 	return (1); //success
 }
@@ -98,5 +98,5 @@ int tokenize(char *str, t_data *data, int b_heredoc)
 */
 int	lexer (char	*input, t_data *data)
 {
-	tokenize(input, data, 0);
+	tokenize(input, data);
 }

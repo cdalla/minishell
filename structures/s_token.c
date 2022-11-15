@@ -6,11 +6,11 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:39:35 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/03 11:59:28 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/15 13:31:08 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 	pointer to s_token list in main struct
