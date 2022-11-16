@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include "./libft/libft.h"
 
-enum	type
+enum	token_type
 {
 	WORD = 1,
 	PIPE = 2,	// ||
@@ -16,6 +16,45 @@ enum	type
 	REDOA = 5,	//redirection out append >>
 	HERED = 6,	//heredoc <<
 };
+
+enum	cmd_type
+{
+	SIMPLE_CMD = 1,	//head of a single command
+	ARGUMENT = 2,
+};
+
+enum	red_type
+{
+	APPEND = 1,
+	WRITE = 2,
+	HERED = 3,
+	READ = 4,
+};
+
+typedef struct s_infile
+{
+	char			*filename;
+	enum red_type	type;
+	struct s_infile *next;
+};
+
+typedef struct s_outfile
+{
+	char 			*filename;
+	enum red_type 	type;
+	strcut s_oufile *next;
+};
+
+typedef struct s_scmd
+{
+	enum cmd_type	type;
+	char			*value;
+	struct s_scmd	*cmd_name;
+	struct s_scmd	*next_arg;
+	struct s_scmd	*prev_arg;
+	struct s_infile	*infile;
+	struct s_outfile *outfile;
+}				t_scmd;
 
 typedef struct s_envp
 {
@@ -28,9 +67,9 @@ typedef struct s_envp
 
 typedef struct s_token
 {
-    char		    *word;
-    int 		    type;
-    struct s_token  *next;
+    char		    	*word;
+    enum token_type 	type;
+    struct s_token  	*next;
 }               t_token;
 
 typedef struct s_exit_code
