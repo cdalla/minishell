@@ -36,14 +36,14 @@ typedef struct s_infile
 	char			*filename;
 	enum red_type	type;
 	struct s_infile *next;
-};
+}				t_infile;
 
 typedef struct s_outfile
 {
 	char 			*filename;
 	enum red_type 	type;
-	strcut s_oufile *next;
-};
+	struct s_outfile *next;
+}				t_outfile;
 
 typedef struct s_scmd
 {
@@ -52,8 +52,8 @@ typedef struct s_scmd
 	struct s_scmd	*cmd_name;
 	struct s_scmd	*next_arg;
 	struct s_scmd	*prev_arg;
-	struct s_infile	*infile;
-	struct s_outfile *outfile;
+	t_infile		*infile;
+	t_outfile 		*outfile;
 }				t_scmd;
 
 typedef struct s_envp
