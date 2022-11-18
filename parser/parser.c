@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/17 14:14:06 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/18 12:38:59 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,13 @@ int	parser(t_data *data)
 	}
 }
 
-t_scmd	*parse_single_token(t_token *ptr, t_scmd *cmd)
+//check if this function is actually modifying the cmd pointer value or not
+//but i think it is correct XD
+int	parse_single_token(t_token *ptr, t_scmd *cmd)
 {
 	t_scmd	*arg;
 	int		ret;
 
-	cmd = new_scmd(SIMPLE_CMD);
-	if (!ptr || !cmd)
-		return (0); //error
 	if (ptr->type == WORD)
 	{
 		arg = new_scmd(ARGUMENT);
@@ -104,10 +103,34 @@ t_scmd	*parse_single_token(t_token *ptr, t_scmd *cmd)
 t_scmd **parse_cmd_line(t_token *token, int n_pipes)
 {
 	t_scmd	**cmd_line;
+	t_token	*ptr;
+	int		i;
+	int		ret;
 
-	cmd_line = (t_scmd **)malloc((n_pipes + 1) * sizeof(t_scmd *));
+	cmd_line = (t_scmd **)malloc((n_pipes + 2) * sizeof(t_scmd *));// if 1 pipe == 2 cmd, plus null pointer at the end
 	if (!cmd_line)
 		return (0); //malloc failed
+	i = 0;
+	ptr = token;
+	while (token && i <= n_pipes)
+	{	
+		cmd_line[i] = new_scmd(SIMPLE_CMD);
+		if (!ptr || !cmd_line[i])
+			return (0); //failed and free memory
+		while (token->type != PIPE && ptr)
+		{
+			ret = parse_single_token(ptr, cmd_line[i]);
+			if (!ret)
+				return (0); //error free memory
+			while (ret--)
+				ptr = ptr->next;
+		}
+		if (ptr->next)
+			ptr = ptr->next;
+		i++;
+	}
+	cmd_line[n_pipes + 1] = NULL;
+	return (cmd_line);
 }
 
 /*
@@ -125,12 +148,14 @@ t_scmd	*parse_simple_command(t_token *token)
 	int		ret;
 
 	ptr = token;
-	cmd = new_scmd(SIMPLE_CMD);
+	cmd = new_scmd(SIMPLE_CMD); //create head of cmd node
 	if (!ptr || !cmd)
 		return (0); //error
 	while (ptr->type != PIPE && ptr)
 	{
 		ret = parse_single_token(ptr, cmd);
+		if (!ret)
+			return (0); //error free memory
 		while (ret--)
 			ptr = ptr->next;
 	}
