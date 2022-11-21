@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 13:56:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/15 15:39:53 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/21 11:59:22 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	type_recogn(char *word)
 	else if (!ft_strncmp(word, ">>", 3))
 		return (REDOA);
 	else if (!ft_strncmp(word, "<<", 2))
-		return (HERED);
+		return (HEREDOC);
 	else
 		return (WORD);
 }

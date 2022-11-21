@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/18 12:38:59 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/21 16:46:58 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@
 	}
 */
 
-int	count_pipes(t_data *token)
+int	count_pipes(t_token *token)
 {
 	t_token	*ptr;
 	int		count;
 
 	count = 0;
+	ptr = token;
 	while (ptr)
 	{
 		if (ptr->type == PIPE)
@@ -47,26 +48,6 @@ int	count_pipes(t_data *token)
 	return (count);
 }
 
-int	parser(t_data *data)
-{
-	t_scmd	**cmd_line;
-	t_scmd	*single_cmd;
-	int		n_pipes;
-
-	n_pipes = count_pipes(data->token);
-	if (n_pipes)
-	{
-		cmd_line = parse_cmd_line(data->token, n_pipes);
-		if (!cmd_line)
-			return (0); //failed something free memory
-	}
-	else
-	{
-		single_cmd = parse_simple_command(data->token);
-		if (!single_cmd)
-			return (0); //failed something memory to free
-	}
-}
 
 //check if this function is actually modifying the cmd pointer value or not
 //but i think it is correct XD
@@ -75,6 +56,7 @@ int	parse_single_token(t_token *ptr, t_scmd *cmd)
 	t_scmd	*arg;
 	int		ret;
 
+	ret = 0;
 	if (ptr->type == WORD)
 	{
 		arg = new_scmd(ARGUMENT);
@@ -82,13 +64,13 @@ int	parse_single_token(t_token *ptr, t_scmd *cmd)
 			return (0);
 		set_scmd_value(arg, ptr->word);
 		add_scmd_arg(cmd, arg);
-		return (1); //success with 1 position to skip in token list
+		return (1); //success with 1 position to skip in token list	
 	}
 	else
 	{
 		if (ptr->type == REDI)
 		ret = add_infile(cmd, READ, ptr->next->word);
-		else if (ptr->type == HERED)
+		else if (ptr->type == HEREDOC)
 		ret = add_infile(cmd, HERED, ptr->next->word);
 		else if (ptr->type == REDO)
 		ret = add_outfile(cmd, WRITE, ptr->next->word);
@@ -151,13 +133,45 @@ t_scmd	*parse_simple_command(t_token *token)
 	cmd = new_scmd(SIMPLE_CMD); //create head of cmd node
 	if (!ptr || !cmd)
 		return (0); //error
-	while (ptr->type != PIPE && ptr)
+	while (ptr && ptr->type != PIPE)
 	{
 		ret = parse_single_token(ptr, cmd);
 		if (!ret)
 			return (0); //error free memory
-		while (ret--)
+		while (ret-- != 0 && ptr)
+		{
 			ptr = ptr->next;
+			//ret--;
+		}
 	}
 	return (cmd);
+}
+
+int	parser(t_data *data)
+{
+	t_scmd	**cmd_line = NULL;
+	t_scmd	*single_cmd = NULL;
+	int		n_pipes;
+	
+	
+	n_pipes = count_pipes(data->token);
+	printf ("n_pipes = %d\n", n_pipes);
+	//print_tokens(data->token);
+	if (n_pipes)
+	{
+		cmd_line = parse_cmd_line(data->token, n_pipes);
+		if (!cmd_line)
+			return (0); //failed something free memory
+	}
+	else
+	{
+		single_cmd = parse_simple_command(data->token);
+		if (!single_cmd)
+		{
+			printf("single cmd not returned\n");
+			return (0);
+		} //failed something memory to free
+		print_scmd(single_cmd);
+	}
+	return (1);
 }

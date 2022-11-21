@@ -1,37 +1,60 @@
-GCC = gcc
+NAME := minishell
 
-CFLAGS = -Wall -Wextra -Werror
+CC := gcc
 
-HEADER = ./minishell.h
+CFLAGS := -Wall -Werror -Wextra
 
-NAME = minishell.a
+HEADER := src/minishell.h
 
-OBJECTS =   ./builtins/unset.o \
-			./TESTS/builtins_test.o 
+LIBFT := src/libft/libft.a
 
-#./builtins/cd.o \
-			./builtins/echo.o \
-			./builtins/env.o \
-			./builtins/exit.o \
-			./builtins/export.o \
-			./builtins/pwd.o 
+LIBREADLINE = -L /Users/$(USER)/.brew/opt/readline/lib -lreadline
 
-.PHONY: all fclean clean re
+OBJ :=	obj/lexer/lexer_utils.o\
+		obj/lexer/lexer.o\
+		obj/lexer/read_line.o\
+		obj/parser/parser.o\
+		obj/structures/s_envp.o\
+		obj/structures/s_exit_code.o\
+		obj/structures/s_redirection.o\
+		obj/structures/s_scmd.o\
+		obj/structures/s_token.o\
+		obj/main.o\
+
+
+SRC :=	src/lexer/lexer_utils.c\
+		src/lexer/lexer.c\
+		src/lexer/read_line.c\
+		src/parser/parser.c\
+		src/structures/s_envp.c\
+		src/structures/s_exit_code.c\
+		src/structures/s_redirection.c\
+		src/structures/s_scmd.c\
+		src/structures/s_token.c\
+		src/main.c\
+
 
 all: $(NAME)
+	
+$(NAME): $(LIBFT) $(OBJ) 
+	$(CC) $(CFLAGS) $(LIBREADLINE) -o $@ $^
 
-$(NAME): $(OBJECTS)
-	make -C ./libft
-	cp ./libft/libft.a ./minishell.a
-	ar rc $@ $^
-	$(CC) $(CFLAGS) -o $@ ./minishell.a
-
-$(OBJECTS): $(HEADER)
+obj/%.o: src/%.c $(HEADER)
+	@mkdir -p $(dir $@)
+	$(CC) -c $(CFLAGS) -o $@ $<
+	
+$(LIBFT):
+	make -C ./src/libft
 
 clean:
-	rm -f $(OBJECTS) && make clean -C ./libft/
+	rm -f $(OBJ)
+	make clean -C ./src/libft
+	rmdir obj/lexer obj/parser obj/structures obj
 
 fclean: clean
-	rm -f $(NAME) && make fclean -C ./libft/
+	rm -f $(NAME)
+	rm -f $(LIBFT)
 
-re:	fclean all
+re: fclean all
+
+.PHONY: all, clean, fclean, re

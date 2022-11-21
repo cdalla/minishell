@@ -14,7 +14,7 @@ enum	token_type
 	REDI = 3,	//redirection input <
 	REDO = 4,	//redirection output >
 	REDOA = 5,	//redirection out append >>
-	HERED = 6,	//heredoc <<
+	HEREDOC = 6,	//heredoc <<
 };
 
 enum	cmd_type
@@ -99,4 +99,15 @@ int		lexer (char	*input, t_data *data);
 int 	add_token(t_token **token, char *word, int type);
 void	free_tokens(t_data *data);
 void    print_tokens(t_token *token);
+
+t_scmd	*new_scmd(enum cmd_type type);
+int	add_scmd_arg(t_scmd *cmd, t_scmd *arg);
+int	set_scmd_value(t_scmd *cmd, char *value);
+void print_scmd(t_scmd *cmd);
+int	add_infile(t_scmd *cmd, enum red_type type, char *value);
+int	add_outfile(t_scmd *cmd, enum red_type type, char *value);
+
+//PARSER
+int	parser(t_data *data);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/15 16:05:34 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/21 12:11:08 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 //IT IS WORKING BUT WE NEED TO INCLUDE ALL THE CHARACTERS POSSIBLE
 int is_str_valid(char *str)
 {
+	(void)str;
     // while(*str && ((*str >= 'a' && *str <= 'z')
     //     || (*str >= 'A' && *str <= 'Z')
     //     || (*str >= '0' && *str <= '9')))
@@ -87,7 +88,7 @@ void    print_env_var(t_envp *envp) //print only one var or more?
 //remove a node from the list
 int	remove_envp(t_envp **envp, t_envp *to_rem)
 {
-	t_envp	*ptr;
+	//t_envp	*ptr;
 
 	if (!to_rem->prev && to_rem->next) //if to_rem is first node
 	{

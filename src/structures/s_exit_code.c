@@ -6,11 +6,11 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 12:03:48 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/03 12:19:17 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/21 12:11:32 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 /*
 	struct for exit code???
