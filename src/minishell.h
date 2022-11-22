@@ -109,5 +109,9 @@ int	add_outfile(t_scmd *cmd, enum red_type type, char *value);
 
 //PARSER
 int	parser(t_data *data);
+int	parse_loop(t_scmd *cmd, t_token **token, int line);
+int	parse_single_token(t_token *ptr, t_scmd *cmd);
+int	parse_red(t_token *ptr, t_scmd *cmd);
+int	count_pipes(t_token *token);
 
 #endif

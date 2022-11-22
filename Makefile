@@ -14,6 +14,7 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/lexer/lexer.o\
 		obj/lexer/read_line.o\
 		obj/parser/parser.o\
+		src/parser/parser_utils.o\
 		obj/structures/s_envp.o\
 		obj/structures/s_exit_code.o\
 		obj/structures/s_redirection.o\
@@ -26,6 +27,7 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/lexer/lexer.c\
 		src/lexer/read_line.c\
 		src/parser/parser.c\
+		src/parser/parser_utils.c\
 		src/structures/s_envp.c\
 		src/structures/s_exit_code.c\
 		src/structures/s_redirection.c\
