@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/22 12:55:42 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/22 16:08:38 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_scmd	*parse_simple_command(t_token *token)
 	return (cmd);
 }
 
+int	executer_single(t_scmd *cmd, t_data *data);
 /*
 	this function count the number of pipes present in the token list
 	create a single command or multi command based on n_pipes
@@ -107,7 +108,9 @@ int	parser(t_data *data)
 		single_cmd = parse_simple_command(data->token);
 		if (!single_cmd)
 			return (0);//failed something memory to free
-		print_scmd(single_cmd);//tester printing single cmd
+		executer_single(single_cmd, data);
+		//print_scmd(single_cmd);//tester printing single cmd
+
 	}
 	return (1);
 }

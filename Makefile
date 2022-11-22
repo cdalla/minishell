@@ -14,12 +14,13 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/lexer/lexer.o\
 		obj/lexer/read_line.o\
 		obj/parser/parser.o\
-		src/parser/parser_utils.o\
+		obj/parser/parser_utils.o\
 		obj/structures/s_envp.o\
 		obj/structures/s_exit_code.o\
 		obj/structures/s_redirection.o\
 		obj/structures/s_scmd.o\
 		obj/structures/s_token.o\
+		obj/executer/executer.o\
 		obj/main.o\
 
 
@@ -33,6 +34,7 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/structures/s_redirection.c\
 		src/structures/s_scmd.c\
 		src/structures/s_token.c\
+		src/executer/executer.c\
 		src/main.c\
 
 
@@ -51,7 +53,7 @@ $(LIBFT):
 clean:
 	rm -f $(OBJ)
 	make clean -C ./src/libft
-	rmdir obj/lexer obj/parser obj/structures obj
+	rmdir obj/lexer obj/parser obj/structures obj/executer obj
 
 fclean: clean
 	rm -f $(NAME)
