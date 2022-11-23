@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/21 12:11:08 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/22 23:24:44 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,13 @@ t_envp	*new_envp(char *arg)
 	char	**args;
 
 	new_node = (t_envp *)malloc(sizeof(t_envp));
+	if (!new_node)
+		return(0);
+	new_node->input = ft_strdup(arg);
+	if (!new_node->input)
+		return (0);
 	args = ft_split(arg, '=');
-	if (!new_node || !args)
+	if (!args)
 		return (0); //failure
 	if (!is_str_valid(args[0]) || !is_str_valid(args[1]))
 		return (0);	//print_env_var(); (i guess here return with error)
@@ -104,6 +109,7 @@ int	remove_envp(t_envp **envp, t_envp *to_rem)
 	}
 	free(to_rem->env);
 	free(to_rem->value);
+	free(to_rem->input);
 	free(to_rem);
 	return (1); //success
 }

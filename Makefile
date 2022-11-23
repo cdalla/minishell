@@ -21,6 +21,8 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/structures/s_scmd.o\
 		obj/structures/s_token.o\
 		obj/executer/executer.o\
+		obj/executer/cmd_path.o\
+		obj/executer/list_to_array.o\
 		obj/main.o\
 
 
@@ -35,13 +37,15 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/structures/s_scmd.c\
 		src/structures/s_token.c\
 		src/executer/executer.c\
+		src/executer/cmd_path.c\
+		src/executer/list_to_array.c\
 		src/main.c\
 
 
 all: $(NAME)
 	
 $(NAME): $(LIBFT) $(OBJ) 
-	$(CC) $(CFLAGS) $(LIBREADLINE) -o $@ $^
+	@$(CC) $(CFLAGS) $(LIBREADLINE) -o $@ $^
 
 obj/%.o: src/%.c $(HEADER)
 	@mkdir -p $(dir $@)

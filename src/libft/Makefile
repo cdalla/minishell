@@ -56,7 +56,7 @@ OBJECTS = ft_isalpha.o \
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	ar cr $@ $^
+	@ar cr $@ $^
 
 $(OBJECTS): $(HEADER)
 
@@ -66,7 +66,7 @@ bonus : $(BONUS)
 $(BONUS) : $(HEADER)
 
 clean:
-	rm -f $(OBJECTS)
+	@rm -f $(OBJECTS)
 
 fclean: clean
 	rm -f $(NAME) $(BONUS)

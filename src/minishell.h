@@ -52,7 +52,7 @@ typedef struct s_scmd
 	char			*value;
 	struct s_scmd	*cmd_name;
 	struct s_scmd	*next_arg;
-	struct s_scmd	*prev_arg;
+	struct s_scmd	*prev_arg;//unused
 	t_infile		*infile;
 	t_outfile 		*outfile;
 }				t_scmd;
@@ -61,6 +61,7 @@ typedef struct s_envp
 {
     char *env;
     char *value;
+	char *input;
     struct s_envp *next;
     struct s_envp *prev;
     struct s_envp *last_node;
@@ -114,5 +115,14 @@ int	parse_loop(t_scmd *cmd, t_token **token, int line);
 int	parse_single_token(t_token *ptr, t_scmd *cmd);
 int	parse_red(t_token *ptr, t_scmd *cmd);
 int	count_pipes(t_token *token);
+
+//EXECUTER
+char **split_paths(t_envp *envp);
+int	join_cmd_name(char *cmd_name, char **paths);
+char *check_path_cmd(char *cmd_name, t_data *data);
+char **ls_toarr_args(t_scmd *list);
+char **cpy_list_args(t_scmd *list, int size);
+char **ls_toarr_env(t_envp *list);
+char **cpy_list_env(t_envp *list, int size);
 
 #endif

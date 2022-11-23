@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/22 16:08:38 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/23 00:32:21 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ int	parser(t_data *data)
 			return (0);//failed something memory to free
 		executer_single(single_cmd, data);
 		//print_scmd(single_cmd);//tester printing single cmd
-
 	}
 	return (1);
 }

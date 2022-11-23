@@ -6,108 +6,47 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/22 16:56:14 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/23 00:54:43 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char **split_paths(t_envp *envp)
+void print_dsarry(char **array)//just for testing purpose !!!REMOVE!!!
 {
-	char	*path;
-	t_envp	*ptr;
+	int i = 0;
 
-	ptr = envp;
-	while (ft_strncmp(ptr->env, "PATH", 5) && ptr)
-		ptr = ptr->next;
-	if (!ptr)
-		return (0);
-	path = ft_strdup(ptr->value);
-	if (!path)
-		return (0);
-	return (ft_split(path, ':'));
-}
-
-int	join_cmd_name(char *cmd_name, char **paths)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	while (paths[i])
+	while (array[i])
 	{
-		tmp = ft_strjoin(paths[i], "/");
-		if (!tmp)
-			return (0); //error and free
-		free(paths[i]);
-		paths[i] = ft_strjoin(tmp, cmd_name);
-		if (!paths[i])
-			return (0);// error and free
-		free(tmp);
+		printf("%s\n", array[i]);
 		i++;
 	}
-	return (1);
-}
-
-char *check_path_cmd(char *cmd_name, t_data *data)
-{
-	char	**paths;
-	int		i;
-	
-	i = 0;
-	paths = split_paths(data->envp);
-	if (!paths)
-		return (0);//error in split
-	if (access(cmd_name, X_OK) == 0)
-		return (cmd_name);
-	else
-	{
-		join_cmd_name(cmd_name, paths);
-		while (paths[i])
-		{
-			if (access(paths[i], X_OK) == 0)
-				return (paths[i]);
-			i++;
-		}
-	}
-	return (0); //no path found
-}
-
-char **translate_list_env(t_envp *list, int type)
-{
-	t_envp	*ptr;
-	int		size;
-	char	**array;
-	int		i;
-
-	size = 0;
-	i = 0;
-	while (ptr)
-	{
-		size++;
-		ptr = ptr->next;
-	}
-	array = (char **)malloc((size + 1) * sizeof(char *));
-	if (!array)
-		return (0); //malloc error
-	ptr = list;
-	while (ptr && i < size)
-	{
-		array[i] = 
-	}
-	return (array);
 }
 
 int	cmd_start(t_scmd *cmd, t_data *data)
 {
 	char	*cmd_path;
+	char	**envp_ar;
+	char	**cmd_args;
 	
 	// if (cmd->infile)
 	// 	//set infiles
 	// if (cmd->outfile)
 	// 	//set outfile
-	cmd_path = check_path_cmd(cmd->cmd_name->value, data);
 
+	cmd_path = check_path_cmd(cmd->cmd_name->value, data);
+	if (!cmd_path)
+		return (0);
+	envp_ar = ls_toarr_env(data->envp);
+	if (!envp_ar)
+		return (0);
+	//print_dsarry(envp_ar); //testing purpose
+	cmd_args = ls_toarr_args(cmd->next_arg);
+	if (!cmd_args)
+		return (0);
+	//print_dsarry(cmd_args); //testing purpose
+	//execve(cmd_path, cmd_args, envp_ar);
+	//execve(check_path_cmd, ls_toarr_env, ls_toarr_args); //this is nice :) do not care about ret
 	return (1);
 }
 
