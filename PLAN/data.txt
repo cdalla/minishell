@@ -59,3 +59,7 @@ builtin recogniton
 If a command specified to the shell contains a slash ``/'', the shell will not execute a builtin command
 
 pouet
+
+
+everytime create a child all the memory is a copy of the parent
+

@@ -120,8 +120,8 @@ int	count_pipes(t_token *token);
 char **split_paths(t_envp *envp);
 int	join_cmd_name(char *cmd_name, char **paths);
 char *check_path_cmd(char *cmd_name, t_data *data);
-char **ls_toarr_args(t_scmd *list);
-char **cpy_list_args(t_scmd *list, int size);
+char **ls_toarr_args(t_scmd *list, char *cmd_name);
+char **cpy_list_args(t_scmd *list, int size, char *cmd_name);
 char **ls_toarr_env(t_envp *list);
 char **cpy_list_env(t_envp *list, int size);
 

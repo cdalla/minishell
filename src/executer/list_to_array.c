@@ -38,18 +38,21 @@ char **ls_toarr_env(t_envp *list)
 	return (cpy_list_env(list, size));
 }
 
-char **cpy_list_args(t_scmd *list, int size)
+char **cpy_list_args(t_scmd *list, int size, char *cmd_name)
 {
 	int		i;
 	t_scmd	*ptr;
 	char	**array;
 	
-	i = 0;
-	array = (char **)malloc((size + 1) * sizeof(char *));
+	i = 1;
+	array = (char **)malloc((size + 2) * sizeof(char *));
 	if (!array)
 		return (0); //malloc error
-	ptr = list;	
-	while (ptr && i < size)
+	array[0] = ft_strdup(cmd_name);
+	if (!array[0])
+		return (0);
+	ptr = list;
+	while (ptr && i <= size)
 	{
 		array[i] = ft_strdup(ptr->value);
 		if (!array[i])
@@ -61,7 +64,7 @@ char **cpy_list_args(t_scmd *list, int size)
 	return (array);
 }
 
-char **ls_toarr_args(t_scmd *list)
+char **ls_toarr_args(t_scmd *list, char *cmd_name)
 {
 	t_scmd	*ptr;
 	int		size;
@@ -73,5 +76,5 @@ char **ls_toarr_args(t_scmd *list)
 		size++;
 		ptr = ptr->next_arg;
 	}
-	return (cpy_list_args(list, size));
+	return (cpy_list_args(list, size, cmd_name));
 }

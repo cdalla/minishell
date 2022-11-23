@@ -43,17 +43,17 @@ char *check_path_cmd(char *cmd_name, t_data *data)
 	int		i;
 	
 	i = 0;
-	if (access(cmd_name, X_OK) == 0)
-		return (cmd_name);
 	paths = split_paths(data->envp);
 	if (!paths)
 		return (0);//error in split
 	join_cmd_name(cmd_name, paths);
 	while (paths[i])
 	{
-		if (access(paths[i], X_OK) == 0)
+		if (access(paths[i], F_OK) == 0)
 			return (paths[i]);
 		i++;
 	}
+	if (access(cmd_name, F_OK) == 0)
+		return (cmd_name);
 	return (0); //no path found
 }
