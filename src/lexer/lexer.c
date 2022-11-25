@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 13:23:23 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/25 13:53:59 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ int	is_space(int c);
 int	type_recogn(char *word);
 void quote_check(int *quote, int *dquote, int c);
 int	is_redirection(char *c);
+
+int	check_token_syntax(t_token *token)
+{
+	t_token	*ptr;
+
+	ptr = token;
+	while (ptr)
+	{
+		if ((ptr->type == REDI || ptr->type == REDO || ptr->type == REDOA
+			|| ptr->type == HEREDOC) && ptr->next->type != WORD)
+		{
+			printf("syntax error\n");
+			return (0);
+		}
+		ptr = ptr->next;
+	}
+	return (1);
+}
 
 char	*trim_word(char **str, int *w_len)
 {
@@ -89,8 +107,9 @@ int	lexer (char	*input, t_data *data)
 {
 	if (!tokenize(input, data))
 		return (0);
-	
-	print_tokens(data->token);
+	//print_tokens(data->token);
+	if (!check_token_syntax(data->token))
+		return (0);
 	//call to the parser
 	//parser(data);
 	//free_tokens(data);

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 13:16:56 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/25 13:53:39 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 int	prompt_call(t_data *data)
 {
 	char	*input;
-	//t_scmd	*cmd;
+	t_scmd	*cmd = NULL;
 
 	while (1)
 	{
@@ -40,6 +40,7 @@ int	prompt_call(t_data *data)
 		// if (!cmd)
 		// 	return (0);
 		free_tokens(data);
+		free_cmd(cmd);
 	}
 }
 

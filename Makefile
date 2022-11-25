@@ -20,6 +20,7 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/structures/s_redirection.o\
 		obj/structures/s_scmd.o\
 		obj/structures/s_token.o\
+		obj/structures/free_scmd.o\
 		obj/executer/executer.o\
 		obj/executer/cmd_path.o\
 		obj/executer/list_to_array.o\
@@ -36,6 +37,7 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/structures/s_redirection.c\
 		src/structures/s_scmd.c\
 		src/structures/s_token.c\
+		src/structures/free_scmd.c\
 		src/executer/executer.c\
 		src/executer/cmd_path.c\
 		src/executer/list_to_array.c\

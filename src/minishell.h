@@ -110,6 +110,7 @@ void print_scmd(t_scmd *cmd);
 void print_multi_cmd(t_scmd *cmd_line, int n_pipes);
 int	add_infile(t_scmd *cmd, enum red_type type, char *value);
 int	add_outfile(t_scmd *cmd, enum red_type type, char *value);
+void free_cmd(t_scmd *cmd);
 
 //PARSER
 t_scmd *parser(t_data *data);
