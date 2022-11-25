@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/22 12:44:02 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/25 12:24:47 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,13 @@ int tokenize(char *str, t_data *data)
 
 int	lexer (char	*input, t_data *data)
 {
-	tokenize(input, data);
-	//print_tokens(data->token);
+	if (!tokenize(input, data))
+		return (0);
+	
+	print_tokens(data->token);
 	//call to the parser
-	parser(data);
-	free_tokens(data);
-	printf("finished\n");
-	return (0);
+	//parser(data);
+	//free_tokens(data);
+	printf("finished parser\n");
+	return (1);
 }

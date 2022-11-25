@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 12:09:10 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/21 16:45:13 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/25 11:48:55 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_scmd	*new_scmd(enum cmd_type type)
 	if (!new_scmd)
 		return (0); //failure
 	new_scmd->type = type;
+	new_scmd->next_cmd = 0;
 	new_scmd->next_arg = 0;
 	new_scmd->prev_arg = 0;
 	new_scmd->value = 0;
@@ -103,5 +104,21 @@ void print_scmd(t_scmd *cmd)
 			i++;
 			out = out->next;
 		}
+	}
+}
+
+void print_multi_cmd(t_scmd *multi_cmd, int n_pipes)
+{
+	int i;
+	t_scmd *ptr;
+
+	i = 0;
+	ptr = multi_cmd;
+	while (ptr && i <= n_pipes)
+	{
+		printf("CMD %d\n", i+1);
+		print_scmd(ptr);
+		i++;
+		ptr = ptr->next_cmd;
 	}
 }

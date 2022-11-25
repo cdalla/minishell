@@ -50,6 +50,7 @@ typedef struct s_scmd
 {
 	enum cmd_type	type;
 	char			*value;
+	struct s_scmd	*next_cmd;
 	struct s_scmd	*cmd_name;
 	struct s_scmd	*next_arg;
 	struct s_scmd	*prev_arg;//unused
@@ -87,7 +88,7 @@ typedef struct s_data
     t_exit_code     *exit_code;
     t_envp          *envp;
     t_token         *token;
-    bool            pipe_flag;
+	int            	n_pipes;
 }   t_data;
 
 int unset(t_envp **envp, char *var);
@@ -106,11 +107,12 @@ t_scmd	*new_scmd(enum cmd_type type);
 int	add_scmd_arg(t_scmd *cmd, t_scmd *arg);
 int	set_scmd_value(t_scmd *cmd, char *value);
 void print_scmd(t_scmd *cmd);
+void print_multi_cmd(t_scmd *cmd_line, int n_pipes);
 int	add_infile(t_scmd *cmd, enum red_type type, char *value);
 int	add_outfile(t_scmd *cmd, enum red_type type, char *value);
 
 //PARSER
-int	parser(t_data *data);
+t_scmd *parser(t_data *data);
 int	parse_loop(t_scmd *cmd, t_token **token, int line);
 int	parse_single_token(t_token *ptr, t_scmd *cmd);
 int	parse_red(t_token *ptr, t_scmd *cmd);

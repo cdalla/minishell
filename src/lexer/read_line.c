@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/15 16:03:25 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/25 12:23:48 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,18 @@
 int	prompt_call(t_data *data)
 {
 	char	*input;
+	//t_scmd	*cmd;
 
 	while (1)
 	{
 		input = get_rl();
 		//printf("%s\n", input); //to show what we got from input
-		lexer(input, data);
+		if (!lexer(input, data))
+			return (0); //stop and return
+		//cmd = parser(data);
+		// if (!cmd)
+		// 	return (0);
+		// free_tokens(data);
 	}
 }
 
