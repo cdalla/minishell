@@ -1,121 +1,104 @@
 #include "./../minishell.h"
 
-int look_for_path(char **cd_paths, char *dir)
+int check_and_format_arguments(char **str)
+{
+    char *new_str;
+
+    if(**str)
+    {
+        new_str = ft_strtrim(*str, " ");
+            //free(new_str);
+        if (ft_strchr(new_str, ' '))
+            return(0);
+        *str = new_str; 
+    }
+    return(1);
+}
+
+int change_directory(char **lst_cdpaths, char **dir, char *tmp_dir, t_envp *envp) //If the shell variable CDPATH exists, it is used as a search path: each directory name in CDPATH is searched for directory
 {
     int     error;
+    int     paths_usage;
     char    *path;
 
-    if(!cd_paths)
-        error = chdir(dir);
-    while (cd_paths)
+    paths_usage = 0; 
+    while (lst_cdpaths && *lst_cdpaths)
     {
-        path = ft_strjoin(cd_paths, dir);
+
+        *lst_cdpaths = ft_strjoin(*lst_cdpaths, "/");
+        path = ft_strjoin(*lst_cdpaths, *dir);
         if (!path)
             return (NULL);
-        if((error = chdir(path)) == 0)
+        if((error = chdir(path)) == 0) //success on 0
+        {
+            paths_usage = 1;
             break;
-        cdpath++;
+        }
+        lst_cdpaths++;
     }
+    error = chdir(*dir);
     if (error == -1)
-        return(errno);
-    else if(error == 0 || *dir == '-')
-        pwd(path);
-    return(1);
+        return(ERRARG_CD); //forgot **dir
+    else if(error == 0 && paths_usage || *tmp_dir == '-') //‘-’ first argument, directory change successful,  absolute path new working directory written to the standard output.
+            pwd(envp);                //If a non-empty directory name from CDPATH is used -- -- -- -- -- (read above)
+    return(SUCCESS);
 }
 
-int success_config(char *new_dir, char *prev_dir, t_envp *envp)
-{
-    int flag;
 
-    flag = 0;
-    while(envp)
+int configure_options(char  **dir, char ***lst_cdpath, t_envp *envp)
+{
+    char *cd_paths;
+
+    if (!*dir || !**dir)
+        *dir = get_envp(envp, "HOME"); //directory is not supplied, the value of the HOME shell variable is used.
+    else if (**dir == '~')
+    {   
+        (*dir)++;
+        *dir = ft_strjoin(get_envp(envp, "HOME"), *dir); //directory is not supplied, the value of the HOME shell variable is used.
+    }
+    else if (**dir == '-') //If directory is ‘-’, it is converted to $OLDPWD before the directory change is attempted.
+        *dir = get_envp(envp, "OLD_PWD");
+    else if(**dir != '/' && **dir != '.') //If directory begins with a slash, CDPATH is not used.
     {
-        if(ft_strcmp(envp->env, "PWD"))
+        cd_paths = get_envp(envp, "PATH");
+        if(cd_paths)
         {
-            envp->value = new_dir;
-            flag++;
+            *lst_cdpath = ft_split(cd_paths, ':'); //alternative directory names in CDPATH separated by a colon (‘:’).
+            if(!*lst_cdpath)
+                return(ERRMALLOC);
         }
-        if(ft_strcmp(envp->env, "OLDPWD"))
-        {
-            envp->value = old_dir;
-            flag++;
-        }
-        if (flag == 2)
-            break;
-        envp = envp->next;
     }
-    return (0);
+    if(!*dir)
+        return (-1);
+    return (SUCCESS);
 }
 
-char *get_env_var(t_envp *envp, char *env)
-{
-    while(envp)
-    {
-        if(ft_strcmp(envp->env, env) == 0)
-            return(envp->val);
-        envp = envp->next;
-    }
-    return (NULL);
-}
-
-int configure_options(char  *dir, char ***cdpath_split, t_envp *envp)
-{
-    if (!*directory)
-        directory = get_env_var(envp, "HOME");
-    if (!directory)
-        return(0);
-    if (directory == '-')
-    {
-        directory = get_env_var(envp, "OLDPWD");
-        if (!directory)
-            return (0);
-    }
-    if(*directory != '/')
-    {
-        cdpath = get_env_var(envp, "CDPATH");
-        if(!cdpath)
-            return(0);
-        *cdpath_split = ft_split(cdpath), ':';
-        if(!*cdpath_split)
-            return(0);
-    }
-    return(1);
-}
-
-int cd(char *old_dir, t_envp *envp)
+int cd(char *dir, t_envp *envp)
 {
     char    *cdpath;
-    char    ***cdpath_split;
-    char    *new_dir;
-    cd_path_split = NULL;
+    char    **lst_cdpath;
+    char    *tmp_dir;
+    int     errno;
+    char    s[100];
 
-    if(configure_options(old_dir, cdpath_split, envp)
+    lst_cdpath = NULL;
+    cdpath = NULL;
+    tmp_dir = dir;
+    if(!check_and_format_arguments(&dir))
     {
-        if (look_for_path(*cdpath_split, directory))
+        printf("bash: cd: too many arguments");
+        return(WRGNUMARGS);
+    }
+    errno = configure_options(&dir, &lst_cdpath, envp);
+    if (errno == SUCCESS)
+    {
+        if (change_directory(lst_cdpath, &dir, tmp_dir, envp) == SUCCESS)
         {
-            success_config(new_dir, old_dir, envp);
-            return (0);
+            export(&envp, ft_strjoin("OLD_PWD=", get_envp(envp, "PWD")));
+            export(&envp, ft_strjoin("PWD=", getcwd(s, 100)));
         }
     }
-    return (-1);
+    if(errno == ERRARG_CD)
+        printf("bash: cd: %s", dir);
+    return (errno); //dir not changed non-zero .
 }
-
-//using structs
-
-/*
-change current working directory to directory -- chdir
-If directory is not supplied, the value of the HOME shell variable is used. --getenv("HOME")
-If the shell variable CDPATH exists, it is used as a search path: each directory name in CDPATH is searched for directory, --look_for_path
-with alternative directory names in CDPATH separated by a colon (‘:’). If directory begins with a slash, CDPATH is not used. -- ft_split(cdpath, ':')
-If directory is ‘-’, it is converted to $OLDPWD before the directory change is attempted. // l32
-
-If ‘..’ appears in directory, it is processed by removing the immediately preceding pathname component, back to a slash or the beginning of directory. --> autoamtic handling
-
-If a non-empty directory name from CDPATH is used, or if ‘-’ is the first argument, and the directory change is successful, the absolute pathname of the new working directory is written to the standard output.
-
-If the directory change is successful, 
-cd sets the value of the PWD environment variable to the new directory name,
-and sets the OLDPWD environment variable to the value of the current working directory before the change. -->configure_success
-The return status is zero if the directory is successfully changed, non-zero otherwise.
-
-*/

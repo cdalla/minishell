@@ -1,48 +1,29 @@
 #include "./../minishell.h"
 
-static void    remove_node(t_envp *envp, t_envp **head)
+int unset(t_envp **head, char *var)
 {
-    if(!(envp->next && envp->prev))
-    {
-        if(envp->next)
-        {
-            *head = envp->next;
-            (*head)->prev = NULL;
-    }
-    if(envp->prev)
-    {
-        envp->next->prev = envp->prev;
-        envp->prev->next = envp->next;
-    }
-    free(envp->env);
-    if(!envp->value)
-        free(envp->value);
-    free(envp);
-}
-
-int unset(t_envp **envp, char *var)
-{
-    int     errno;
     char    **vars;
-    t_envp  **head;
+    t_envp  *envp;
 
-    errno = 0;
     vars = ft_split(var, ' ');
     if(!vars)
         return(0);
-    head = envp;
+    envp = *head;
     while(*vars)
     {
-        while((*envp)->next)
+        if(is_str_valid(*vars))
         {
-            if(ft_strncmp((*envp)->env, var, ft_strlen(var)) == 0)
+            while(envp)
             {
-                remove_node(*envp, head);
-                break ;
+                if(ft_strcmp(envp->env, var) == 0)
+                {
+                    remove_envp(head, envp);
+                    break ;
+                }
+                envp = envp->next;
             }
-            *envp = (*envp)->next;
         }
-        *envp = *head;
+        envp = *head;
         vars++;
     }
     return(1);

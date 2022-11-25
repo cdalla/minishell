@@ -1,16 +1,12 @@
 #include "./../minishell.h"
-#include <limits.h>
 
-int pwd()
+int pwd(t_envp *envp)
 {
-    char *path;
-    int     errno;
-
-    path  = getcwd(path, PATH_MAX);
-	//read it from the linked list
-    if (path = NULL)
-        return(errno);
-    printf("%s", path);
+    char    *buff;
+    int errno;
+    buff = get_envp(envp, "PWD");
+    if((errno = printf("%s", buff)) == -1)
+        return(-1);
     return(0);
 }
 
@@ -22,4 +18,6 @@ int pwd()
     If the -L option is supplied, the pathname printed may contain symbolic links.
     The return status is zero unless an error is encountered while determining the
     name of the current directory or an invalid option is supplied.
+
+envp-> *envp -> **envp
 */

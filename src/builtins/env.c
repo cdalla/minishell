@@ -1,16 +1,17 @@
 #include "./../minishell.h"
 
-// void    env(t_envp *envp)
-// {
-//     while(envp)
-//     {
-//         printf("%s=%s\n", envp->env, envp->value)
-//         envp = envp->next;
-//     }
-// }
-
-//WE CAN USE THE FUNCTION YOU WROTE ALREADY
-void    env(t_envp *envp)
+int    env(t_envp *envp)
 {
-    print_env_var(envp);
+    int status;
+
+    status = 0;
+    while(envp)
+    {
+        if(!envp->standalone)
+            status = printf("%s=%s\n", envp->env, envp->value);
+        if(status == -1)
+            return(-1);
+        envp = envp->next;
+    }
+    return(0);
 }
