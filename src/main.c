@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:47:04 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/23 00:20:36 by lisa          ########   odam.nl         */
+/*   Updated: 2022/11/25 12:40:32 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
 
-	// if (argc > 2 || argv)
-	// 	return (0);
+	if (argc > 2 || !argv)
+		return (0);
 	(void)argc;
 	(void)argv;
 	data.envp = NULL;

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 12:23:48 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/25 13:16:56 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	prompt_call(t_data *data)
 		//cmd = parser(data);
 		// if (!cmd)
 		// 	return (0);
-		// free_tokens(data);
+		free_tokens(data);
 	}
 }
 

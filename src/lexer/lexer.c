@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 12:24:47 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/25 13:23:23 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@
 */
 
 int	is_space(int c);
-int quote_check(int value);
 int	type_recogn(char *word);
+void quote_check(int *quote, int *dquote, int c);
+int	is_redirection(char *c);
 
 char	*trim_word(char **str, int *w_len)
 {
@@ -41,21 +42,24 @@ char	*trim_word(char **str, int *w_len)
 
 	quote = 0;
 	dquote = 0;
-	while (is_space(**str) && **str != '\0')
+	while (is_space(**str) && **str != '\0') //skip all spaces
 		(*str)++;
-	while (((!is_space(*(*str + *w_len))) || quote || dquote)
+	while (((!is_space(*(*str + *w_len))) || quote || dquote) //if it is not a space or quotes are opened
 			&& *(*str + *w_len) != '\0')
 	{
-		if (*(*str + *w_len) == '\'')
-			quote = quote_check(quote);
-		if (*(*str + *w_len) == '\"')
-			dquote = quote_check(dquote);
+		if (*(*str + *w_len) == '\'' || *(*str + *w_len) == '\"')
+			quote_check(&quote, &dquote, *(*str + *w_len));
+		if ((*(*str + *w_len) == '>' || *(*str + *w_len) == '<') && !quote && !dquote)
+		{
+			(*w_len) += is_redirection((*str + *w_len));
+			break ;
+		}
 		(*w_len)++;
+		if (is_redirection((*str + *w_len)) && !quote && !dquote)
+			break ;
 	}
 	if (*w_len)
 		word = ft_substr(*str, 0, *w_len);
-	if (!word)
-		return (0);
 	return (word);
 }
 /*

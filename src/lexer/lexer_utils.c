@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 13:56:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/22 10:56:12 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/25 13:22:50 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,31 @@ int	type_recogn(char *word)
 		return (WORD);
 }
 
-int quote_check(int value)
+int	is_redirection(char *c)
 {
-	if (value == 0)
+	if ((*c == '<' && *(c + 1) != '<') || (*c == '>' && *(c + 1) != '>'))
 		return (1);
+	else if ((*c == '<' && *(c + 1) == '<') || (*c == '>' && *(c + 1) == '>'))
+		return (2);
 	return (0);
+}
+
+void quote_check(int *quote, int *dquote, int c)
+{
+	if (c == '\'')
+	{
+		if (*quote == 0)
+			*quote = 1;
+		else
+			*quote = 0;
+	}
+	else if (c == '\"')
+	{
+		if (*dquote == 0)
+			*dquote = 1;
+		else
+			*dquote = 0;
+	}
 }
 
 int	is_space(int c)
