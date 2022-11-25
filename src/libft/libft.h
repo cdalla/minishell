@@ -6,7 +6,7 @@
 /*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/23 16:27:35 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/02/23 16:27:36 by rpicot        ########   odam.nl         */
+/*   Updated: 2022/11/25 15:06:31 by rpicot        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 /*STRING COMPARISON*/
+int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 
@@ -65,6 +66,7 @@ char	*ft_strdup(const char *s1);
 char	**ft_split(const char *s, char c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin_free(char *s1, char *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 
 /*POINTEUR SUR FONCTIONS --> CHARS*/

@@ -1,6 +1,6 @@
 GCC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
 HEADER = libft.h
 
@@ -33,6 +33,7 @@ OBJECTS = ft_isalpha.o \
 		  ft_strchr.o \
 		  ft_strrchr.o \
 		  ft_strncmp.o \
+		  ft_strcmp.o \
 		  ft_memchr.o \
 		  ft_memcmp.o \
 		  ft_strnstr.o \
@@ -41,6 +42,7 @@ OBJECTS = ft_isalpha.o \
 		  ft_strdup.o \
 		  ft_substr.o \
 		  ft_strjoin.o \
+		  ft_strjoin_free.o \
 		  ft_strtrim.o \
 		  ft_itoa.o \
 		  ft_strmapi.o \

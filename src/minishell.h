@@ -63,6 +63,7 @@ typedef struct s_envp
     char *env;
     char *value;
 	char *input;
+	int standalone;
     struct s_envp *next;
     struct s_envp *prev;
     struct s_envp *last_node;
@@ -128,4 +129,22 @@ char **cpy_list_args(t_scmd *list, int size, char *cmd_name);
 char **ls_toarr_env(t_envp *list);
 char **cpy_list_env(t_envp *list, int size);
 
+
+//EXPANDER
+int expander(t_data *data);
+
+
+
+//---------------------------ENV--------------------------//
+//env_crud
+char *get_envp(t_envp *envp, char *env);
+int create_envp(char **args, t_envp **envp, bool standalone);
+int update_envp(t_envp *envp, char **args, bool standalone);
+void    read_envp(t_envp *envp); //print only one var or more? 
+int	remove_envp(t_envp **envp, t_envp *to_rem);
+
+//env_builtins
+char **ft_cut_string(char *str, bool *standalone);
+int	format_and_add(t_envp **envp, char *arg);
+int is_str_valid(char *str);
 #endif

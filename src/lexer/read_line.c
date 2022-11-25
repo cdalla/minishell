@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 13:53:39 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/25 15:11:58 by rpicot        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	prompt_call(t_data *data)
 		//printf("%s\n", input); //to show what we got from input
 		if (!lexer(input, data))
 			return (0); //stop and return
+		expander(data);
 		//cmd = parser(data);
 		// if (!cmd)
 		// 	return (0);
