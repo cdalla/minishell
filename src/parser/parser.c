@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 12:13:06 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/26 14:07:19 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,41 +30,13 @@
 	create an array of single commands
 	create a head node SIMPLE_CMD for each and fill his fields
 */
-// t_scmd **parse_cmd_line(t_token **token, int n_pipes)
-// {
-// 	t_scmd	**cmd_line;
-// 	t_token	*ptr;
-// 	int 	ret;
-// 	int		i;
-	
-// 	cmd_line = (t_scmd **)malloc((n_pipes + 2) * sizeof(t_scmd *));// if 1 pipe == 2 cmd, plus null pointer at the end
-// 	if (!cmd_line)
-// 		return (0); //malloc failed
-// 	i = 0;
-// 	ptr = *token;
-// 	while (ptr && i <= n_pipes)
-// 	{	
-// 		cmd_line[i] = new_scmd(SIMPLE_CMD);
-// 		if (!*token || !cmd_line[i])
-// 			return (0); //failed and free memory
-// 		ret = parse_loop(cmd_line[i], &ptr, 1);
-// 		if (!ret)
-// 			return (0);
-// 		ret++;
-// 		while (ret-- && ptr->next)
-// 			ptr = ptr->next;
-// 		i++;
-// 	}
-// 	cmd_line[n_pipes + 2] = NULL;
-// 	return (cmd_line);
-// }
 
-int parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd)
+int	parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd)
 {
 	t_scmd	*cmd_ptr;
 	t_token	*ptr;
-	int 	ret;
-	
+	int		ret;
+
 	ptr = *token;
 	cmd_ptr = multi_cmd;
 	while (ptr && n_pipes >= 0)
@@ -94,7 +66,7 @@ int parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd)
 t_scmd	*parse_simple_command(t_token *token)
 {
 	t_scmd	*cmd;
-	
+
 	cmd = new_scmd(SIMPLE_CMD); //create head of cmd node
 	if (!token || !cmd)
 		return (0); //error
@@ -127,7 +99,6 @@ t_scmd	*parser(t_data *data)
 		cmd = parse_simple_command(data->token);
 		if (!cmd)
 			return (0);//failed something memory to free
-		//executer_single(single_cmd, data);
 		//print_scmd(single_cmd);//tester printing single cmd
 	}
 	return (cmd);

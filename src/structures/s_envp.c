@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 15:10:32 by rpicot        ########   odam.nl         */
+/*   Updated: 2022/11/26 14:13:13 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 //not sure in we need to include '/' '.' ':' '-' '_' in the valid characters
 //NEED TO FIX THIS
 //IT IS WORKING BUT WE NEED TO INCLUDE ALL THE CHARACTERS POSSIBLE
-int is_str_valid(char *str)
+int	is_str_valid(char *str)
 {
 	(void)str;
     // while(*str && ((*str >= 'a' && *str <= 'z')
@@ -31,7 +31,7 @@ int is_str_valid(char *str)
     //     str++;
     // if(*str)
     //     return(0);
-    return(1);
+	return (1);
 }
 
 t_envp	*new_envp(char *arg)
@@ -41,7 +41,7 @@ t_envp	*new_envp(char *arg)
 
 	new_node = (t_envp *)malloc(sizeof(t_envp));
 	if (!new_node)
-		return(0);
+		return (0);
 	new_node->input = ft_strdup(arg);
 	if (!new_node->input)
 		return (0);
@@ -49,7 +49,7 @@ t_envp	*new_envp(char *arg)
 	if (!args)
 		return (0); //failure
 	if (!is_str_valid(args[0]) || !is_str_valid(args[1]))
-		return (0);	//print_env_var(); (i guess here return with error)
+		return (0); //print_env_var(); (i guess here return with error)
 	new_node->env = args[0];
 	new_node->value = args[1];
 	new_node->next = 0;
@@ -78,16 +78,16 @@ int	add_env(t_envp **envp, char *args)
 	return (1); //success
 }
 
-void    print_env_var(t_envp *envp) //print only one var or more? 
+void	print_env_var(t_envp *envp) //print only one var or more? 
 {
 	t_envp	*ptr;
 
 	ptr = envp;
-    while(ptr)
-    {
-    	printf("%s=%s\n", ptr->env, ptr->value);
-        ptr = ptr->next;
-    }
+	while (ptr)
+	{
+		printf("%s=%s\n", ptr->env, ptr->value);
+		ptr = ptr->next;
+	}
 }
 
 // //remove a node from the list

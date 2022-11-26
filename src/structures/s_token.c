@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:39:35 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/15 16:02:11 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/26 14:20:46 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_token	*new_token(char *word, int type)
 	return (new_token);
 }
 
-int add_token(t_token **token, char *word, int type)
+int	add_token(t_token **token, char *word, int type)
 {
 	t_token	*new;
 	t_token	*ptr;
@@ -39,7 +39,7 @@ int add_token(t_token **token, char *word, int type)
 	new = new_token(word, type);
 	if (!new)
 		return (0); //failure
-	if(!*token) //if token list empty
+	if (!*token) //if token list empty
 		*token = new;
 	else
 	{
@@ -67,14 +67,14 @@ void	free_tokens(t_data *data)
 	data->token = NULL;
 }
 
-void    print_tokens(t_token *token) //print only one var or more? 
+void	print_tokens(t_token *token) //print token only for debug purpose !!TO REMOVE
 {
 	t_token	*ptr;
 
 	ptr = token;
-    while(ptr)
-    {
-    	printf("\"%s\" type = %d\n", ptr->word, ptr->type);
-        ptr = ptr->next;
-    }
+	while (ptr)
+	{
+		printf("\"%s\" type = %d\n", ptr->word, ptr->type);
+		ptr = ptr->next;
+	}
 }

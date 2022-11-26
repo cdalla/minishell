@@ -6,17 +6,17 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 14:11:11 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 14:17:31 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/26 14:09:11 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void free_infile(t_scmd *ptr)
+void	free_infile(t_scmd *ptr)
 {
 	t_infile	*ptr_inf;
 	t_infile	*next_inf;
-	
+
 	if (ptr->infile)
 	{
 		ptr_inf = ptr->infile;
@@ -30,11 +30,11 @@ void free_infile(t_scmd *ptr)
 	}
 }
 
-void free_outfile(t_scmd *ptr)
+void	free_outfile(t_scmd *ptr)
 {
 	t_outfile	*ptr_out;
 	t_outfile	*next_out;
-		
+
 	if (ptr->outfile)
 	{
 		ptr_out = ptr->outfile;
@@ -48,7 +48,7 @@ void free_outfile(t_scmd *ptr)
 	}
 }
 
-void free_args(t_scmd *ptr)
+void	free_args(t_scmd *ptr)
 {
 	t_scmd	*ptr_arg;
 	t_scmd	*next_arg;
@@ -56,7 +56,7 @@ void free_args(t_scmd *ptr)
 	if (ptr->next_arg)
 	{
 		ptr_arg = ptr->next_arg;
-		while(ptr_arg)
+		while (ptr_arg)
 		{
 			next_arg = ptr_arg->next_arg;
 			free(ptr_arg->value);
@@ -66,7 +66,7 @@ void free_args(t_scmd *ptr)
 	}
 }
 
-void free_cmd(t_scmd *cmd)
+void	free_cmd(t_scmd *cmd)
 {
 	t_scmd	*ptr;
 	t_scmd	*next_ptr;

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 12:03:48 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/21 12:11:32 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/26 14:14:48 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,6 @@
 	MODIFY?
 
 */
-
-typedef struct s_excode
-{
-    int				code;
-    char			*cmd;
-    struct s_excode	*next;
-    struct s_excode	*prev;
-}   			t_excode;
 
 t_excode	*new_excode(char *cmd, int code)
 {

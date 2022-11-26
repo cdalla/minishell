@@ -6,16 +6,17 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/23 13:14:24 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/26 14:31:34 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void print_dsarry(char **array)//just for testing purpose !!!REMOVE!!!
+void	print_dsarry(char **array)//just for testing purpose !!!REMOVE!!!
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (array[i])
 	{
 		printf("%s\n", array[i]);
@@ -28,9 +29,9 @@ int	cmd_start(t_scmd *cmd, t_data *data)
 	char	*cmd_path;
 	char	**envp_ar;
 	char	**cmd_args;
-	int 	errno;
+	int		errno;
 	//int 	ret;
-	
+
 	// if (cmd->infile)
 	// 	//set infiles
 	// if (cmd->outfile)
@@ -62,14 +63,14 @@ int	cmd_start(t_scmd *cmd, t_data *data)
 	execve(cmd_path, cmd_args, envp_ar);
 	printf("execve returned\n");
 	//execve(check_path_cmd, ls_toarr_env, ls_toarr_args); //this is nice :) do not care about ret
-	return(0);
+	return (0);
 }
 
 int	executer_single(t_scmd *cmd, t_data *data)
 {
-	//no pipe
 	pid_t	child;
 	int		pouet;
+
 	child = fork();
 	if (child == 0)
 	{
@@ -81,7 +82,6 @@ int	executer_single(t_scmd *cmd, t_data *data)
 		//parent wait the child end
 		wait(&pouet);
 		printf("execve returned %d\n", pouet);
-
 	}
 	else
 	{

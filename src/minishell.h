@@ -63,7 +63,6 @@ typedef struct s_envp
     char *env;
     char *value;
 	char *input;
-	int standalone;
     struct s_envp *next;
     struct s_envp *prev;
     struct s_envp *last_node;
@@ -76,17 +75,17 @@ typedef struct s_token
     struct s_token  	*next;
 }               t_token;
 
-typedef struct s_exit_code
+typedef struct s_excode
 {
-    int                 exit_code;
-    char                *exited_cmd;
-    struct s_exit_code  *next;
-    struct s_exit_code  *prev;
-}   t_exit_code;
+    int				code;
+    char			*cmd;
+    struct s_excode	*next;
+    struct s_excode	*prev;
+}   			t_excode;
 
 typedef struct s_data
 {
-    t_exit_code     *exit_code;
+    t_excode     *exit_code;
     t_envp          *envp;
     t_token         *token;
 	int            	n_pipes;
@@ -96,10 +95,15 @@ int unset(t_envp **envp, char *var);
 
 //LEXER
 int		prompt_call(t_data *data);
-char	*get_rl(void);
-int		lexer (char	*input, t_data *data);
 
-//STRUCT 
+int		lexer (char	*input, t_data *data);
+int		is_space(int c);
+int		type_recogn(char *word);
+int		is_redirection(char *c);
+char	*get_rl(void);
+void 	quote_check(int *quote, int *dquote, int c);
+
+//STRUCT TOKEN
 int 	add_token(t_token **token, char *word, int type);
 void	free_tokens(t_data *data);
 void    print_tokens(t_token *token);
@@ -129,22 +133,4 @@ char **cpy_list_args(t_scmd *list, int size, char *cmd_name);
 char **ls_toarr_env(t_envp *list);
 char **cpy_list_env(t_envp *list, int size);
 
-
-//EXPANDER
-int expander(t_data *data);
-
-
-
-//---------------------------ENV--------------------------//
-//env_crud
-char *get_envp(t_envp *envp, char *env);
-int create_envp(char **args, t_envp **envp, bool standalone);
-int update_envp(t_envp *envp, char **args, bool standalone);
-void    read_envp(t_envp *envp); //print only one var or more? 
-int	remove_envp(t_envp **envp, t_envp *to_rem);
-
-//env_builtins
-char **ft_cut_string(char *str, bool *standalone);
-int	format_and_add(t_envp **envp, char *arg);
-int is_str_valid(char *str);
 #endif

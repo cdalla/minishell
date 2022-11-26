@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 11:44:27 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 11:41:02 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/26 14:07:52 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ int	parse_single_token(t_token *ptr, t_scmd *cmd)
 */
 int	parse_loop(t_scmd *cmd, t_token **token, int line)
 {
-	int	ret;
-	int	ret_line;
+	int		ret;
+	int		ret_line;
 	t_token	*ptr;
 
 	ret_line = 0;
@@ -98,6 +98,6 @@ int	parse_loop(t_scmd *cmd, t_token **token, int line)
 			ptr = ptr->next;
 	}
 	if (line)
-		return(ret_line);
+		return (ret_line);
 	return (1);
 }

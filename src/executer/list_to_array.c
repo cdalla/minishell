@@ -6,23 +6,23 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:28 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 12:50:29 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/26 14:23:58 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char **cpy_list_env(t_envp *list, int size)
+char	**cpy_list_env(t_envp *list, int size)
 {
 	int		i;
 	t_envp	*ptr;
 	char	**array;
-	
+
 	i = 0;
 	array = (char **)malloc((size + 1) * sizeof(char *));
 	if (!array)
 		return (0); //malloc error
-	ptr = list;	
+	ptr = list;
 	while (ptr && i < size)
 	{
 		array[i] = ft_strdup(ptr->input);
@@ -35,7 +35,7 @@ char **cpy_list_env(t_envp *list, int size)
 	return (array);
 }
 
-char **ls_toarr_env(t_envp *list)
+char	**ls_toarr_env(t_envp *list)
 {
 	t_envp	*ptr;
 	int		size;
@@ -50,12 +50,12 @@ char **ls_toarr_env(t_envp *list)
 	return (cpy_list_env(list, size));
 }
 
-char **cpy_list_args(t_scmd *list, int size, char *cmd_name)
+char	**cpy_list_args(t_scmd *list, int size, char *cmd_name)
 {
 	int		i;
 	t_scmd	*ptr;
 	char	**array;
-	
+
 	i = 1;
 	array = (char **)malloc((size + 2) * sizeof(char *));
 	if (!array)
@@ -76,7 +76,7 @@ char **cpy_list_args(t_scmd *list, int size, char *cmd_name)
 	return (array);
 }
 
-char **ls_toarr_args(t_scmd *list, char *cmd_name)
+char	**ls_toarr_args(t_scmd *list, char *cmd_name)
 {
 	t_scmd	*ptr;
 	int		size;

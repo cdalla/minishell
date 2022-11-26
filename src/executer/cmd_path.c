@@ -6,13 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:15 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 12:50:17 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/26 14:23:07 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char **split_paths(t_envp *envp)
+char	**split_paths(t_envp *envp)
 {
 	char	*path;
 	t_envp	*ptr;
@@ -49,11 +49,11 @@ int	join_cmd_name(char *cmd_name, char **paths)
 	return (1);
 }
 
-char *check_path_cmd(char *cmd_name, t_data *data)
+char	*check_path_cmd(char *cmd_name, t_data *data)
 {
 	char	**paths;
 	int		i;
-	
+
 	i = 0;
 	paths = split_paths(data->envp);
 	if (!paths)

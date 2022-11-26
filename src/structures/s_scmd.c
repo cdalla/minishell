@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 12:09:10 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/25 14:11:48 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/26 14:26:19 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ t_scmd	*new_scmd(enum cmd_type type)
 	new_scmd->value = 0;
 	new_scmd->infile = 0;
 	new_scmd->outfile = 0;
-	return (new_scmd);	
+	return (new_scmd);
 }
 
 int	add_scmd_arg(t_scmd *cmd, t_scmd *arg)
 {
 	t_scmd	*ptr;
-	
+
 	if (!cmd || !arg)
 		return (0); //error
 	if (!cmd->cmd_name)
@@ -66,13 +66,14 @@ int	set_scmd_value(t_scmd *cmd, char *value)
 	return (1); //success
 }
 
-void print_scmd(t_scmd *cmd)
+void	print_scmd(t_scmd *cmd) //to be removed, only for debug purpose
 {
-	t_scmd *ptr;
-	t_infile *inf;
-	t_outfile *out;
-	int i = 1;
+	t_scmd		*ptr;
+	t_infile	*inf;
+	t_outfile	*out;
+	int			i;
 
+	i = 0;
 	ptr = cmd;
 	printf("cmd name = %s\n", ptr->cmd_name->value);
 	ptr = ptr->next_arg;
@@ -94,7 +95,7 @@ void print_scmd(t_scmd *cmd)
 			inf = inf->next;
 		}
 	}
-		if (ptr->outfile)
+	if (ptr->outfile)
 	{
 		out = ptr->outfile;
 		i = 1;
@@ -107,16 +108,16 @@ void print_scmd(t_scmd *cmd)
 	}
 }
 
-void print_multi_cmd(t_scmd *multi_cmd, int n_pipes)
+void	print_multi_cmd(t_scmd *multi_cmd, int n_pipes)
 {
-	int i;
-	t_scmd *ptr;
+	int		i;
+	t_scmd	*ptr;
 
 	i = 0;
 	ptr = multi_cmd;
 	while (ptr && i <= n_pipes)
 	{
-		printf("CMD %d\n", i+1);
+		printf("CMD %d\n", i + 1);
 		print_scmd(ptr);
 		i++;
 		ptr = ptr->next_cmd;
