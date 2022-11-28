@@ -6,13 +6,14 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:05:39 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/28 14:20:53 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 
 /*
 	called by main
@@ -25,6 +26,22 @@
 		we can pass back the string from input
 		in this case we can merge this with get_rl()
 */
+void	sigint_handler(int signum)
+{
+	//printf("\n");
+	write(1, "\n",1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	(void)signum;
+}
+
+void	signals(void)
+{
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
+}
+
 int	prompt_call(t_data *data)
 {
 	char	*input;
@@ -32,8 +49,12 @@ int	prompt_call(t_data *data)
 
 	cmd = NULL;
 	while (1)
-	{
+	{	
+		signals();
+		//signal(, signal_handler);
 		input = get_rl();
+		if (!input)
+			exit(0); // return the correct msg
 		//printf("input = \"%s\"\n", input); //to show what we got from input
 		if (!lexer(input, data))
 			return (0); //stop and return
@@ -59,7 +80,12 @@ char	*get_rl(void)
 		line_read = NULL;
 	}
 	line_read = readline("pouetpolpet>");
-	if (line_read && *line_read)
+	if (!line_read)
+	{
+		ft_putendl_fd("exit",1);
+		return (0);
+	}
+	else if (line_read && *line_read)
 		add_history(line_read);
 	return (line_read);
 }

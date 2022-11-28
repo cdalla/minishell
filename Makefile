@@ -8,7 +8,7 @@ HEADER := src/minishell.h
 
 LIBFT := src/libft/libft.a
 
-LIBREADLINE = -L /Users/$(USER)/.brew/opt/readline/lib -lreadline
+LIBREADLINE =  -L /Users/$(USER)/.brew/opt/readline/lib/ 
 
 OBJ :=	obj/lexer/lexer_utils.o\
 		obj/lexer/lexer.o\
@@ -16,8 +16,6 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/parser/parser.o\
 		obj/parser/parser_utils.o\
 		obj/structures/s_envp.o\
-		obj/structures/env_crud.o\
-		obj/structures/env_builtins.o\
 		obj/structures/s_exit_code.o\
 		obj/structures/s_redirection.o\
 		obj/structures/s_scmd.o\
@@ -27,7 +25,6 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/executer/cmd_path.o\
 		obj/executer/list_to_array.o\
 		obj/main.o\
-		obj/expander/expander.o\
 
 
 SRC :=	src/lexer/lexer_utils.c\
@@ -36,8 +33,6 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/parser/parser.c\
 		src/parser/parser_utils.c\
 		src/structures/s_envp.c\
-		src/structures/env_crud.c\
-		src/structures/env_builtins.c\
 		src/structures/s_exit_code.c\
 		src/structures/s_redirection.c\
 		src/structures/s_scmd.c\
@@ -47,17 +42,16 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/executer/cmd_path.c\
 		src/executer/list_to_array.c\
 		src/main.c\
-		src/expander/expander.c\
 
 
 all: $(NAME)
 	
 $(NAME): $(LIBFT) $(OBJ) 
-	@$(CC) $(CFLAGS) $(LIBREADLINE) -o $@ $^
+	@$(CC) $(CFLAGS) $(LIBREADLINE) -o $@ $^  -lreadline 
 
 obj/%.o: src/%.c $(HEADER)
 	@mkdir -p $(dir $@)
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(CFLAGS) -o $@ $< -I /Users/$(USER)/.brew/opt/readline/include/
 
 $(LIBFT):
 	make -C ./src/libft
@@ -65,7 +59,7 @@ $(LIBFT):
 clean:
 	rm -f $(OBJ)
 	make clean -C ./src/libft/
-	rmdir obj/lexer obj/parser obj/structures obj/executer obj/expander obj
+	rmdir obj/lexer obj/parser obj/structures obj/executer obj
 
 fclean: clean
 	rm -f $(NAME)
