@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/28 14:20:53 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/29 18:24:57 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	signals(void)
 		signal(SIGQUIT, SIG_IGN);
 }
 
+int executer(t_scmd *cmd, t_data *data);
 int	prompt_call(t_data *data)
 {
 	char	*input;
@@ -51,7 +52,6 @@ int	prompt_call(t_data *data)
 	while (1)
 	{	
 		signals();
-		//signal(, signal_handler);
 		input = get_rl();
 		if (!input)
 			exit(0); // return the correct msg
@@ -59,9 +59,10 @@ int	prompt_call(t_data *data)
 		if (!lexer(input, data))
 			return (0); //stop and return
 		// /expander(data);
-		//cmd = parser(data);
-		// if (!cmd)
-		// 	return (0);
+		cmd = parser(data);
+		if (!cmd)
+			return (0);
+		executer(cmd, data);
 		free_tokens(data);
 		free_cmd(cmd);
 	}

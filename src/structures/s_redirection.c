@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/17 11:38:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:15:53 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/29 18:17:47 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_infile	*new_infile(enum red_type type, char *value)
 	if (!new_inf)
 		return (0); //malloc failed
 	new_inf->type = type;
+	new_inf->next = 0;
 	new_inf->filename = ft_strdup(value);
 	if (!new_inf->filename)
 		return (0); //failed in strdup
@@ -56,6 +57,7 @@ t_outfile	*new_outfile(enum red_type type, char *value)
 	if (!new_outf)
 		return (0); //malloc failed
 	new_outf->type = type;
+	new_outf->next = 0;
 	new_outf->filename = ft_strdup(value);
 	if (!new_outf->filename)
 		return (0); //failed in strdup

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:31:34 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/29 19:47:21 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	print_dsarry(char **array)//just for testing purpose !!!REMOVE!!!
 	}
 }
 
-int	cmd_start(t_scmd *cmd, t_data *data)
+int	cmd_start(t_scmd *cmd, t_data *data, int *fd)
 {
 	char	*cmd_path;
 	char	**envp_ar;
@@ -32,41 +32,23 @@ int	cmd_start(t_scmd *cmd, t_data *data)
 	int		errno;
 	//int 	ret;
 
-	// if (cmd->infile)
-	// 	//set infiles
-	// if (cmd->outfile)
-	// 	//set outfile
+	set_red(cmd, fd);
 	errno = 0;
 	cmd_path = check_path_cmd(cmd->cmd_name->value, data);
 	if (!cmd_path)
-	{	
-		printf("cmd path failed\n");
 		return (0);
-	}
-	printf("%s\n", cmd_path);
 	envp_ar = ls_toarr_env(data->envp);
 	if (!envp_ar)
-	{
-		printf("envp array failed");
 		return (0);
-	}
-	//sprint_dsarry(envp_ar); //testing purpose
 	cmd_args = ls_toarr_args(cmd->next_arg, cmd_path);
 	if (!cmd_args)
-	{
-		printf("args array failed\n");
 		return (0);
-	}
-	print_dsarry(cmd_args); //testing purpose
-	printf("\n");
-	//printf("before execution");
 	execve(cmd_path, cmd_args, envp_ar);
-	printf("execve returned\n");
 	//execve(check_path_cmd, ls_toarr_env, ls_toarr_args); //this is nice :) do not care about ret
 	return (0);
 }
 
-int	executer_single(t_scmd *cmd, t_data *data)
+int	executer_single(t_scmd *cmd, t_data *data, int *fd)
 {
 	pid_t	child;
 	int		pouet;
@@ -75,13 +57,13 @@ int	executer_single(t_scmd *cmd, t_data *data)
 	if (child == 0)
 	{
 		//child task
-		cmd_start(cmd, data);
+		cmd_start(cmd, data, fd);
 	}
 	else if (child > 0)
 	{
 		//parent wait the child end
 		wait(&pouet);
-		printf("execve returned %d\n", pouet);
+		//printf("execve returned %d\n", pouet);
 	}
 	else
 	{
@@ -91,16 +73,31 @@ int	executer_single(t_scmd *cmd, t_data *data)
 	return (1);
 }
 
-int	executer_multi(t_scmd **cmd_line, t_data *data, int n_pipes)
+int	executer_multi(t_scmd *cmd, t_data *data, int *fd)
 {
-	int	i;
+	t_scmd	*ptr;
 
-	i = 0;
-	while (i <= n_pipes)
+	ptr = cmd;
+	while(ptr)
 	{
-		//set fd for pipes
-		executer_single(cmd_line[i], data);
-		//check execution return
+		pipe(fd);
+		executer_single(ptr, data, fd);
+		ptr = ptr->next_cmd;
 	}
+	// wait(NULL);
 	return (1);// success
+}
+
+int executer(t_scmd *cmd, t_data *data)
+{
+	int	fd[2];
+	//int	p_fd[2];
+	
+	// fd[0] = STDIN_FILENO; 
+	// fd[1] = STDOUT_FILENO;
+	if (data->n_pipes)
+		executer_multi(cmd, data, fd);
+	else
+		executer_single(cmd, data, fd);
+	return (0);
 }
