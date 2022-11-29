@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:03:59 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/29 11:44:41 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	check_token_syntax(t_token *token)
 	return (1);
 }
 
-char	*trim_word(char **str, int *w_len)
+char	*trim_word(char **s, int *wl)
 {
 	char	*word;
 	int		quote;
@@ -58,23 +58,23 @@ char	*trim_word(char **str, int *w_len)
 	word = 0;
 	quote = 0;
 	dquote = 0;
-	while (((!is_space(*(*str + *w_len))) || quote || dquote) //if it is not a space or quotes are opened
-		&& *(*str + *w_len) != '\0')
+	while (((!is_space(*(*s + *wl))) || quote || dquote) //if it is not a space or quotes are opened
+		&& *(*s + *wl) != '\0')
 	{
-		if (*(*str + *w_len) == '\'' || *(*str + *w_len) == '\"')
-			quote_check(&quote, &dquote, *(*str + *w_len));
-		if ((*(*str + *w_len) == '>' || *(*str + *w_len) == '<')
+		if (*(*s + *wl) == '\'' || *(*s + *wl) == '\"')
+			quote_check(&quote, &dquote, *(*s + *wl));
+		if ((*(*s + *wl) == '>' || *(*s + *wl) == '<' || *(*s + *wl) == '$')
 			&& !quote && !dquote) //if this one is redirection trim symbol
 		{
-			(*w_len) += is_redirection((*str + *w_len));
+			(*wl) += is_redirection((*s + *wl));
 			break ;
 		}
-		(*w_len)++;
-		if (is_redirection((*str + *w_len)) && !quote && !dquote) //if next is redirection break
+		(*wl)++;
+		if (is_redirection((*s + *wl)) && !quote && !dquote) //if next is redirection break
 			break ;
 	}
-	if (*w_len)
-		word = ft_substr(*str, 0, *w_len);
+	if (*wl)
+		word = ft_substr(*s, 0, *wl);
 	return (word);
 }
 
