@@ -89,6 +89,9 @@ typedef struct s_data
     t_envp          *envp;
     t_token         *token;
 	int            	n_pipes;
+	int				to_write;
+	int				to_read;
+	int				to_close;
 }   t_data;
 
 int unset(t_envp **envp, char *var);

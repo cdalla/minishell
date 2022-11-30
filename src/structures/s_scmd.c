@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 12:09:10 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:26:19 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/30 03:17:33 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_scmd	*new_scmd(enum cmd_type type)
 	if (!new_scmd)
 		return (0); //failure
 	new_scmd->type = type;
+	new_scmd->cmd_name = 0;
 	new_scmd->next_cmd = 0;
 	new_scmd->next_arg = 0;
 	new_scmd->prev_arg = 0;
@@ -75,7 +76,8 @@ void	print_scmd(t_scmd *cmd) //to be removed, only for debug purpose
 
 	i = 0;
 	ptr = cmd;
-	printf("cmd name = %s\n", ptr->cmd_name->value);
+	if (cmd->cmd_name)
+		printf("cmd name = %s\n", ptr->cmd_name->value);
 	ptr = ptr->next_arg;
 	while (ptr)
 	{
@@ -90,7 +92,7 @@ void	print_scmd(t_scmd *cmd) //to be removed, only for debug purpose
 		i = 1;
 		while (inf)
 		{
-			printf("infile %d = %s\n", i, inf->filename);
+			printf("infile %d = %s - type = %d\n", i, inf->filename, inf->type);
 			i++;
 			inf = inf->next;
 		}
@@ -101,7 +103,7 @@ void	print_scmd(t_scmd *cmd) //to be removed, only for debug purpose
 		i = 1;
 		while (out)
 		{
-			printf("outfile %d = %s\n", i, out->filename);
+			printf("outfile %d = %s - type = %d\n", i, out->filename, out->type);
 			i++;
 			out = out->next;
 		}

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:07:19 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/11/29 17:36:03 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_scmd	*parser(t_data *data)
 		cmd = parse_simple_command(data->token);
 		if (!cmd)
 			return (0);//failed something memory to free
-		//print_scmd(single_cmd);//tester printing single cmd
+		print_scmd(cmd);//tester printing single cmd
 	}
 	return (cmd);
 }
