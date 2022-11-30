@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/30 03:29:17 by lisa          ########   odam.nl         */
+/*   Updated: 2022/11/30 12:31:29 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	set_outfile(t_outfile *outfile, t_data *data)
 			close(data->to_write);//close fd set previously
 		if (outfile->type == APPEND)
 		{
-			data->to_write = open(outfile->filename, O_APPEND);
+			data->to_write = open(outfile->filename, O_WRONLY | O_APPEND);
 			if (data->to_write == -1)
 				return (0); //error
 		}
@@ -35,7 +35,8 @@ int	set_outfile(t_outfile *outfile, t_data *data)
 		}
 		outfile = outfile->next;
 	}
-	dup2(data->to_write, STDOUT_FILENO);
+	if (data->to_write != -1)
+		dup2(data->to_write, STDOUT_FILENO);
 	if (data->to_write != STDOUT_FILENO)
 		close(data->to_write);
 	return (1);
@@ -79,12 +80,12 @@ int	set_infile(t_infile *infile, t_data *data)
 	{
 		if (data->to_read != STDIN_FILENO)
 			close(data->to_read);
-		// if (infile->type == HERED)//check if we need to manage heredoc if something fails before
-		// {
-		// 	data->to_read = set_heredoc(infile->filename, data);
-		// 	if (!data->to_read)
-		// 		return (0);
-		// }
+		if (infile->type == HERED)//check if we need to manage heredoc if something fails before
+		{
+			data->to_read = set_heredoc(infile->filename, data);
+			if (!data->to_read)
+				return (0);
+		}
 		if (infile->type == READ || infile->type == HERED)
 		{
 			data->to_read = open(infile->filename, O_RDONLY);
@@ -93,7 +94,8 @@ int	set_infile(t_infile *infile, t_data *data)
 		}
 		infile = infile->next;
 	}
-	dup2(data->to_read, STDIN_FILENO);
+	if (data->to_read != -1)
+		dup2(data->to_read, STDIN_FILENO);
 	if (data->to_read != 0)
 		close(data->to_read);
 	// if (infile->type == HERED) //fix this file delete for heredoc

@@ -3,8 +3,8 @@
 void	set_fd(t_data *data, int fd[2][2], int i)
 {
 	data->to_close = -1;
-	data->to_read = 0;
-	data->to_write = 1;
+	data->to_read = -1;
+	data->to_write = -1;
 	if (i % 2)
 	{
 		if (i < data->n_pipes)
@@ -28,18 +28,29 @@ void	set_fd(t_data *data, int fd[2][2], int i)
 
 void	parent_close(int fd[2][2], int i, int n_pipes)
 {
+	printf("parent close\n");
 	if (i % 2)
 	{
 		if (i < n_pipes)
+		{
+			printf("%d\n", fd[1][1]);
 			close(fd[1][1]);
+		}
+		printf("%d\n", fd[0][0]);
 		close(fd[0][0]);
 	}
 	else
 	{
-		if (i < n_pipes)	
+		if (i < n_pipes)
+		{
+			printf("%d\n", fd[0][1]);
 			close(fd[0][1]);
+		}
 		if (i != 0)
+		{
+			printf("%d\n", fd[1][0]);
 			close(fd[1][0]);
+		}
 	}
 }
 
