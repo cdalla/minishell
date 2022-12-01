@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/30 02:54:54 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/01 03:07:22 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	signals(void)
 }
 
 int executer(t_scmd *cmd, t_data *data);
+
 int	prompt_call(t_data *data)
 {
 	char	*input;

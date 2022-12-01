@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/29 22:54:11 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/01 03:04:42 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ int	check_token_syntax(t_token *token)
 			printf("syntax error\n");
 			return (0);
 		}
-		else if (ptr->type == PIPE && (ptr->next->type == PIPE || !ptr->next))
+		else if (ptr->type == PIPE && (!ptr->next || ptr->next->type == PIPE ))
+		{
+			printf("syntax error\n");
 			return (0);
+		}
 		ptr = ptr->next;
 	}
 	return (1);
@@ -110,7 +113,7 @@ int	lexer(char	*input, t_data *data)
 {
 	if (!tokenize(input, data))
 		return (0);
-	print_tokens(data->token);
+	//print_tokens(data->token);
 	if (!check_token_syntax(data->token))
 		return (0);
 	//printf("finished parser\n");

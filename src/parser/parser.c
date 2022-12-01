@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/29 17:36:03 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/01 02:52:39 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ t_scmd	*parser(t_data *data)
 			return (0);
 		if (!parse_multi_cmd(&data->token, data->n_pipes, cmd))
 			return (0); //failed something free memory
-		print_multi_cmd(cmd, data->n_pipes); //tester printing multi
+		//print_multi_cmd(cmd, data->n_pipes); //tester printing multi
 	}
 	else
 	{
 		cmd = parse_simple_command(data->token);
 		if (!cmd)
 			return (0);//failed something memory to free
-		print_scmd(cmd);//tester printing single cmd
+		//print_scmd(cmd);//tester printing single cmd
 	}
 	return (cmd);
 }
