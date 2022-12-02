@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/30 12:31:29 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/02 12:01:22 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ int	set_outfile(t_outfile *outfile, t_data *data)
 {
 	while (outfile)
 	{
-		if (data->to_write != STDOUT_FILENO)
+		if (data->to_write != -1)
 			close(data->to_write);//close fd set previously
 		if (outfile->type == APPEND)
 		{
-			data->to_write = open(outfile->filename, O_WRONLY | O_APPEND);
+			data->to_write = open(outfile->filename, O_WRONLY | O_APPEND | O_CREAT , 0777);
 			if (data->to_write == -1)
 				return (0); //error
 		}
 		if (outfile->type == WRITE)
 		{
-			data->to_write = open(outfile->filename, O_WRONLY);
+			data->to_write = open(outfile->filename, O_WRONLY | O_CREAT , 0777);
 			if (data->to_write == -1)
 				return (0); //error
 		}
@@ -37,8 +37,7 @@ int	set_outfile(t_outfile *outfile, t_data *data)
 	}
 	if (data->to_write != -1)
 		dup2(data->to_write, STDOUT_FILENO);
-	if (data->to_write != STDOUT_FILENO)
-		close(data->to_write);
+	close(data->to_write);
 	return (1);
 }
 
@@ -78,7 +77,7 @@ int	set_infile(t_infile *infile, t_data *data)
 {
 	while (infile)
 	{
-		if (data->to_read != STDIN_FILENO)
+		if (data->to_read != -1)
 			close(data->to_read);
 		if (infile->type == HERED)//check if we need to manage heredoc if something fails before
 		{
@@ -88,7 +87,7 @@ int	set_infile(t_infile *infile, t_data *data)
 		}
 		if (infile->type == READ || infile->type == HERED)
 		{
-			data->to_read = open(infile->filename, O_RDONLY);
+			data->to_read = open(infile->filename, O_RDONLY | O_CREAT , 0777);
 			if (data->to_read == -1)
 				return (0); //error
 		}
@@ -96,8 +95,7 @@ int	set_infile(t_infile *infile, t_data *data)
 	}
 	if (data->to_read != -1)
 		dup2(data->to_read, STDIN_FILENO);
-	if (data->to_read != 0)
-		close(data->to_read);
+	close(data->to_read);
 	// if (infile->type == HERED) //fix this file delete for heredoc
 	// 	unlink(infile->filename);
 	return (1);
@@ -105,9 +103,7 @@ int	set_infile(t_infile *infile, t_data *data)
 
 int	set_red(t_scmd *cmd, t_data *data)
 {
-	if (cmd->infile)
-		set_infile(cmd->infile, data);
-	if (cmd->outfile)
-		set_outfile(cmd->outfile, data);
+	set_infile(cmd->infile, data);
+	set_outfile(cmd->outfile, data);
 	return (1);
 }

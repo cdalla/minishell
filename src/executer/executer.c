@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/01 03:01:45 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/02 12:04:29 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 	if (data->to_close != -1)
 		close(data->to_close);
 	set_red(cmd, data);
-	//printf("to_close = %d\nto_read = %d\nto_write = %d\n", data->to_close, data->to_read, data->to_write);
 	cmd_path = check_path_cmd(cmd->cmd_name->value, data);
 	if (!cmd_path)
 		return (0);
@@ -43,14 +42,11 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 pid_t	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins here
 {
 	pid_t	child;
-	//int		pouet;
 	int		status;
 
 	child = fork();
 	if (child == 0)
 	{
-		//child task
-		//printf ("child pid = %d\n", getpid());
 		cmd_start(cmd, data);
 	}
 	else if (child > 0)
@@ -60,13 +56,14 @@ pid_t	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins h
 		//printf("execve returned %d\n", pouet);
 		if (i == data->n_pipes)
 		{
-			waitpid(-1, &status, 0);
-			i = 0;
-			while (i < data->n_pipes)
-			{
-				wait(NULL);
-				i++;
-			}
+			waitpid(child, &status, 0);
+			// i = 0;
+			// while (i < data->n_pipes)
+			// {
+			// 	wait(NULL);
+			// 	printf("un altro processo i = %d\n", i);
+			// 	i++;
+			// }
 		}
 	}
 	else if (child < 0)
@@ -80,31 +77,21 @@ pid_t	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins h
 int	executer_multi(t_scmd *cmd, t_data *data)
 {
 	t_scmd	*ptr;
-	pid_t	last_child;
 	int		fd[2][2];
 	int		i;
 
 	i = 0;
 	ptr = cmd;
-	//printf("n_pipes = %d\n", data->n_pipes);
 	while(ptr)
 	{
 		if (i < data->n_pipes)
 			pipe(fd[i % 2]);
 		set_fd(data, fd, i);
-		last_child = executer_single(ptr, data, i);
-		//printf("last pid = %d\n", last_child);
+		executer_single(ptr, data, i);
 		parent_close(fd, i, data->n_pipes);
 		ptr = ptr->next_cmd;
 		i++;
 	}
-	// waitpid(last_child, &status, 0);
-	// i = 0;
-	// while (i < data->n_pipes)
-	// {
-	// 	wait(NULL);
-	// 	i++;
-	// }	
 	return (1);// success
 }
 
