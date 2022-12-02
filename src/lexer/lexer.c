@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/01 03:04:42 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/02 17:18:32 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ char	*trim_word(char **s, int *wl)
 	{
 		if (*(*s + *wl) == '\'' || *(*s + *wl) == '\"')
 			quote_check(&quote, &dquote, *(*s + *wl));
-		if ((*(*s + *wl) == '>' || *(*s + *wl) == '<' || *(*s + *wl) == '$')
-			&& !quote && !dquote) //if this one is redirection trim symbol
+		if ((*(*s + *wl) == '>' || *(*s + *wl) == '<' || (*(*s + *wl) == '$'
+			&& *(*s + *wl + 1) == '?'))&& !quote && !dquote) //if this one is redirection trim symbol
 		{
 			(*wl) += is_redirection((*s + *wl));
 			break ;
@@ -113,7 +113,7 @@ int	lexer(char	*input, t_data *data)
 {
 	if (!tokenize(input, data))
 		return (0);
-	//print_tokens(data->token);
+	print_tokens(data->token);
 	if (!check_token_syntax(data->token))
 		return (0);
 	//printf("finished parser\n");

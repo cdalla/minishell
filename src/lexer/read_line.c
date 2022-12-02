@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/01 03:07:22 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/02 17:05:57 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ int	prompt_call(t_data *data)
 		if (!lexer(input, data))
 			return (0); //stop and return
 		// /expander(data);
-		cmd = parser(data);
-		if (!cmd)
-			return (0);
-		executer(cmd, data);
+		// cmd = parser(data);
+		// if (!cmd)
+		// 	return (0);
+		// executer(cmd, data);
 		free_tokens(data);
 		free_cmd(cmd);
 	}
