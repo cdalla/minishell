@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/02 12:04:29 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/02 15:45:38 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,6 @@ pid_t	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins h
 	}
 	else if (child > 0)
 	{
-		//parent wait the child end
-		//wait(NULL);
-		//printf("execve returned %d\n", pouet);
 		if (i == data->n_pipes)
 		{
 			waitpid(child, &status, 0);
@@ -61,7 +58,6 @@ pid_t	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins h
 			// while (i < data->n_pipes)
 			// {
 			// 	wait(NULL);
-			// 	printf("un altro processo i = %d\n", i);
 			// 	i++;
 			// }
 		}

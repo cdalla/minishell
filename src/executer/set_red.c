@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/02 12:01:22 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/02 15:43:35 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,16 @@ int	set_outfile(t_outfile *outfile, t_data *data)
 		}
 		outfile = outfile->next;
 	}
-	if (data->to_write != -1)
-		dup2(data->to_write, STDOUT_FILENO);
-	close(data->to_write);
 	return (1);
 }
 
-int	set_heredoc(char *del, t_data *data)
+int	set_heredoc(char **del, t_data *data)
 {
-	char	*tmp = "test_file";
 	char	*str = NULL;
 
-	data->to_read = open (tmp , O_WRONLY | O_APPEND |  O_CREAT , 0777);
+	data->to_read = open ("test_file" , O_WRONLY | O_APPEND |  O_CREAT , 0777);
 	if (data->to_read == -1)
-		return (-1);//file not opened
+		return (0);//file not opened
 	else
 	{
 		while (1)
@@ -58,16 +54,14 @@ int	set_heredoc(char *del, t_data *data)
 				free(str);
 				str = NULL;
 			}
-			str = readline("gimmeheredoc>");
-			if (!ft_strcmp(del, str))
+			str = readline(">");
+			if (!ft_strcmp(*del, str))
 				break ;
 			write(data->to_read, str, ft_strlen(str));
 			write(data->to_read, "\n", 1);
 		}
-		free(del);
-		del = ft_strdup(tmp);//save the tmp char
-		if (!del)
-			return (0); //error
+		free(*del);
+		*del = "test_file";//save the tmp char
 		close(data->to_read);
 	}
 	return (1); //success
@@ -81,8 +75,9 @@ int	set_infile(t_infile *infile, t_data *data)
 			close(data->to_read);
 		if (infile->type == HERED)//check if we need to manage heredoc if something fails before
 		{
-			data->to_read = set_heredoc(infile->filename, data);
-			if (!data->to_read)
+			if (access("test_file", F_OK) == 0)
+				unlink("test_file");
+			if (!set_heredoc(&infile->filename, data))
 				return (0);
 		}
 		if (infile->type == READ || infile->type == HERED)
@@ -93,17 +88,22 @@ int	set_infile(t_infile *infile, t_data *data)
 		}
 		infile = infile->next;
 	}
-	if (data->to_read != -1)
-		dup2(data->to_read, STDIN_FILENO);
-	close(data->to_read);
-	// if (infile->type == HERED) //fix this file delete for heredoc
-	// 	unlink(infile->filename);
 	return (1);
 }
 
 int	set_red(t_scmd *cmd, t_data *data)
 {
-	set_infile(cmd->infile, data);
-	set_outfile(cmd->outfile, data);
+	if (!set_infile(cmd->infile, data))
+		return (0);
+	if (data->to_read != -1)
+		dup2(data->to_read, STDIN_FILENO);
+	close(data->to_read);
+	if (access("test_file", F_OK) == 0)
+		unlink("test_file");
+	if (!set_outfile(cmd->outfile, data))
+		return (0);
+	if (data->to_write != -1)
+		dup2(data->to_write, STDOUT_FILENO);
+	close(data->to_write);
 	return (1);
 }
