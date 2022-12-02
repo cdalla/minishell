@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/02 15:45:38 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/02 15:49:28 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 	return (0);
 }
 
-pid_t	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins here
+int	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins here
 {
 	pid_t	child;
 	int		status;
@@ -63,11 +63,8 @@ pid_t	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins h
 		}
 	}
 	else if (child < 0)
-	{
-		printf("fork failed\n");
 		return (0); //error
-	}
-	return (child);
+	return (1);
 }
 
 int	executer_multi(t_scmd *cmd, t_data *data)
