@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/02 17:05:57 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/08 13:39:41 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	signals(void)
 
 int executer(t_scmd *cmd, t_data *data);
 
+
+//check in case of only shell var assignation the return of lexer
 int	prompt_call(t_data *data)
 {
 	char	*input;
@@ -60,10 +62,10 @@ int	prompt_call(t_data *data)
 		if (!lexer(input, data))
 			return (0); //stop and return
 		// /expander(data);
-		// cmd = parser(data);
-		// if (!cmd)
-		// 	return (0);
-		// executer(cmd, data);
+		cmd = parser(data);
+		if (!cmd)
+			return (0);
+		executer(cmd, data);
 		free_tokens(data);
 		free_cmd(cmd);
 	}
@@ -71,6 +73,7 @@ int	prompt_call(t_data *data)
 
 //get the line from prompt and return the string
 //add error return
+//MAYBE PUT SIGNALS HERE
 char	*get_rl(void)
 {
 	static char	*line_read;
@@ -81,10 +84,10 @@ char	*get_rl(void)
 		free(line_read);
 		line_read = NULL;
 	}
-	line_read = readline("pouetpolpet>");
-	if (!line_read)
+	line_read = readline("pizzamandolino>");
+	if (!line_read || !ft_strncmp(line_read, "exit", 5))
 	{
-		ft_putendl_fd("exit",1);
+		ft_putendl_fd("exit", 1);
 		return (0);
 	}
 	else if (line_read && *line_read)

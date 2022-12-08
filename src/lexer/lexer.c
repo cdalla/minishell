@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/02 17:18:32 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/08 13:14:16 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ int	tokenize(char *str, t_data *data)
 	return (1); //success
 }
 
+
+//check first token if it is shell var assignation remove the token, check return of lexer in case after this token list is empty
 int	lexer(char	*input, t_data *data)
 {
 	if (!tokenize(input, data))

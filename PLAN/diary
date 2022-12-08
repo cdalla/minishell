@@ -17,9 +17,16 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 
 
 8/12
+	do		SHELL VARIABLE assignation after tokenize when token value is: name=value (with no spaces between = sign and words)-(with no quotes in the <KEY>)
+			only if this is the first token
+	check	ENVP STRUCT for shell_env
 
+	manage	Minishell calling minishell what happens in envp
+
+	do		quote removal
 	do		BUILTINS
 	do 		EXPANDER
 	do 		SIGNALS
 	do 		ERROR MANAGEMENT
-	check	ENVP STRUCT for STANDALONE
+
+	changed strcmp -> strncmp in set_red.c
