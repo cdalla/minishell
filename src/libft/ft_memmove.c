@@ -1,38 +1,25 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_memmove.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/23 16:25:32 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/02/23 16:25:34 by rpicot        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <stdlib.h>
 #include "libft.h"
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	unsigned char	*source;
-	unsigned char	*dest;
-	int				i;
+	size_t	index;
 
-	i = 0;
-	dest = (unsigned char *)dst;
-	source = (unsigned char *)src;
-	if (!dest && !src)
-		return (NULL);
-	else if (dest == source)
-		return (dst);
-	else if (dest < source)
-		ft_memcpy(dst, src, len);
+	index = 0;
+	if (!src && !dst)
+		return (0);
+	if (src > dst)
+	{
+		while (index < len)
+		{
+			((unsigned char *)dst)[index] = ((unsigned char *)src)[index];
+			index++;
+		}
+	}
 	else
 	{
-		while (len)
+		while (len > 0)
 		{
-			dest[len - 1] = source[len - 1];
+			((unsigned char *)dst)[len - 1] = ((unsigned char *)src)[len - 1];
 			len--;
 		}
 	}

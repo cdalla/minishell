@@ -1,40 +1,26 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_atoi.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/23 16:22:58 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/02/23 16:23:02 by rpicot        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "libft.h"
-#include <stdio.h>
-
 int	ft_atoi(const char *str)
 {
-	int				neg;
-	long long int	res;
+	int	index;
+	int	num;
+	int	sign;
 
-	res = 0;
-	neg = 1;
-	while ((*str >= 9 && *str <= 13) || *str == 32)
-		str++;
-	if (*str == '+' || *str == '-')
+	index = 0;
+	num = 0;
+	sign = 1;
+	while (str[index] == '\t' || str[index] == '\v' || str[index] == '\f'
+		|| str[index] == '\r' || str[index] == '\n' || str[index] == ' ')
+		index++;
+	if (str[index] == '-')
 	{
-		if (*str == '-')
-			neg *= -1;
-		str++;
+		sign = -sign;
+		index++;
 	}
-	while (ft_isdigit(*str))
+	else if (str[index] == '+')
+		index++;
+	while (str[index] >= '0' && str[index] <= '9')
 	{
-		res *= 10;
-		res += *str - '0';
-		str++;
+		num = num * 10 + (str[index] - 48);
+		index++;
 	}
-	if (res < 0)
-		return (0);
-	return (res * neg);
+	return (num * sign);
 }

@@ -1,26 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_striteri.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/23 16:26:12 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/02/23 16:26:13 by rpicot        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
+#include "libft.h"
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	unsigned int	i;
+	unsigned int	iter;
 
-	i = 0;
-	if (s && f)
+	iter = 0;
+	if (s)
 	{
-		while (s[i])
+		while (s[iter])
 		{
-			(*f)(i, &s[i]);
-			i++;
+			f(iter, &(s[iter]));
+			iter++;
 		}
 	}
 }

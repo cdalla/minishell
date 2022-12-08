@@ -1,30 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_calloc.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/23 16:24:05 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/02/23 16:24:07 by rpicot        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <stdlib.h>
 #include "libft.h"
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	unsigned char	*memory;
+	size_t	index;
+	char	*ptr;
 
-	if (count == 0 || size == 0)
+	index = 0;
+	ptr = (char *)malloc(count * size);
+	if (ptr == 0)
+		return (0);
+	while (index < count * size)
 	{
-		count = 1;
-		size = 1;
+		ptr[index] = 0;
+		index++;
 	}
-	memory = (unsigned char *)malloc(size * count);
-	if (!memory)
-		return (NULL);
-	ft_bzero(memory, count * size);
-	return (memory);
+	return (ptr);
 }

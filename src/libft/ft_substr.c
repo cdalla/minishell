@@ -1,51 +1,21 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_substr.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/23 16:26:52 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/11/26 13:32:19 by cdalla-s      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <stdlib.h>
 #include "libft.h"
-
-static size_t	find_length_to_allocate(size_t prefered_len, size_t actual_len)
-{
-	if (actual_len > prefered_len)
-		return (prefered_len);
-	else
-		return (actual_len);
-}
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char				*str;
-	size_t				counter;
-	size_t				slength;
-	size_t				length_of_substring;
+	char	*sub;
+	size_t	s_len;
 
 	if (!s)
-		return (NULL);
-	slength = ft_strlen(s);
-	counter = 0;
-	if (start <= slength)
-	{
-		length_of_substring = find_length_to_allocate(len, slength - start);
-		str = (char *)malloc(sizeof(char) * (length_of_substring + 1));
-		if (!str)
-			return (NULL);
-		while (counter < length_of_substring)
-		{
-			str[counter] = s[start];
-			counter++;
-			start++;
-		}
-		str[counter] = '\0';
-		return (str);
-	}
-	return (ft_strdup(""));
+		return (0);
+	s_len = ft_strlen((char *)s);
+	if (start >= s_len)
+		return (ft_strdup(""));
+	if (len > s_len - start)
+		sub = (char *)malloc((s_len - start + 1) * sizeof(char));
+	else
+		sub = (char *)malloc((len + 1) * sizeof(char));
+	if (sub == 0)
+		return (0);
+	ft_strlcpy(sub, &(s[start]), len + 1);
+	return (sub);
 }

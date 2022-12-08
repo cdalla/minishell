@@ -1,42 +1,29 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_strnstr.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/23 16:26:37 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/02/23 16:26:37 by rpicot        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <stdlib.h>
+#include "libft.h"
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	int		i;
-	int		j;
-	size_t	neelen;
+	size_t	index;
+	size_t	n_len;
+	size_t	jndex;
 
-	i = 0;
-	j = 0;
-	if (needle[0])
+	index = 0;
+	n_len = 0;
+	while (needle[n_len])
+		n_len++;
+	if (n_len == 0)
+		return ((char *)haystack);
+	while (index < len && haystack[index])
 	{
-		while (haystack[i] && len)
+		if (haystack[index] == needle[0])
 		{
-			neelen = len;
-			while (needle[j] == haystack[i + j] && neelen)
-			{
-				neelen--;
-				if (needle[j + 1] == '\0')
-					return ((char *)&haystack[i]);
-				j++;
-			}
-			len--;
-			j = 0;
-			i++;
+			jndex = 0;
+			while (jndex < n_len && haystack[index + jndex]
+				== needle[jndex] && index + jndex < len)
+				jndex++;
+			if (jndex == n_len)
+				return ((char *)haystack + index);
 		}
-		return (NULL);
+		index++;
 	}
-	return ((char *)haystack);
+	return (0);
 }

@@ -1,33 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_memcpy.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/23 16:25:17 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/02/23 16:25:18 by rpicot        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <stdlib.h>
+#include "libft.h"
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	unsigned char	*dest;
-	unsigned char	*sourc;
-	int				i;
+	size_t	index;
 
-	i = 0;
-	dest = (unsigned char *)dst;
-	sourc = (unsigned char *)src;
-	if (!dest && !sourc)
-		return (NULL);
-	while (n)
+	index = 0;
+	if (!dst && !src)
+		return (0);
+	while (index < n && n != 0)
 	{
-		dest[i] = sourc[i];
-		n--;
-		i++;
+		((unsigned char *)dst)[index] = ((unsigned char *)src)[index];
+		index++;
 	}
-	return (dst);
+	return ((void *)dst);
 }

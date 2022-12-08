@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/02 15:43:35 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/08 11:46:50 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	set_heredoc(char **del, t_data *data)
 				str = NULL;
 			}
 			str = readline(">");
-			if (!ft_strcmp(*del, str))
+			if (!ft_strncmp(*del, str, ft_strlen(*del) + 1))
 				break ;
 			write(data->to_read, str, ft_strlen(str));
 			write(data->to_read, "\n", 1);

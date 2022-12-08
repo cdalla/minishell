@@ -14,3 +14,12 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 
 29/11
 	how "$?" between quote or double quotes is going to be expanded
+
+
+8/12
+
+	do		BUILTINS
+	do 		EXPANDER
+	do 		SIGNALS
+	do 		ERROR MANAGEMENT
+	check	ENVP STRUCT for STANDALONE

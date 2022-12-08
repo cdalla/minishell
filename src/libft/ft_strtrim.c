@@ -1,55 +1,32 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_strtrim.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/23 16:26:48 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/02/23 16:26:49 by rpicot        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <stdlib.h>
 #include "libft.h"
 
-static int	left_limit(const char *set, const char *s1, int i)
+int	static	ft_checkset(const char c, char const *set)
 {
-	while (ft_strchr(set, s1[i]) && s1[i])
-		i++;
-	return (i);
-}
-
-static int	right_limit(const char *set, const char *s1, int len)
-{
-	while (ft_strchr(set, s1[len]))
+	while (*set)
 	{
-		if (!(len > 0))
-			break ;
-		len--;
+		if (*set == c)
+			return (0);
+		set++;
 	}
-	return (len);
+	return (1);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	int		i;
-	int		len;
-	char	*res;
+	char	*trim;
+	int		start;
+	int		end;
 
-	i = 0;
 	if (!s1 || !set)
-		return (ft_strdup(""));
-	len = (int)ft_strlen(s1) - 1;
-	i = left_limit(set, s1, i);
-	len = right_limit(set, s1, len);
-	if (len < i)
-		return (ft_strdup(""));
-	if (i == 0 && (int)ft_strlen(s1) == len + 1)
-		return (ft_strdup(s1));
-	res = (char *)malloc(sizeof(char) * ((len - i) + 2));
-	if (!res)
-		return (NULL);
-	ft_strlcpy(res, s1 + i, (len - i) + 2);
-	return (res);
+		return (0);
+	start = 0;
+	end = ft_strlen((char *)s1);
+	while (ft_checkset(s1[start], set) == 0 && s1[start])
+		start++;
+	while (ft_checkset(s1[end - 1], set) == 0 && s1[start])
+		end--;
+	trim = ft_substr(s1, start, end - start);
+	if (trim == 0)
+		return (0);
+	return (trim);
 }

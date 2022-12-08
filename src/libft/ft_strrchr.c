@@ -1,33 +1,17 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_strrchr.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpicot <rpicot@student.codam.nl>             +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2022/02/23 16:26:43 by rpicot        #+#    #+#                 */
-/*   Updated: 2022/02/23 16:26:44 by rpicot        ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "libft.h"
-
 char	*ft_strrchr(const char *s, int c)
 {
-	unsigned char	carac;
-	char			*res;
-	int				i;
+	int		index;
+	char	*ptr;
 
-	i = ft_strlen(s);
-	carac = (char)c;
-	while (i >= 0)
+	index = 0;
+	ptr = 0;
+	while (s[index])
 	{
-		if (s[i] == carac)
-		{
-			res = (char *)(&s[i]);
-			return (res);
-		}
-		i--;
+		if (s[index] == (char)c)
+			ptr = (char *)s + index;
+		index++;
 	}
-	return (0);
+	if (s[index] == (char)c)
+		return ((char *)s + index);
+	return (ptr);
 }
