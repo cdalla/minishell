@@ -30,3 +30,6 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	do 		ERROR MANAGEMENT
 
 	changed strcmp -> strncmp in set_red.c
+
+11/12
+	added shell var addition, modification, added var type, deleted var declaration token

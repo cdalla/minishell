@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/09 12:28:19 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/11 17:07:27 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,10 @@ int	prompt_call(t_data *data)
 	cmd = NULL;
 	while (1)
 	{	
-		signals();
+		//signals();
 		input = get_rl();
 		if (!input)
 			exit(0); // return the correct msg
-		//printf("input = \"%s\"\n", input); //to show what we got from input
 		if (!lexer(input, data))
 			return (0); //stop and return
 		// /expander(data);

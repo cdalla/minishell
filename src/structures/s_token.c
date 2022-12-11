@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:39:35 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:20:46 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/11 13:29:14 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,22 +51,6 @@ int	add_token(t_token **token, char *word, int type)
 	return (1); //success
 }
 
-void	free_tokens(t_data *data)
-{
-	t_token	*ptr;
-	t_token	*next;
-
-	ptr = data->token;
-	while (ptr)
-	{
-		next = ptr->next;
-		free(ptr->word);
-		free(ptr);
-		ptr = next;
-	}
-	data->token = NULL;
-}
-
 void	print_tokens(t_token *token) //print token only for debug purpose !!TO REMOVE
 {
 	t_token	*ptr;
@@ -78,3 +62,4 @@ void	print_tokens(t_token *token) //print token only for debug purpose !!TO REMO
 		ptr = ptr->next;
 	}
 }
+

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/09 12:39:38 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/11 17:39:29 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,6 @@
 	echo "ciao"Rafa"nice covid" -> 2 tokens
 */
 
-int	check_token_syntax(t_token *token)
-{
-	t_token	*ptr;
-
-	ptr = token;
-	while (ptr)
-	{
-		if ((ptr->type == REDI || ptr->type == REDO || ptr->type == REDOA
-				|| ptr->type == HEREDOC) && ptr->next->type != WORD)
-		{
-			printf("syntax error\n");
-			return (0);
-		}
-		else if (ptr->type == PIPE && (!ptr->next || ptr->next->type == PIPE ))
-		{
-			printf("syntax error\n");
-			return (0);
-		}
-		ptr = ptr->next;
-	}
-	return (1);
-}
-
 char	*trim_word(char **s, int *wl)
 {
 	char	*word;
@@ -66,14 +43,15 @@ char	*trim_word(char **s, int *wl)
 	{
 		if (*(*s + *wl) == '\'' || *(*s + *wl) == '\"')
 			quote_check(&quote, &dquote, *(*s + *wl));
-		if ((*(*s + *wl) == '>' || *(*s + *wl) == '<' || (*(*s + *wl) == '$'
-			&& *(*s + *wl + 1) == '?'))&& !quote && !dquote) //if this one is redirection trim symbol
+		// if ((*(*s + *wl) == '>' || *(*s + *wl) == '<' || (*(*s + *wl) == '$'
+		// 	&& *(*s + *wl + 1) == '?')) && !quote && !dquote) //if this one is redirection trim symbol
+		if ((is_redirection((*s + *wl)) && !quote && !dquote))
 		{
 			(*wl) += is_redirection((*s + *wl));
 			break ;
 		}
 		(*wl)++;
-		if (is_redirection((*s + *wl)) && !quote && !dquote) //if next is redirection break
+		if (is_redirection((*s + *wl)) && (!quote && !dquote)) //if next is redirection break
 			break ;
 	}
 	if (*wl)
@@ -110,14 +88,37 @@ int	tokenize(char *str, t_data *data)
 }
 
 
-//check first token if it is shell var assignation remove the token, check return of lexer in case after this token list is empty
+int	check_token_syntax(t_token *token)
+{
+	t_token	*ptr;
+
+	ptr = token;
+	while (ptr)
+	{
+		if ((ptr->type == REDI || ptr->type == REDO || ptr->type == REDOA
+				|| ptr->type == HEREDOC) && ptr->next->type != WORD)
+		{
+			printf("syntax error\n");
+			return (0);
+		}
+		else if (ptr->type == PIPE && (!ptr->next || ptr->next->type == PIPE ))
+		{
+			printf("syntax error\n");
+			return (0);
+		}
+		ptr = ptr->next;
+	}
+	return (1);
+}
+
+//check return of lexer in case after this token list is empty
 int	lexer(char	*input, t_data *data)
 {
 	if (!tokenize(input, data))
 		return (0);
 	print_tokens(data->token);//to be removed
+	check_shell_var(data);
 	if (!check_token_syntax(data->token))
 		return (0);
-	//printf("finished parser\n");
 	return (1);
 }

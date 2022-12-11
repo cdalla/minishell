@@ -6,12 +6,12 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:13:13 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/11 17:35:16 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
+char **split_var(char *str, char c);
 /*
 	pointer to the s_envp list in main struct
 	create a new node, check for valid input
@@ -22,19 +22,26 @@
 //not sure in we need to include '/' '.' ':' '-' '_' in the valid characters
 //NEED TO FIX THIS
 //IT IS WORKING BUT WE NEED TO INCLUDE ALL THE CHARACTERS POSSIBLE
-int	is_str_valid(char *str)
+
+int	check_var_syntax(char *str)
 {
-	(void)str;
-    // while(*str && ((*str >= 'a' && *str <= 'z')
-    //     || (*str >= 'A' && *str <= 'Z')
-    //     || (*str >= '0' && *str <= '9')))
-    //     str++;
-    // if(*str)
-    //     return(0);
-	return (1);
+	int		i;
+
+	i = 0;
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	while(str[i])
+	{	
+		if (str[i] == '=' && i > 0)//deve ritornare qui altrimenti non c'e var
+			return (1);
+		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (0);
 }
 
-t_envp	*new_envp(char *arg)
+t_envp	*new_envp(char *arg, enum var_type type)
 {
 	t_envp	*new_node;
 	char	**args;
@@ -45,24 +52,23 @@ t_envp	*new_envp(char *arg)
 	new_node->input = ft_strdup(arg);
 	if (!new_node->input)
 		return (0);
-	args = ft_split(arg, '=');
+	args = split_var(arg, '=');
 	if (!args)
 		return (0); //failure
-	if (!is_str_valid(args[0]) || !is_str_valid(args[1]))
-		return (0); //print_env_var(); (i guess here return with error)
 	new_node->env = args[0];
 	new_node->value = args[1];
+	new_node->type = type;
 	new_node->next = 0;
 	new_node->prev = 0; //if we need prev
 	return (new_node);
 }
 
-int	add_env(t_envp **envp, char *args)
+int	add_env(t_envp **envp, char *args, enum var_type type)
 {
 	t_envp	*new;
 	t_envp	*ptr;
 
-	new = new_envp(args);
+	new = new_envp(args, type);
 	if (!new)
 		return (0); //failure
 	if (!*envp) //if envp list empty
@@ -78,14 +84,21 @@ int	add_env(t_envp **envp, char *args)
 	return (1); //success
 }
 
-void	print_env_var(t_envp *envp) //print only one var or more? 
+void	print_env_var(t_envp *envp)
 {
 	t_envp	*ptr;
 
 	ptr = envp;
 	while (ptr)
 	{
-		printf("%s=%s\n", ptr->env, ptr->value);
+		if (ptr->type == ENV)
+		{
+			printf("%s=", ptr->env);
+			if (ptr->value)
+				printf("%s\n", ptr->value);
+			else
+				printf("\n");
+		}
 		ptr = ptr->next;
 	}
 }
@@ -108,7 +121,8 @@ void	print_env_var(t_envp *envp) //print only one var or more?
 // 		to_rem->prev->next = to_rem->next; //prev connected to next
 // 	}
 // 	free(to_rem->env);
-// 	free(to_rem->value);
+// 	if (to->rem->value)
+//		free(to_rem->value);
 // 	free(to_rem->input);
 // 	free(to_rem);
 // 	return (1); //success

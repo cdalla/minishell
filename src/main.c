@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:47:04 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/02 15:39:58 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/11 13:01:28 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@
 	EXECUTER
 */
 
-int		add_env(t_envp **envp, char *args);
-void	print_env_var(t_envp *envp);
-
 int	env_save(t_envp **s_envp, char **envp)
 {
 	int	i;
@@ -32,7 +29,7 @@ int	env_save(t_envp **s_envp, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (!add_env(s_envp, envp[i]))
+		if (!add_env(s_envp, envp[i], 2))
 			return (0); //failure and free all the malloced mem
 		i++;
 	}

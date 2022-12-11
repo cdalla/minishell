@@ -13,14 +13,17 @@ LIBREADLINE =  -L /Users/$(USER)/.brew/opt/readline/lib/
 OBJ :=	obj/lexer/lexer_utils.o\
 		obj/lexer/lexer.o\
 		obj/lexer/read_line.o\
+		obj/lexer/shell_var.o\
 		obj/parser/parser.o\
 		obj/parser/parser_utils.o\
 		obj/structures/s_envp.o\
+		obj/structures/s_envp_utils.o\
 		obj/structures/s_exit_code.o\
 		obj/structures/s_redirection.o\
 		obj/structures/s_scmd.o\
 		obj/structures/s_token.o\
 		obj/structures/free_scmd.o\
+		obj/structures/free_token.o\
 		obj/executer/executer.o\
 		obj/executer/cmd_path.o\
 		obj/executer/list_to_array.o\
@@ -32,14 +35,17 @@ OBJ :=	obj/lexer/lexer_utils.o\
 SRC :=	src/lexer/lexer_utils.c\
 		src/lexer/lexer.c\
 		src/lexer/read_line.c\
+		src/lexer/shell_var.c\
 		src/parser/parser.c\
 		src/parser/parser_utils.c\
 		src/structures/s_envp.c\
+		src/structures/s_envp_utils.c\
 		src/structures/s_exit_code.c\
 		src/structures/s_redirection.c\
 		src/structures/s_scmd.c\
 		src/structures/s_token.c\
 		src/structures/free_scmd.c\
+		src/structures/free_token.c\
 		src/executer/executer.c\
 		src/executer/cmd_path.c\
 		src/executer/list_to_array.c\

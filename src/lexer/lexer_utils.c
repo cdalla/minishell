@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 13:56:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/02 17:10:10 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/11 16:52:15 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	type_recogn(char *word)
 int	is_redirection(char *c)
 {
 	if ((*c == '<' && *(c + 1) != '<') || (*c == '>' && *(c + 1) != '>'))
+		return (1);
+	else if (*c == '|')
 		return (1);
 	else if ((*c == '<' && *(c + 1) == '<') || (*c == '>' && *(c + 1) == '>'))
 		return (2);
