@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/02 15:49:28 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/13 10:44:25 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 		if (i < data->n_pipes)
 			pipe(fd[i % 2]);
 		set_fd(data, fd, i);
-		executer_single(ptr, data, i);
+		//if (!is_builtins(cmd, data, i))
+			executer_single(ptr, data, i);
 		parent_close(fd, i, data->n_pipes);
 		ptr = ptr->next_cmd;
 		i++;
@@ -97,7 +98,8 @@ int executer(t_scmd *cmd, t_data *data)
 		data->to_close = -1;
 		data->to_read = -1;
 		data->to_write = -1;
-		executer_single(cmd, data , 0);
+		//if(!is_builtins(cmd, data, 0))
+			executer_single(cmd, data , 0);
 	}
 	return (0);
 }

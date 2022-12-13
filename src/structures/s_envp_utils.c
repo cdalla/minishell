@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 12:10:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/11 12:47:58 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/13 11:23:00 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,41 @@ char **split_var(char *str, char c)
 	}
 	split[2] = 0;
 	return(split);
+}
+
+t_envp	*var_exist(t_envp *envp, char *name)
+{
+	t_envp	*ptr;
+
+	ptr = envp;
+	while (ptr)
+	{
+		if (!ft_strncmp(ptr->env, name, ft_strlen(ptr->env) + 1))
+			return (ptr);
+		ptr = ptr->next;
+	}
+	return (0);
+}
+
+int	update_var_value(t_envp *envp, t_envp *var, char *value, int type)
+{
+	t_envp	*ptr;
+
+	ptr = envp;
+	while (ptr)
+	{
+		if (ptr == var)
+		{
+			if (type)//update type
+				ptr->type = ENV;
+			else
+			{
+				free(ptr->value);
+				ptr->value = value;
+			}
+			return (1);
+		}
+		ptr = ptr->next;
+	}
+	return (0);
 }

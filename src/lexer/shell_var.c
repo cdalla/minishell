@@ -6,13 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 12:39:13 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/11 17:32:38 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/13 11:24:47 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 void remove_first_token(t_token **token);
-void remove_token(t_token **token, char *value);
+void remove_token(t_token **token, t_token *to_rem);
 char **split_var(char *str, char c);
 int	check_var_syntax(char *str);
 
@@ -33,7 +33,7 @@ void	remove_var_declaration(t_data *data)
 				ptr = ptr->next->next;
 			else									//else skip one
 				ptr = ptr->next;
-			remove_token(&data->token, to_rem->word);
+			remove_token(&data->token, to_rem);
 		}
 		else
 		{
@@ -43,40 +43,44 @@ void	remove_var_declaration(t_data *data)
 	}
 }
 
-int	var_exist(t_envp *envp, char *name, char *value)
+void	remove_extra_pipe(t_data *data)
 {
-	t_envp	*ptr;
+	t_token	*ptr;
 
-	ptr = envp;
+	ptr = data->token;
 	while (ptr)
 	{
-		if (!ft_strncmp(ptr->env, name, ft_strlen(ptr->env) + 1))
+		if (ptr->next && ptr->next->type == PIPE && !ptr->next->next)
 		{
-			free(ptr->value);
-			free(name);
-			ptr->value = value;
-			return (1);
+			ptr->next = 0;
+			remove_token(&data->token, ptr->next);
+			return ;
 		}
 		ptr = ptr->next;
 	}
-	return (0);
 }
 
-int	add_shell_var(t_data *data, t_token *token)
+int	add_var(t_data *data, char *str, enum var_type type)
 {
 	char	**args;
+	t_envp	*to_update;
 	
-	(void)data;
-	args = split_var(token->word, '=');
+	args = split_var(str, '=');
 	if (!args)
 		return (0); //malloc error
-	if (!var_exist(data->envp, args[0], args[1]))
+	to_update = var_exist(data->envp, args[0]);
+	if (to_update)
+	{
+		free(args[0]);
+		update_var_value(data->envp, to_update, args[1], 0);
+	}
+	else
 	{	
 		free(args[0]);
 		if (args[1])
 			free(args[1]);
 		free(args);
-		if (!add_env(&data->envp, token->word, 1))
+		if (!add_env(&data->envp, str, type))
 			return (0);
 	}
 	return (1);
@@ -89,9 +93,10 @@ int	check_shell_var(t_data	*data)
 	ptr = data->token;
 	if (check_var_syntax(ptr->word))
 	{
-		if (!add_shell_var(data, ptr))
+		if (!add_var(data, ptr->word, 1))
 			return (0); //malloc fail
 	}
 	remove_var_declaration(data);
+	remove_extra_pipe(data);
 	return (1);
 }

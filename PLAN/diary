@@ -33,3 +33,8 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 
 11/12
 	added shell var addition, modification, added var type, deleted var declaration token
+
+13/12
+	delete pipe after removing var declaration (done)
+	
+	!!TO FIX enter pressed with no args on readline!!

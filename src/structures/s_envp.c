@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/11 17:35:16 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/13 11:31:39 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,39 +91,39 @@ void	print_env_var(t_envp *envp)
 	ptr = envp;
 	while (ptr)
 	{
-		if (ptr->type == ENV)
-		{
+		//if (ptr->type == ENV)
+		//{
 			printf("%s=", ptr->env);
 			if (ptr->value)
 				printf("%s\n", ptr->value);
 			else
 				printf("\n");
-		}
+		//}
 		ptr = ptr->next;
 	}
 }
 
 // //remove a node from the list
-// int	remove_envp(t_envp **envp, t_envp *to_rem)
-// {
-// 	//t_envp	*ptr;
+int	remove_envp(t_envp **envp, t_envp *to_rem)
+{
+	t_envp	*ptr;
 
-// 	if (!to_rem->prev && to_rem->next) //if to_rem is first node
-// 	{
-// 		to_rem->next->prev = 0;
-// 		*envp = to_rem->next;
-// 	}
-// 	else if (to_rem->prev && !to_rem->next) //if to_rem last node
-// 		to_rem->prev->next = 0;
-// 	else if (to_rem->prev && to_rem->next)
-// 	{
-// 		to_rem->next->prev = to_rem->prev; //next connected to prev
-// 		to_rem->prev->next = to_rem->next; //prev connected to next
-// 	}
-// 	free(to_rem->env);
-// 	if (to->rem->value)
-//		free(to_rem->value);
-// 	free(to_rem->input);
-// 	free(to_rem);
-// 	return (1); //success
-// }
+	if (!to_rem->prev && to_rem->next) //if to_rem is first node
+	{
+		to_rem->next->prev = 0;
+		*envp = to_rem->next;
+	}
+	else if (to_rem->prev && !to_rem->next) //if to_rem last node
+		to_rem->prev->next = 0;
+	else if (to_rem->prev && to_rem->next)
+	{
+		to_rem->next->prev = to_rem->prev; //next connected to prev
+		to_rem->prev->next = to_rem->next; //prev connected to next
+	}
+	free(to_rem->env);
+	if (to_rem->value)
+		free(to_rem->value);
+	free(to_rem->input);
+	free(to_rem);
+	return (1); //success
+}

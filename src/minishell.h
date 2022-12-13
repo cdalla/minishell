@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <sys/types.h>
+#include <sys/param.h>
 #include "./libft/libft.h"
 
 enum	token_type
@@ -113,6 +114,9 @@ char	*get_rl(void);
 void 	quote_check(int *quote, int *dquote, int c);
 int		check_shell_var(t_data	*data);
 int		check_var_syntax(char *str);
+t_envp	*var_exist(t_envp *envp, char *name);
+int		update_var_value(t_envp *envp, t_envp *var, char *value, int type);
+int		add_var(t_data *data, char *str, enum var_type type);
 
 //STRUCT TOKEN
 int 	add_token(t_token **token, char *word, int type);

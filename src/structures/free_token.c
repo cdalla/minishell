@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 13:28:29 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/11 16:58:44 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/13 09:36:11 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void set_next_token(t_token **token, t_token *ptr, t_token *prev)
 	}
 }
 
-void remove_token(t_token **token, char *value)
+void remove_token(t_token **token, t_token *to_rem)
 {
 	t_token	*ptr;
 	t_token	*prev;
@@ -46,7 +46,7 @@ void remove_token(t_token **token, char *value)
 	ptr = *token;
 	while (ptr)
 	{
-		if (!ft_strncmp(ptr->word, value, ft_strlen(ptr->word) + 1))
+		if (ptr == to_rem)
 		{
 			set_next_token(token, ptr, prev);
 			free_token(ptr);
