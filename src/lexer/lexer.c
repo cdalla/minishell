@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 10:45:43 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/13 17:11:32 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	lexer(char	*input, t_data *data)
 		return (0);
 	print_tokens(data->token);//to be removed
 	check_shell_var(data);
-	print_env_var(data->envp);
+	//print_env_var(data->envp); /to be removed
 	if (!check_token_syntax(data->token))
 		return (0);
 	return (1);

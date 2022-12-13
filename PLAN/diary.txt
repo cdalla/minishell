@@ -36,5 +36,17 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 
 13/12
 	delete pipe after removing var declaration (done)
-	
+	added export, unset, env, pwd, cd
+
 	!!TO FIX enter pressed with no args on readline!!
+
+	export print in alpha order
+	export accepts more than one arg
+
+14/12
+	to do:
+		-echo builtin
+		-quote removal
+		-errno handling
+		-malloc error handling
+		-no arg to readline

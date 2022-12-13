@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 11:31:39 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/13 15:27:56 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int	add_env(t_envp **envp, char *args, enum var_type type)
 	t_envp	*new;
 	t_envp	*ptr;
 
+	if (!args)
+		return (0);
 	new = new_envp(args, type);
 	if (!new)
 		return (0); //failure
@@ -84,30 +86,9 @@ int	add_env(t_envp **envp, char *args, enum var_type type)
 	return (1); //success
 }
 
-void	print_env_var(t_envp *envp)
-{
-	t_envp	*ptr;
-
-	ptr = envp;
-	while (ptr)
-	{
-		//if (ptr->type == ENV)
-		//{
-			printf("%s=", ptr->env);
-			if (ptr->value)
-				printf("%s\n", ptr->value);
-			else
-				printf("\n");
-		//}
-		ptr = ptr->next;
-	}
-}
-
 // //remove a node from the list
 int	remove_envp(t_envp **envp, t_envp *to_rem)
 {
-	t_envp	*ptr;
-
 	if (!to_rem->prev && to_rem->next) //if to_rem is first node
 	{
 		to_rem->next->prev = 0;
@@ -126,4 +107,18 @@ int	remove_envp(t_envp **envp, t_envp *to_rem)
 	free(to_rem->input);
 	free(to_rem);
 	return (1); //success
+}
+
+char *get_env_value(char *name, t_data *data)
+{
+	t_envp	*ptr;
+
+	ptr = data->envp;
+	while (ptr)
+	{
+		if (!ft_strncmp(ptr->env, name, ft_strlen(ptr->env) + 1))
+			return (ptr->value);
+		ptr = ptr->next;
+	}
+	return (0);
 }

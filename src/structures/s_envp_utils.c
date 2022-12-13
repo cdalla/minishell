@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 12:10:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 11:23:00 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/13 15:25:07 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,23 @@ int	update_var_value(t_envp *envp, t_envp *var, char *value, int type)
 		ptr = ptr->next;
 	}
 	return (0);
+}
+
+void	print_env_var(t_envp *envp)
+{
+	t_envp	*ptr;
+
+	ptr = envp;
+	while (ptr)
+	{
+		//if (ptr->type == ENV)
+		//{
+			printf("%s=", ptr->env);
+			if (ptr->value)
+				printf("%s\n", ptr->value);
+			else
+				printf("\n");
+		//}
+		ptr = ptr->next;
+	}
 }

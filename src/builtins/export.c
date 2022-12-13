@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:50:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 11:40:11 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/13 17:05:49 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@
 		-<key>=<value> -> update value if var exist, else add new ENV 
 		-only <key> -> add from SHELL to ENV if the variable exist
 	-list existing var -> printf all type ENV if the form "declare -x <key>=<value>"
+
+
+	FIX PRINTING MUST BE IN ORDER
 */
 
 void	print_declare(t_envp *envp)
@@ -40,7 +43,7 @@ void	print_declare(t_envp *envp)
 
 int	export(t_scmd *args, t_data *data)
 {
-	t_envp	*to_update;
+	t_envp	*to_export;
 
 	if (!args)
 		print_declare(data->envp);
@@ -51,9 +54,9 @@ int	export(t_scmd *args, t_data *data)
 	}
 	else if (!args->next_arg && !ft_strchr(args->value, '=')) //change type if exist
 	{
-		to_update = var_exist(data->envp, args->value);
-		if (to_update)
-			update_var_value(data->envp, to_update, 0, 1);
+		to_export = var_exist(data->envp, args->value);
+		if (to_export)
+			update_var_value(data->envp, to_export, 0, 1);
 	}
 	else
 		printf("export: syntax error\n");
