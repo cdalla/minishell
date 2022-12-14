@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 17:11:32 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/14 12:08:12 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,13 @@ char	*trim_word(char **s, int *wl)
 	{
 		if (*(*s + *wl) == '\'' || *(*s + *wl) == '\"')
 			quote_check(&quote, &dquote, *(*s + *wl));
-		// if ((*(*s + *wl) == '>' || *(*s + *wl) == '<' || (*(*s + *wl) == '$'
-		// 	&& *(*s + *wl + 1) == '?')) && !quote && !dquote) //if this one is redirection trim symbol
-		if ((is_redirection((*s + *wl)) && !quote && !dquote))
+		if ((is_redirection((*s + *wl), quote, dquote) && !quote && !dquote))
 		{
-			(*wl) += is_redirection((*s + *wl));
+			(*wl) += is_redirection((*s + *wl), quote, dquote);
 			break ;
 		}
 		(*wl)++;
-		if (is_redirection((*s + *wl)) && (!quote && !dquote)) //if next is redirection break
+		if ((is_redirection((*s + *wl), quote, dquote) && !quote && !dquote))
 			break ;
 	}
 	if (*wl)

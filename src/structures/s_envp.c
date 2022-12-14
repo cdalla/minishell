@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 15:27:56 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/14 13:32:52 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ char *get_env_value(char *name, t_data *data)
 {
 	t_envp	*ptr;
 
+	if (!name)
+		return (0);
 	ptr = data->envp;
 	while (ptr)
 	{
