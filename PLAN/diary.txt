@@ -52,4 +52,4 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 		-no arg to readline
 
 15/12
-	add almost complete and tested expander
+	expander almost complete and tested expander

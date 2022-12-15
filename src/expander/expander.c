@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 16:36:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/15 12:32:47 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/15 12:49:37 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,9 @@
 
 char	*ft_strjoin_free(char *s1, char *s2);
 int	len_to_trim(char *str);
-/*
-	expand variables to their value
-	if $var between single quotes dont expand
-	loop through tokens and check value
 
-
-	check token value
-	if starts with single quote skip
-	check if there is a $ sign
-	change the value of the word with the value of the var
-
-
-	redirection -> var empty -> keep the $var -> ambiguous redirect 
-*/
 /*look for var_name in envp, return a copy of var->value*/
-char	*expand_value(char *var, t_data *data)
+char	*expand_value(char *var, t_token *prev, t_data *data)
 {
 	char	*var_name;
 
@@ -37,7 +24,11 @@ char	*expand_value(char *var, t_data *data)
 	if (!var_name)
 		return (0); //malloc error //qui mettere if token type redirection and value empty dont expand
 	if (!var_exist(data->envp, var_name))
+	{
+		if (prev && (prev->type == REDI || prev->type == REDO || prev->type == REDOA))
+			return (ft_strdup(var));
 		return (ft_strdup(""));
+	}
 	return (ft_strdup(get_env_value(var_name, data)));
 }
 
@@ -58,7 +49,7 @@ int	trim_join(t_token *token, t_data *data, char *str, int w_len)
 			free(to_join);
 			return (0); //malloc fail
 		}
-		to_join = expand_value(tmp, data);
+		to_join = expand_value(tmp, 0, data);
 		if (!to_join)
 			return (0); //malloc fail
 	}
@@ -96,13 +87,13 @@ int	expand_in_str(t_token *token, t_data *data) //need to expand every var in th
 }
 
 /*check if expand in a str or only var name*/
-int	expand_check(t_token *token, t_data *data)
+int	expand_check(t_token *token, t_token *prev, t_data *data)
 {
 	char	*new_value;
 	
 	if (token->word[0] == '$')
 	{
-		new_value = expand_value(token->word, data);
+		new_value = expand_value(token->word, prev, data);
 		if (!new_value)
 			return (0); //malloc fail
 		free(token->word);
@@ -120,15 +111,18 @@ int	expand_check(t_token *token, t_data *data)
 int	expander(t_data *data)
 {
 	t_token	*ptr;
+	t_token	*prev;
 
 	ptr = data->token;
+	prev = 0;
 	while (ptr)
 	{
 		if (ptr->word[0] != '\'' && ft_strchr(ptr->word, '$'))
 		{
-			if (!expand_check(ptr, data))
+			if (!expand_check(ptr, prev, data))
 				return (0); // malloc error
 		}
+		prev = ptr;
 		ptr = ptr->next;
 	}
 	return (1);
