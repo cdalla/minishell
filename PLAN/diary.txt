@@ -50,3 +50,6 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 		-errno handling
 		-malloc error handling
 		-no arg to readline
+
+15/12
+	add almost complete and tested expander

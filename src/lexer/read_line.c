@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/11 17:07:27 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/15 11:51:07 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	signals(void)
 }
 
 int executer(t_scmd *cmd, t_data *data);
+int	expander(t_data *data);
 
 
 //check in case of only shell var assignation the return of lexer
@@ -60,7 +61,9 @@ int	prompt_call(t_data *data)
 			exit(0); // return the correct msg
 		if (!lexer(input, data))
 			return (0); //stop and return
-		// /expander(data);
+		if (!expander(data))
+			return(0);
+		print_tokens(data->token);
 		// cmd = parser(data);
 		// if (!cmd)
 		// 	return (0);
