@@ -6,22 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:47:04 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/11 13:01:28 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:36:18 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-	create structures
-	save env into envp structure
-	call to:
-	LEXER 
-	PARSER
-	EXPANDER
-	EXECUTER
-*/
-
+/*save initial configuration of env vars*/
 int	env_save(t_envp **s_envp, char **envp)
 {
 	int	i;
@@ -36,12 +27,7 @@ int	env_save(t_envp **s_envp, char **envp)
 	return (1); //success
 }
 
-/*
-	initialize env list
-	launch prompt
-	scan input
-	check for lexical errors
-*/
+/*create data struct instance, fill envp, start cmd line*/
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
@@ -53,9 +39,10 @@ int	main(int argc, char **argv, char **envp)
 	data.envp = NULL;
 	data.token = NULL;
 	data.exit_code = NULL;
-	env_save(&data.envp, envp);
-	//print_env_var(data.envp); //WE SAVED CORRECTLY THE INITIAL CONF OF ENV
-	prompt_call(&data);
+	if (!env_save(&data.envp, envp))
+		return (0); //malloc fail
+	if (!prompt_call(&data))
+		return (0); // malloc fail
 	exit(0);
 	return (0);
 }

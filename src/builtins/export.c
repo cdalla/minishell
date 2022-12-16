@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:50:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 17:05:49 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:31:09 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 	FIX PRINTING MUST BE IN ORDER
 */
 
+//TO FIX AND  PUT IN ORDER
+/*print env var, with declare -x before*/
 void	print_declare(t_envp *envp)
 {
 	t_envp	*ptr;
@@ -41,6 +43,7 @@ void	print_declare(t_envp *envp)
 	}
 }
 
+/*no args print, <key> update type, <key>=<value> add new envp*/
 int	export(t_scmd *args, t_data *data)
 {
 	t_envp	*to_export;

@@ -6,12 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 14:11:11 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:09:11 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:16:19 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*free SCMD intfile list*/
 void	free_infile(t_scmd *ptr)
 {
 	t_infile	*ptr_inf;
@@ -30,6 +31,7 @@ void	free_infile(t_scmd *ptr)
 	}
 }
 
+/*free SCMD outfile list*/
 void	free_outfile(t_scmd *ptr)
 {
 	t_outfile	*ptr_out;
@@ -48,6 +50,7 @@ void	free_outfile(t_scmd *ptr)
 	}
 }
 
+/*free SCMD arguments*/
 void	free_args(t_scmd *ptr)
 {
 	t_scmd	*ptr_arg;
@@ -66,6 +69,7 @@ void	free_args(t_scmd *ptr)
 	}
 }
 
+/*free single SCMD, call free all subparts*/
 void	free_cmd(t_scmd *cmd)
 {
 	t_scmd	*ptr;

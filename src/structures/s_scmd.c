@@ -6,12 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 12:09:10 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/30 03:17:33 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/16 13:26:05 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*create new SCMD node*/
 t_scmd	*new_scmd(enum cmd_type type)
 {
 	t_scmd	*new_scmd;
@@ -30,6 +31,7 @@ t_scmd	*new_scmd(enum cmd_type type)
 	return (new_scmd);
 }
 
+/*append SCMD node to cmdlist*/
 int	add_scmd_arg(t_scmd *cmd, t_scmd *arg)
 {
 	t_scmd	*ptr;
@@ -54,6 +56,7 @@ int	add_scmd_arg(t_scmd *cmd, t_scmd *arg)
 	return (1); //succes
 }
 
+/*fill value field of SCMD*/
 int	set_scmd_value(t_scmd *cmd, char *value)
 {
 	if (!value)
@@ -67,7 +70,8 @@ int	set_scmd_value(t_scmd *cmd, char *value)
 	return (1); //success
 }
 
-void	print_scmd(t_scmd *cmd) //to be removed, only for debug purpose
+/*TO REMOVE*/
+void	print_scmd(t_scmd *cmd)
 {
 	t_scmd		*ptr;
 	t_infile	*inf;
@@ -110,6 +114,7 @@ void	print_scmd(t_scmd *cmd) //to be removed, only for debug purpose
 	}
 }
 
+/*TO REMOVE*/
 void	print_multi_cmd(t_scmd *multi_cmd, int n_pipes)
 {
 	int		i;

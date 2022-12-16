@@ -6,23 +6,15 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/01 02:52:39 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/16 13:14:31 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*
-	read the token list
-	divide the tokens in simple command
-	recognize syntax errors
-
 	SYNTAX ERROR TO CHECK
 	| | | | | | | | 
-
-	split the word from the symbol
-	>outfile
-	<infile
 */
 
 /*
@@ -30,7 +22,6 @@
 	create an array of single commands
 	create a head node SIMPLE_CMD for each and fill his fields
 */
-
 int	parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd)
 {
 	t_scmd	*cmd_ptr;
@@ -59,10 +50,7 @@ int	parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd)
 	return (1);
 }
 
-/*
-	parsing single command
-	create a head node SIMPLE_CMD and fill his fields
-*/
+/*	create a head node SIMPLE_CMD and fill his fields*/
 t_scmd	*parse_simple_command(t_token *token)
 {
 	t_scmd	*cmd;
@@ -75,10 +63,7 @@ t_scmd	*parse_simple_command(t_token *token)
 	return (cmd);
 }
 
-/*
-	this function count the number of pipes present in the token list
-	create a single command or multi command based on n_pipes
-*/
+/*count PIPES, call multi line or single cmd creation*/
 t_scmd	*parser(t_data *data)
 {
 	t_scmd	*cmd;

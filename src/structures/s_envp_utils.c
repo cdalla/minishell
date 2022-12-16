@@ -6,12 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 12:10:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 15:25:07 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:21:42 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*split input str into the envp args[2]*/
 int	split_args(char **split, char *str, char c)
 {
 	int		w_len;
@@ -41,6 +42,7 @@ int	split_args(char **split, char *str, char c)
 	return (1);
 }
 
+/*create envp args[2] for name_env and value_env*/
 char **split_var(char *str, char c)
 {
 	char	**split;
@@ -58,6 +60,7 @@ char **split_var(char *str, char c)
 	return(split);
 }
 
+/*loop envp list and return 1 if env exist*/
 t_envp	*var_exist(t_envp *envp, char *name)
 {
 	t_envp	*ptr;
@@ -72,6 +75,7 @@ t_envp	*var_exist(t_envp *envp, char *name)
 	return (0);
 }
 
+/*find correct envp based on value, set new value or new type*/
 int	update_var_value(t_envp *envp, t_envp *var, char *value, int type)
 {
 	t_envp	*ptr;
@@ -95,6 +99,7 @@ int	update_var_value(t_envp *envp, t_envp *var, char *value, int type)
 	return (0);
 }
 
+/*print all envp type ENV*/
 void	print_env_var(t_envp *envp)
 {
 	t_envp	*ptr;
@@ -102,14 +107,14 @@ void	print_env_var(t_envp *envp)
 	ptr = envp;
 	while (ptr)
 	{
-		//if (ptr->type == ENV)
-		//{
+		if (ptr->type == ENV)
+		{
 			printf("%s=", ptr->env);
 			if (ptr->value)
 				printf("%s\n", ptr->value);
 			else
 				printf("\n");
-		//}
+		}
 		ptr = ptr->next;
 	}
 }

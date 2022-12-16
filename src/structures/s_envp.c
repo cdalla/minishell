@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/14 13:32:52 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:23:06 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ char **split_var(char *str, char c);
 //NEED TO FIX THIS
 //IT IS WORKING BUT WE NEED TO INCLUDE ALL THE CHARACTERS POSSIBLE
 
+/*check var_name correct syntax*/
 int	check_var_syntax(char *str)
 {
 	int		i;
@@ -41,6 +42,7 @@ int	check_var_syntax(char *str)
 	return (0);
 }
 
+/*create new envp node and fill some fiedls*/
 t_envp	*new_envp(char *arg, enum var_type type)
 {
 	t_envp	*new_node;
@@ -63,6 +65,7 @@ t_envp	*new_envp(char *arg, enum var_type type)
 	return (new_node);
 }
 
+/*add envp node to the list*/
 int	add_env(t_envp **envp, char *args, enum var_type type)
 {
 	t_envp	*new;
@@ -86,7 +89,7 @@ int	add_env(t_envp **envp, char *args, enum var_type type)
 	return (1); //success
 }
 
-// //remove a node from the list
+/*remove a node from the list*/
 int	remove_envp(t_envp **envp, t_envp *to_rem)
 {
 	if (!to_rem->prev && to_rem->next) //if to_rem is first node
@@ -109,6 +112,7 @@ int	remove_envp(t_envp **envp, t_envp *to_rem)
 	return (1); //success
 }
 
+/*return value of envp if it exists*/
 char *get_env_value(char *name, t_data *data)
 {
 	t_envp	*ptr;

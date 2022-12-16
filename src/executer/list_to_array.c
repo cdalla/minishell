@@ -6,12 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:28 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:23:58 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:07:35 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*duplicate every list value in a array[]*/
 char	**cpy_list_env(t_envp *list, int size)
 {
 	int		i;
@@ -35,6 +36,7 @@ char	**cpy_list_env(t_envp *list, int size)
 	return (array);
 }
 
+/*count list size and call copy function*/
 char	**ls_toarr_env(t_envp *list)
 {
 	t_envp	*ptr;
@@ -50,6 +52,7 @@ char	**ls_toarr_env(t_envp *list)
 	return (cpy_list_env(list, size));
 }
 
+/*duplicate every list value in a array[]*/
 char	**cpy_list_args(t_scmd *list, int size, char *cmd_name)
 {
 	int		i;
@@ -76,6 +79,7 @@ char	**cpy_list_args(t_scmd *list, int size, char *cmd_name)
 	return (array);
 }
 
+/*count list size and call copy function*/
 char	**ls_toarr_args(t_scmd *list, char *cmd_name)
 {
 	t_scmd	*ptr;

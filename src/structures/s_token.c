@@ -6,18 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:39:35 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/11 13:29:14 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:26:58 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*
-	pointer to s_token list in main struct
-	create a new token
-	add a new token to the list
-*/
-
+/*create new token node*/
 t_token	*new_token(char *word, int type)
 {
 	t_token	*new_token;
@@ -31,6 +26,7 @@ t_token	*new_token(char *word, int type)
 	return (new_token);
 }
 
+/*append token node to token list*/
 int	add_token(t_token **token, char *word, int type)
 {
 	t_token	*new;
@@ -51,7 +47,8 @@ int	add_token(t_token **token, char *word, int type)
 	return (1); //success
 }
 
-void	print_tokens(t_token *token) //print token only for debug purpose !!TO REMOVE
+/*TO REMOVE*/
+void	print_tokens(t_token *token)
 {
 	t_token	*ptr;
 

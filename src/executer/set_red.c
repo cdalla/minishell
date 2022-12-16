@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/08 11:46:50 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:02:36 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+/*loop the outfile list and set the correct file or heredoc*/
 int	set_outfile(t_outfile *outfile, t_data *data)
 {
 	while (outfile)
@@ -38,6 +39,7 @@ int	set_outfile(t_outfile *outfile, t_data *data)
 	return (1);
 }
 
+/*open a temporary file, write with input save the file*/
 int	set_heredoc(char **del, t_data *data)
 {
 	char	*str = NULL;
@@ -67,6 +69,7 @@ int	set_heredoc(char **del, t_data *data)
 	return (1); //success
 }
 
+/*loop the infile list and set the correct file or heredoc*/
 int	set_infile(t_infile *infile, t_data *data)
 {
 	while (infile)
@@ -91,6 +94,7 @@ int	set_infile(t_infile *infile, t_data *data)
 	return (1);
 }
 
+/*call infile, outfile check, remove heredoc file, dup2*/
 int	set_red(t_scmd *cmd, t_data *data)
 {
 	if (!set_infile(cmd->infile, data))

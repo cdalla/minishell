@@ -6,12 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/17 11:38:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/29 18:17:47 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:24:18 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*create new infile node*/
 t_infile	*new_infile(enum red_type type, char *value)
 {
 	t_infile	*new_inf;
@@ -27,6 +28,7 @@ t_infile	*new_infile(enum red_type type, char *value)
 	return (new_inf);
 }
 
+/*add infile node to infile list*/
 int	add_infile(t_scmd *cmd, enum red_type type, char *value)
 {
 	t_infile	*new;
@@ -49,6 +51,7 @@ int	add_infile(t_scmd *cmd, enum red_type type, char *value)
 	return (1); //success
 }
 
+/*create new outfile node*/
 t_outfile	*new_outfile(enum red_type type, char *value)
 {
 	t_outfile	*new_outf;
@@ -64,6 +67,7 @@ t_outfile	*new_outfile(enum red_type type, char *value)
 	return (new_outf);
 }
 
+/*add outfile node to outfile list*/
 int	add_outfile(t_scmd *cmd, enum red_type type, char *value)
 {
 	t_outfile	*new;

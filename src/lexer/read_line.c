@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/15 11:51:07 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:52:50 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@
 		we can pass back the string from input
 		in this case we can merge this with get_rl()
 */
+int executer(t_scmd *cmd, t_data *data);
+int	expander(t_data *data);
+
+/*handle the signal*/
 void	sigint_handler(int signum)
 {
 	//printf("\n");
@@ -36,46 +40,14 @@ void	sigint_handler(int signum)
 	(void)signum;
 }
 
+/*catch the correct signal*/
 void	signals(void)
 {
 		signal(SIGINT, sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
 }
 
-int executer(t_scmd *cmd, t_data *data);
-int	expander(t_data *data);
-
-
-//check in case of only shell var assignation the return of lexer
-int	prompt_call(t_data *data)
-{
-	char	*input;
-	t_scmd	*cmd;
-
-	cmd = NULL;
-	while (1)
-	{	
-		//signals();
-		input = get_rl();
-		if (!input)
-			exit(0); // return the correct msg
-		if (!lexer(input, data))
-			return (0); //stop and return
-		if (!expander(data))
-			return(0);
-		print_tokens(data->token);
-		// cmd = parser(data);
-		// if (!cmd)
-		// 	return (0);
-		// executer(cmd, data);
-		free_tokens(data);
-		free_cmd(cmd);
-	}
-}
-
-//get the line from prompt and return the string
-//add error return
-//MAYBE PUT SIGNALS HERE
+/*get input from f_readline, add it history*/
 char	*get_rl(void)
 {
 	static char	*line_read;
@@ -95,4 +67,42 @@ char	*get_rl(void)
 	else if (line_read && *line_read)
 		add_history(line_read);
 	return (line_read);
+}
+
+//check in case of only shell var assignation the return of lexer
+/*loop get input from command line, call every part of the program*/
+int	prompt_call(t_data *data)
+{
+	char	*input;
+	t_scmd	*cmd;
+
+	cmd = NULL;
+	while (1)
+	{	
+		//signals();
+		input = get_rl();
+		if (!input)
+			exit(0); // return the correct msg
+		if (!lexer(input, data))
+			return (0); //stop and return
+		print_tokens(data->token);
+		if (!expander(data))
+			return(0);
+		cmd = parser(data);
+		if (data->token)
+		{
+			if (!cmd)
+			{
+				printf("parser error\n");
+				return (0);
+			}
+			if (!executer(cmd, data))
+			{
+				printf("executer error\n");
+				return(0);
+			}
+		}
+			free_tokens(data);
+			free_cmd(cmd);
+	}
 }

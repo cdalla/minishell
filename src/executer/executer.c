@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 10:44:25 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:36:38 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	set_fd(t_data *data, int fd[2][2], int i);
 int		set_red(t_scmd *cmd, t_data *data);
 void	parent_close(int fd[2][2], int i, int n_pipes);
 
+/*translate necessary list in array[], execve with right info*/
 int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloced, path
 {
 	char	*cmd_path;
@@ -39,6 +40,7 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 	return (0);
 }
 
+/*fork a child process, call execution of single cmd*/
 int	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins here
 {
 	pid_t	child;
@@ -67,6 +69,7 @@ int	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins her
 	return (1);
 }
 
+/*set pipes, set fd, call execution of every command, close fd*/
 int	executer_multi(t_scmd *cmd, t_data *data)
 {
 	t_scmd	*ptr;
@@ -80,8 +83,12 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 		if (i < data->n_pipes)
 			pipe(fd[i % 2]);
 		set_fd(data, fd, i);
-		//if (!is_builtins(cmd, data, i))
-			executer_single(ptr, data, i);
+		if (!is_builtins(cmd, data, i))//check return
+		{
+			//printf("is builtin error multi\n");
+			if (!executer_single(ptr, data, i))
+				return (0);
+		}
 		parent_close(fd, i, data->n_pipes);
 		ptr = ptr->next_cmd;
 		i++;
@@ -89,6 +96,7 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 	return (1);// success
 }
 
+/*if n_pipes present call multi command, otherwise single*/
 int executer(t_scmd *cmd, t_data *data)
 {
 	if (data->n_pipes)
@@ -98,8 +106,12 @@ int executer(t_scmd *cmd, t_data *data)
 		data->to_close = -1;
 		data->to_read = -1;
 		data->to_write = -1;
-		//if(!is_builtins(cmd, data, 0))
-			executer_single(cmd, data , 0);
+		if(!is_builtins(cmd, data, 0))
+		{
+			//printf("is builtin error single\n");
+			if (!executer_single(cmd, data , 0))
+				return(0);
+		}
 	}
-	return (0);
+	return (1);
 }

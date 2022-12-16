@@ -6,12 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:52:49 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 09:52:51 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 12:47:54 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*set correct fd for pipes based on index value*/
 void	set_fd(t_data *data, int fd[2][2], int i)
 {
 	data->to_close = -1;
@@ -38,6 +39,7 @@ void	set_fd(t_data *data, int fd[2][2], int i)
 	}
 }
 
+/*close correct fd based on index value*/
 void	parent_close(int fd[2][2], int i, int n_pipes)
 {
 	if (i % 2)

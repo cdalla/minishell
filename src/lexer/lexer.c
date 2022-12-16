@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/14 12:08:12 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:10:30 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 	echo "ciao"Rafa"nice covid" -> 2 tokens
 */
 
+/*trim and return single token value*/
 char	*trim_word(char **s, int *wl)
 {
 	char	*word;
@@ -57,9 +58,7 @@ char	*trim_word(char **s, int *wl)
 	return (word);
 }
 
-/*
-	split input into words and put it directly into token list
-*/
+/*split input into words and put it directly into token list*/
 int	tokenize(char *str, t_data *data)
 {
 	int		w_len;
@@ -85,7 +84,7 @@ int	tokenize(char *str, t_data *data)
 	return (1); //success
 }
 
-
+/*control validity of token sequence*/
 int	check_token_syntax(t_token *token)
 {
 	t_token	*ptr;
@@ -110,13 +109,13 @@ int	check_token_syntax(t_token *token)
 }
 
 //check return of lexer in case after this token list is empty
+/*call: input division in token, check var presence and syntax*/
 int	lexer(char	*input, t_data *data)
 {
 	if (!tokenize(input, data))
 		return (0);
-	print_tokens(data->token);//to be removed
+	//print_tokens(data->token);
 	check_shell_var(data);
-	//print_env_var(data->envp); /to be removed
 	if (!check_token_syntax(data->token))
 		return (0);
 	return (1);

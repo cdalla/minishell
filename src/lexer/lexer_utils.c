@@ -6,12 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 13:56:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/14 12:06:57 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 12:56:22 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*recognize token type*/
 int	type_recogn(char *word)
 {
 	if (!ft_strncmp(word, "|", 2))
@@ -28,6 +29,7 @@ int	type_recogn(char *word)
 		return (WORD);
 }
 
+/*check special character for token trimming*/
 int	is_redirection(char *c, int quote, int dquote)
 {
 	if ((*c == '<' && *(c + 1) != '<') || (*c == '>' && *(c + 1) != '>'))
@@ -43,6 +45,7 @@ int	is_redirection(char *c, int quote, int dquote)
 	return (0);
 }
 
+/*check and set opposite value of quote and dquote*/
 void	quote_check(int *quote, int *dquote, int c)
 {
 	if (c == '\'')
@@ -61,6 +64,7 @@ void	quote_check(int *quote, int *dquote, int c)
 	}
 }
 
+/*is_space_and_newline*/
 int	is_space(int c)
 {
 	if (c == '\t' || c == '\n' || c == '\v' || c == '\f'

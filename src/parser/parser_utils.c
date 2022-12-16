@@ -6,12 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 11:44:27 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:07:52 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 13:13:04 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/*count PIPE presence*/
 int	count_pipes(t_token *token)
 {
 	t_token	*ptr;
@@ -28,9 +29,7 @@ int	count_pipes(t_token *token)
 	return (count);
 }
 
-/*
-	add infile and outfile to CMD redirection linked lists
-*/
+/*add type infile and outfile to CMD redirection linked lists*/
 int	parse_red(t_token *ptr, t_scmd *cmd)
 {
 	int	ret;
@@ -47,10 +46,7 @@ int	parse_red(t_token *ptr, t_scmd *cmd)
 	return (ret);
 }
 
-/*
-	evaluate the content of every token
-	fill the corresponding field in SCMD struct
-*/
+/*eval token content, set corresponding SCMD field*/
 int	parse_single_token(t_token *ptr, t_scmd *cmd)
 {
 	t_scmd	*arg;
@@ -75,11 +71,7 @@ int	parse_single_token(t_token *ptr, t_scmd *cmd)
 	}
 }
 
-/*
-	loop through token list between pipes
-	call the function to fill SCMD fields
-	in case of CMD_LINE the return value is the number of nodes parsed per command
-*/
+/*loop token list, divide when find pipes*/
 int	parse_loop(t_scmd *cmd, t_token **token, int line)
 {
 	int		ret;

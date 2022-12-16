@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 12:39:13 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/13 11:24:47 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/16 12:58:57 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void remove_token(t_token **token, t_token *to_rem);
 char **split_var(char *str, char c);
 int	check_var_syntax(char *str);
 
+/*delete var_declaration token from list*/
 void	remove_var_declaration(t_data *data)
 {
 	t_token	*ptr;
@@ -43,6 +44,7 @@ void	remove_var_declaration(t_data *data)
 	}
 }
 
+/*check if PIPE present at the end after remove_var_decl*/
 void	remove_extra_pipe(t_data *data)
 {
 	t_token	*ptr;
@@ -60,6 +62,7 @@ void	remove_extra_pipe(t_data *data)
 	}
 }
 
+/*add or update var from token list*/
 int	add_var(t_data *data, char *str, enum var_type type)
 {
 	char	**args;
@@ -86,6 +89,7 @@ int	add_var(t_data *data, char *str, enum var_type type)
 	return (1);
 }
 
+/*check presence of shell_var_declaration in token list*/
 int	check_shell_var(t_data	*data)
 {
 	t_token	*ptr;
