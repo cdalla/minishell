@@ -6,17 +6,11 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:14:31 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 22:13:15 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-/*
-	SYNTAX ERROR TO CHECK
-	| | | | | | | | 
-*/
-
 /*
 	parsing multi command
 	create an array of single commands
@@ -69,7 +63,6 @@ t_scmd	*parser(t_data *data)
 	t_scmd	*cmd;
 
 	data->n_pipes = count_pipes(data->token);
-	//printf ("n_pipes = %d\n", n_pipes); //testing purpose
 	if (data->n_pipes)
 	{
 		cmd = new_scmd(SIMPLE_CMD);
@@ -77,14 +70,12 @@ t_scmd	*parser(t_data *data)
 			return (0);
 		if (!parse_multi_cmd(&data->token, data->n_pipes, cmd))
 			return (0); //failed something free memory
-		//print_multi_cmd(cmd, data->n_pipes); //tester printing multi
 	}
 	else
 	{
 		cmd = parse_simple_command(data->token);
 		if (!cmd)
 			return (0);//failed something memory to free
-		//print_scmd(cmd);//tester printing single cmd
 	}
 	return (cmd);
 }

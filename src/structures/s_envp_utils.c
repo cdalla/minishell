@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 12:10:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:21:42 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 23:32:22 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	split_args(char **split, char *str, char c)
 	int		w_len;
 
 	w_len = 0;
-	while(*(str +w_len) != c && *(str + w_len))
+	while (*(str + w_len) != c && *(str + w_len))
 		w_len++;
 	if (w_len)
 		split[0] = ft_substr(str, 0, w_len);
@@ -43,7 +43,7 @@ int	split_args(char **split, char *str, char c)
 }
 
 /*create envp args[2] for name_env and value_env*/
-char **split_var(char *str, char c)
+char	**split_var(char *str, char c)
 {
 	char	**split;
 
@@ -57,7 +57,7 @@ char **split_var(char *str, char c)
 		return (0);
 	}
 	split[2] = 0;
-	return(split);
+	return (split);
 }
 
 /*loop envp list and return 1 if env exist*/
@@ -85,7 +85,7 @@ int	update_var_value(t_envp *envp, t_envp *var, char *value, int type)
 	{
 		if (ptr == var)
 		{
-			if (type)//update type
+			if (type) //update type
 				ptr->type = ENV;
 			else
 			{

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 22:02:47 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/18 00:07:55 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ int	prompt_call(t_data *data)
 		//print_tokens(data->token);
 		if (!expander(data))
 			return(0);
+		print_tokens(data->token);
+		if (!quote_removal(data->token))
+			return (0); //malloc fail
+		print_tokens(data->token);
 		cmd = parser(data);
 		if (data->token)
 		{

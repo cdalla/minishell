@@ -6,14 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 19:42:45 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 22:56:03 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 void	set_fd(t_data *data, int fd[2][2], int i);
-int		set_red(t_scmd *cmd, t_data *data);
 void	parent_close(int fd[2][2], int i, int n_pipes);
 
 /*translate necessary list in array[], set red, execve with right info*/
@@ -25,7 +24,7 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 
 	if (data->to_close != -1)
 		close(data->to_close);
-	if (!set_red(cmd, data))
+	if (!set_red(cmd->file, data))
 		printf("redirection error\n");
 	cmd_path = check_path_cmd(cmd->cmd_name->value, data);
 	if (!cmd_path)

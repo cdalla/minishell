@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:59:26 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 19:04:32 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 22:56:37 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	execute_builtin(int	(*fn)(t_scmd *, t_data *), t_scmd *cmd, t_data *data)
 {	
 	if (data->to_close != -1)
 		close(data->to_close);
-	if (!set_red(cmd, data))
+	if (!set_red(cmd->file, data))
 		printf("redirection error\n");
 	fn(cmd->next_arg, data);
 	return (1);

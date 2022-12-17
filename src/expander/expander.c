@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 16:36:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/15 12:49:37 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 22:34:18 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*expand_value(char *var, t_token *prev, t_data *data)
 		return (0); //malloc error //qui mettere if token type redirection and value empty dont expand
 	if (!var_exist(data->envp, var_name))
 	{
-		if (prev && (prev->type == REDI || prev->type == REDO || prev->type == REDOA))
+		if (prev && (prev->type == READ || prev->type == WRITE || prev->type == APPEND))
 			return (ft_strdup(var));
 		return (ft_strdup(""));
 	}

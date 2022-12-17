@@ -14,6 +14,7 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/lexer/lexer.o\
 		obj/lexer/read_line.o\
 		obj/lexer/shell_var.o\
+		obj/lexer/quote_remove.o\
 		obj/expander/expander.o\
 		obj/expander/expander_utils.o\
 		obj/parser/parser.o\
@@ -45,6 +46,7 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/lexer/lexer.c\
 		src/lexer/read_line.c\
 		src/lexer/shell_var.c\
+		src/lexer/quote_remove.c\
 		src/expander/expander.c\
 		src/expander/expander_utils.c\
 		src/parser/parser.c\

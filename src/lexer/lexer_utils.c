@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 13:56:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 21:55:00 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 22:31:20 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int	type_recogn(char *word)
 	if (!ft_strncmp(word, "|", 2))
 		return (PIPE);
 	else if (!ft_strncmp(word, "<", 2))
-		return (REDI);
+		return (READ);
 	else if (!ft_strncmp(word, ">", 2))
-		return (REDO);
+		return (WRITE);
 	else if (!ft_strncmp(word, ">>", 3))
-		return (REDOA);
+		return (APPEND);
 	else if (!ft_strncmp(word, "<<", 2))
 		return (HEREDOC);
 	else

@@ -13,9 +13,9 @@ enum	token_type
 {
 	WORD = 1,
 	PIPE = 2,	// ||
-	REDI = 3,	//redirection input <
-	REDO = 4,	//redirection output >
-	REDOA = 5,	//redirection out append >>
+	READ = 3,	//redirection input <
+	WRITE = 4,	//redirection output >
+	APPEND = 5,	//redirection out append >>
 	HEREDOC = 6,	//heredoc <<
 };
 
@@ -25,13 +25,13 @@ enum	cmd_type
 	ARGUMENT = 2,
 };
 
-enum	red_type
-{
-	APPEND = 1,
-	WRITE = 2,
-	HERED = 3,
-	READ = 4,
-};
+// enum	red_type
+// {
+// 	APPEND = 1,
+// 	WRITE = 2,
+// 	HERED = 3,
+// 	READ = 4,
+// };
 
 enum	var_type
 {
@@ -39,19 +39,26 @@ enum	var_type
 	ENV = 2,
 };
 
-typedef struct s_infile
-{
-	char			*filename;
-	enum red_type	type;
-	struct s_infile *next;
-}				t_infile;
+// typedef struct s_infile
+// {
+// 	char			*filename;
+// 	enum token_type	type;
+// 	struct s_infile *next;
+// }				t_infile;
 
-typedef struct s_outfile
+// typedef struct s_outfile
+// {
+// 	char 			*filename;
+// 	enum red_type 	type;
+// 	struct s_outfile *next;
+// }				t_outfile;
+
+typedef struct s_file
 {
 	char 			*filename;
-	enum red_type 	type;
-	struct s_outfile *next;
-}				t_outfile;
+	enum token_type type;
+	struct s_file 	*next;
+}				t_file;
 
 typedef struct s_scmd
 {
@@ -61,8 +68,9 @@ typedef struct s_scmd
 	struct s_scmd	*cmd_name;
 	struct s_scmd	*next_arg;
 	struct s_scmd	*prev_arg;//unused
-	t_infile		*infile;
-	t_outfile 		*outfile;
+	//t_infile		*infile;
+	//t_outfile 	*outfile;
+	t_file			*file;
 }				t_scmd;
 
 typedef struct s_envp
@@ -118,6 +126,7 @@ t_envp	*var_exist(t_envp *envp, char *name);
 int		update_var_value(t_envp *envp, t_envp *var, char *value, int type);
 int		add_var(t_data *data, char *str, enum var_type type);
 char 	*get_env_value(char *name, t_data *data);
+int	quote_removal(t_token *token);
 
 //STRUCT TOKEN
 int 	add_token(t_token **token, char *word, int type);
@@ -129,8 +138,9 @@ int		add_scmd_arg(t_scmd *cmd, t_scmd *arg);
 int		set_scmd_value(t_scmd *cmd, char *value);
 void 	print_scmd(t_scmd *cmd);
 void 	print_multi_cmd(t_scmd *cmd_line, int n_pipes);
-int		add_infile(t_scmd *cmd, enum red_type type, char *value);
-int		add_outfile(t_scmd *cmd, enum red_type type, char *value);
+//int		add_infile(t_scmd *cmd, enum red_type type, char *value);
+//int		add_outfile(t_scmd *cmd, enum red_type type, char *value);
+int		add_file(t_scmd *cmd, enum token_type type, char *value);
 void 	free_cmd(t_scmd *cmd);
 
 //PARSER
@@ -149,7 +159,7 @@ char 	**cpy_list_args(t_scmd *list, int size, char *cmd_name);
 char 	**ls_toarr_env(t_envp *list);
 char 	**cpy_list_env(t_envp *list, int size);
 int		is_builtins(t_scmd *cmd, t_data *data, int i);
-int	set_red(t_scmd *cmd, t_data *data);
+int	set_red(t_file *file, t_data *data);
 
 int	remove_envp(t_envp **envp, t_envp *to_rem);
 

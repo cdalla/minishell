@@ -6,28 +6,11 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 22:02:22 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 23:33:58 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-/*
-	read string input and divide into tokens
-	split by spaces
-*/
-/*
-	move the str pointer further until beginning of word to trim
-	assign to w_len the correct lenght of the word
-	split words on spaces
-	unless quote or double quote is open
-
-	examples:
-
-	cat -e hello -> 3 tokens
-	cat -e "hello chico" -> 3 tokens
-	echo "ciao"Rafa"nice covid" -> 2 tokens
-*/
 
 /*trim and return single token value*/
 int	count_word_len(char **s, int *wl)
@@ -93,8 +76,8 @@ int	check_token_syntax(t_token *token)
 	ptr = token;
 	while (ptr)
 	{
-		if ((ptr->type == REDI || ptr->type == REDO || ptr->type == REDOA
-				|| ptr->type == HEREDOC) && ptr->next->type != WORD)
+		if ((ptr->type == READ || ptr->type == WRITE || ptr->type == APPEND
+				|| ptr->type == HEREDOC) && (!ptr->next || ptr->next->type != WORD))
 		{
 			printf("syntax error\n");
 			return (0);

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 12:09:10 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:26:05 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 22:37:00 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@ t_scmd	*new_scmd(enum cmd_type type)
 	new_scmd->cmd_name = 0;
 	new_scmd->next_cmd = 0;
 	new_scmd->next_arg = 0;
-	new_scmd->prev_arg = 0;
 	new_scmd->value = 0;
-	new_scmd->infile = 0;
-	new_scmd->outfile = 0;
+	new_scmd->file = 0;
 	return (new_scmd);
 }
 
@@ -74,8 +72,7 @@ int	set_scmd_value(t_scmd *cmd, char *value)
 void	print_scmd(t_scmd *cmd)
 {
 	t_scmd		*ptr;
-	t_infile	*inf;
-	t_outfile	*out;
+	t_file		*file;
 	int			i;
 
 	i = 0;
@@ -90,26 +87,15 @@ void	print_scmd(t_scmd *cmd)
 		ptr = ptr->next_arg;
 	}
 	ptr = cmd;
-	if (ptr->infile)
+	if (ptr->file)
 	{
-		inf = ptr->infile;
+		file = ptr->file;
 		i = 1;
-		while (inf)
+		while (file)
 		{
-			printf("infile %d = %s - type = %d\n", i, inf->filename, inf->type);
+			printf("file %d = %s - type = %d\n", i, file->filename, file->type);
 			i++;
-			inf = inf->next;
-		}
-	}
-	if (ptr->outfile)
-	{
-		out = ptr->outfile;
-		i = 1;
-		while (out)
-		{
-			printf("outfile %d = %s - type = %d\n", i, out->filename, out->type);
-			i++;
-			out = out->next;
+			file = file->next;
 		}
 	}
 }

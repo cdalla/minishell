@@ -6,46 +6,46 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 14:11:11 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:16:19 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 22:38:25 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*free SCMD intfile list*/
-void	free_infile(t_scmd *ptr)
-{
-	t_infile	*ptr_inf;
-	t_infile	*next_inf;
+// /*free SCMD intfile list*/
+// void	free_infile(t_scmd *ptr)
+// {
+// 	t_infile	*ptr_inf;
+// 	t_infile	*next_inf;
 
-	if (ptr->infile)
-	{
-		ptr_inf = ptr->infile;
-		while (ptr_inf->next)
-		{
-			next_inf = ptr_inf->next;
-			free(ptr_inf->filename);
-			free(ptr_inf);
-			ptr_inf = next_inf;
-		}
-	}
-}
+// 	if (ptr->infile)
+// 	{
+// 		ptr_inf = ptr->infile;
+// 		while (ptr_inf->next)
+// 		{
+// 			next_inf = ptr_inf->next;
+// 			free(ptr_inf->filename);
+// 			free(ptr_inf);
+// 			ptr_inf = next_inf;
+// 		}
+// 	}
+// }
 
 /*free SCMD outfile list*/
-void	free_outfile(t_scmd *ptr)
+void	free_file(t_scmd *ptr)
 {
-	t_outfile	*ptr_out;
-	t_outfile	*next_out;
+	t_file	*ptr_file;
+	t_file	*next_file;
 
-	if (ptr->outfile)
+	if (ptr->file)
 	{
-		ptr_out = ptr->outfile;
-		while (ptr_out->next)
+		ptr_file = ptr->file;
+		while (ptr_file->next)
 		{
-			next_out = ptr_out->next;
-			free(ptr_out->filename);
-			free(ptr_out);
-			ptr_out = next_out;
+			next_file = ptr_file->next;
+			free(ptr_file->filename);
+			free(ptr_file);
+			ptr_file = next_file;
 		}
 	}
 }
@@ -85,8 +85,8 @@ void	free_cmd(t_scmd *cmd)
 			free(ptr->cmd_name);
 		}
 		free_args(ptr);
-		free_infile(ptr);
-		free_outfile(ptr);
+		// free_infile(ptr);
+		free_file(ptr);
 		free(ptr);
 		ptr = next_ptr;
 	}
