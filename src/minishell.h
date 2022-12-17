@@ -109,7 +109,7 @@ void	print_env_var(t_envp *envp);
 int		lexer (char	*input, t_data *data);
 int		is_space(int c);
 int		type_recogn(char *word);
-int		is_redirection(char *c, int quote, int dquote);
+int		is_redirection(char *c);
 char	*get_rl(void);
 void 	quote_check(int *quote, int *dquote, int c);
 int		check_shell_var(t_data	*data);

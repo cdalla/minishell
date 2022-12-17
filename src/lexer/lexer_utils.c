@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 13:56:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 12:56:22 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 21:55:00 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	type_recogn(char *word)
 }
 
 /*check special character for token trimming*/
-int	is_redirection(char *c, int quote, int dquote)
+int	is_redirection(char *c)
 {
 	if ((*c == '<' && *(c + 1) != '<') || (*c == '>' && *(c + 1) != '>'))
 		return (1);
@@ -40,8 +40,6 @@ int	is_redirection(char *c, int quote, int dquote)
 		return (2);
 	else if (*c == '$' && *(c + 1) == '?')
 		return (2);
-	else if ((*c == '\"' && !dquote) || (*c == '\'' && !quote))
-		return (1);
 	return (0);
 }
 

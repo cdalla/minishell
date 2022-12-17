@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 13:23:59 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 22:02:22 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 */
 
 /*trim and return single token value*/
-char	*trim_word(char **s, int *wl)
+int	count_word_len(char **s, int *wl)
 {
 	char	*word;
 	int		quote;
@@ -39,23 +39,22 @@ char	*trim_word(char **s, int *wl)
 	word = 0;
 	quote = 0;
 	dquote = 0;
-	while (((!is_space(*(*s + *wl))) || quote || dquote) //if it is not a space or quotes are opened
-		&& *(*s + *wl) != '\0')
+	while ((*(*s + *wl) && (!is_space(*(*s + *wl)) || quote || dquote))) //if it is not a space or quotes are opened
 	{
 		if (*(*s + *wl) == '\'' || *(*s + *wl) == '\"')
 			quote_check(&quote, &dquote, *(*s + *wl));
-		if ((is_redirection((*s + *wl), quote, dquote) && !quote && !dquote))
+		if (!quote && !dquote && is_redirection((*s + *wl)))
 		{
-			(*wl) += is_redirection((*s + *wl), quote, dquote);
+			(*wl) += is_redirection((*s + *wl));
 			break ;
 		}
 		(*wl)++;
-		if ((is_redirection((*s + *wl), quote, dquote) && !quote && !dquote))
+		if ((is_redirection((*s + *wl)) && !quote && !dquote))
 			break ;
 	}
-	if (*wl)
-		word = ft_substr(*s, 0, *wl);
-	return (word);
+	if (quote || dquote)
+		return (0);// error open quotes
+	return (*wl);
 }
 
 /*split input into words and put it directly into token list*/
@@ -68,11 +67,13 @@ int	tokenize(char *str, t_data *data)
 	while (*str)
 	{
 		w_len = 0;
-		while (is_space(*str) && *str) //skip all spaces
+		while (is_space(*str) && *str) //skip all spaces at beginning
 			str++;
 		if (ft_strlen(str))
-		{
-			word = trim_word(&str, &w_len);
+		{	
+			if (!count_word_len(&str, &w_len))
+				return (0); //quotes opened error
+			word = ft_substr(str, 0, w_len);
 			if (!word)
 				return (0); //failure error in substr
 			type = type_recogn(word);

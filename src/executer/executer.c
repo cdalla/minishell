@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 17:23:14 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 19:42:45 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	set_fd(t_data *data, int fd[2][2], int i);
 int		set_red(t_scmd *cmd, t_data *data);
 void	parent_close(int fd[2][2], int i, int n_pipes);
 
-/*translate necessary list in array[], execve with right info*/
+/*translate necessary list in array[], set red, execve with right info*/
 int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloced, path
 {
 	char	*cmd_path;
@@ -42,7 +42,7 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 }
 
 /*fork a child process, call execution of single cmd*/
-int	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins here
+int	executer_single(t_scmd *cmd, t_data *data, int i, int multi)//need to call builtins here
 {
 	pid_t	child;
 	int		status;
@@ -50,23 +50,23 @@ int	executer_single(t_scmd *cmd, t_data *data, int i)//need to call builtins her
 	child = fork();
 	if (child == 0)
 	{
+		if (multi)
+		{
+			if(is_builtins(cmd, data, 0))
+				exit(0);
+		}
 		cmd_start(cmd, data);
 	}
 	else if (child > 0)
 	{
 		if (i == data->n_pipes)
-		{
 			waitpid(child, &status, 0);
-			// i = 0;
-			// while (i < data->n_pipes)
-			// {
-			// 	wait(NULL);
-			// 	i++;
-			// }
-		}
 	}
 	else if (child < 0)
+	{
+		printf("child error\n");
 		return (0); //error
+	}
 	return (1);
 }
 
@@ -84,11 +84,8 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 		if (i < data->n_pipes)
 			pipe(fd[i % 2]);
 		set_fd(data, fd, i);
-		if (!is_builtins(cmd, data, i))//check return
-		{
-			if (!executer_single(ptr, data, i))
+		if (!executer_single(ptr, data, i, 1))
 				return (0);
-		}
 		parent_close(fd, i, data->n_pipes);
 		ptr = ptr->next_cmd;
 		i++;
@@ -103,10 +100,7 @@ int executer(t_scmd *cmd, t_data *data)
 	int saved_in;
 
 	if (data->n_pipes)
-	{
 		executer_multi(cmd, data);
-		//printf("execute multi\n");
-	}
 	else
 	{
 		saved_in = dup(STDIN_FILENO);
@@ -116,8 +110,7 @@ int executer(t_scmd *cmd, t_data *data)
 		data->to_write = -1;
 		if(!is_builtins(cmd, data, 0))
 		{
-			//printf("not builtin\n");
-			if(!executer_single(cmd, data , 0))
+			if(!executer_single(cmd, data , 0, 0))
 				return(0);
 		}
 		else
@@ -125,7 +118,6 @@ int executer(t_scmd *cmd, t_data *data)
 			dup2(saved_in, STDIN_FILENO);
 			dup2(saved_out, STDOUT_FILENO);
 		}
-		//printf("execute single\n");
 	}
 	return (1);
 }

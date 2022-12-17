@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:59:26 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 16:54:18 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 19:04:32 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,12 @@ typedef struct s_builtin
 }				t_builtin;
 
 int	execute_builtin(int	(*fn)(t_scmd *, t_data *), t_scmd *cmd, t_data *data)
-{
-	//int			saved_stdout;
-	
+{	
 	if (data->to_close != -1)
 		close(data->to_close);
-	//saved_stdout = dup(STDIN_FILENO);
 	if (!set_red(cmd, data))
 		printf("redirection error\n");
 	fn(cmd->next_arg, data);
-	//dup2(saved_stdout, STDOUT_FILENO);
 	return (1);
 }
 

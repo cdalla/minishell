@@ -55,11 +55,12 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	expander almost complete and tested expander
 
 16/12
-	bultins redirection
-	fix token trim on spaces only, accept spaces only if quotes or dquotes are open
+	#bultins redirection
+	#check token syntax, PIPE at the end
+	#fix token trim on spaces only, accept spaces only if quotes or dquotes are open
 	print in order with export
+	infile and outfile merge them in file
 	quote removal
-	check token syntax, PIPE at the end
 	error checking
 	malloc fail check
 	errno
