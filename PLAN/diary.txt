@@ -57,6 +57,7 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 16/12
 	bultins redirection
 	fix token trim on spaces only, accept spaces only if quotes or dquotes are open
+	print in order with export
 	quote removal
 	check token syntax, PIPE at the end
 	error checking

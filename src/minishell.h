@@ -149,6 +149,7 @@ char 	**cpy_list_args(t_scmd *list, int size, char *cmd_name);
 char 	**ls_toarr_env(t_envp *list);
 char 	**cpy_list_env(t_envp *list, int size);
 int		is_builtins(t_scmd *cmd, t_data *data, int i);
+int	set_red(t_scmd *cmd, t_data *data);
 
 int	remove_envp(t_envp **envp, t_envp *to_rem);
 

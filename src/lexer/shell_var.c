@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 12:39:13 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 12:58:57 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 17:17:42 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,15 @@ int	check_shell_var(t_data	*data)
 	t_token	*ptr;
 
 	ptr = data->token;
-	if (check_var_syntax(ptr->word))
+	if (ptr)
 	{
-		if (!add_var(data, ptr->word, 1))
-			return (0); //malloc fail
+		if (check_var_syntax(ptr->word))
+		{
+			if (!add_var(data, ptr->word, 1))
+				return (0); //malloc fail
+		}
+		remove_var_declaration(data);
+		remove_extra_pipe(data);
 	}
-	remove_var_declaration(data);
-	remove_extra_pipe(data);
 	return (1);
 }

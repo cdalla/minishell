@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:52:50 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 17:16:44 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	prompt_call(t_data *data)
 			exit(0); // return the correct msg
 		if (!lexer(input, data))
 			return (0); //stop and return
-		print_tokens(data->token);
+		//print_tokens(data->token);
 		if (!expander(data))
 			return(0);
 		cmd = parser(data);

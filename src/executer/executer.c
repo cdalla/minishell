@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:36:38 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 17:23:14 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 
 	if (data->to_close != -1)
 		close(data->to_close);
-	set_red(cmd, data);
+	if (!set_red(cmd, data))
+		printf("redirection error\n");
 	cmd_path = check_path_cmd(cmd->cmd_name->value, data);
 	if (!cmd_path)
 		return (0);
@@ -85,7 +86,6 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 		set_fd(data, fd, i);
 		if (!is_builtins(cmd, data, i))//check return
 		{
-			//printf("is builtin error multi\n");
 			if (!executer_single(ptr, data, i))
 				return (0);
 		}
@@ -99,19 +99,33 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 /*if n_pipes present call multi command, otherwise single*/
 int executer(t_scmd *cmd, t_data *data)
 {
+	int	saved_out;
+	int saved_in;
+
 	if (data->n_pipes)
+	{
 		executer_multi(cmd, data);
+		//printf("execute multi\n");
+	}
 	else
 	{
+		saved_in = dup(STDIN_FILENO);
+		saved_out = dup(STDOUT_FILENO);
 		data->to_close = -1;
 		data->to_read = -1;
 		data->to_write = -1;
 		if(!is_builtins(cmd, data, 0))
 		{
-			//printf("is builtin error single\n");
-			if (!executer_single(cmd, data , 0))
+			//printf("not builtin\n");
+			if(!executer_single(cmd, data , 0))
 				return(0);
 		}
+		else
+		{
+			dup2(saved_in, STDIN_FILENO);
+			dup2(saved_out, STDOUT_FILENO);
+		}
+		//printf("execute single\n");
 	}
 	return (1);
 }

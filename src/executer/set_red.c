@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:02:36 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 17:24:12 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ int	set_outfile(t_outfile *outfile, t_data *data)
 	while (outfile)
 	{
 		if (data->to_write != -1)
-			close(data->to_write);//close fd set previously
+		{
+			printf("close fd = %d\n", data->to_write);
+			if (close(data->to_write) == -1)
+				printf("close infile error\n");//close fd set previously
+		}
 		if (outfile->type == APPEND)
 		{
 			data->to_write = open(outfile->filename, O_WRONLY | O_APPEND | O_CREAT , 0777);
@@ -75,7 +79,11 @@ int	set_infile(t_infile *infile, t_data *data)
 	while (infile)
 	{
 		if (data->to_read != -1)
-			close(data->to_read);
+		{
+			//printf("close fd = %d\n", data->to_read);
+			if (close(data->to_read) == -1)
+				printf("close outfile error\n");
+		}
 		if (infile->type == HERED)//check if we need to manage heredoc if something fails before
 		{
 			if (access("test_file", F_OK) == 0)
@@ -100,14 +108,18 @@ int	set_red(t_scmd *cmd, t_data *data)
 	if (!set_infile(cmd->infile, data))
 		return (0);
 	if (data->to_read != -1)
+	{
 		dup2(data->to_read, STDIN_FILENO);
-	close(data->to_read);
+		close(data->to_read);
+	}
 	if (access("test_file", F_OK) == 0)
 		unlink("test_file");
 	if (!set_outfile(cmd->outfile, data))
 		return (0);
 	if (data->to_write != -1)
+	{
 		dup2(data->to_write, STDOUT_FILENO);
-	close(data->to_write);
+		close(data->to_write);
+	}
 	return (1);
 }

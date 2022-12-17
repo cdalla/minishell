@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:59:26 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:36:51 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/17 16:54:18 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,50 @@
 
 int	echo(t_scmd *args, t_data *data);
 int	cd(t_scmd *args, t_data *data);
-int	env(t_scmd *args, t_data *data);
+int	env( t_scmd *args, t_data *data);
 int	export(t_scmd *args, t_data *data);
 int pwd(t_scmd *args, t_data *data);
 int	unset(t_scmd *args, t_data *data);
 
+typedef struct s_builtin
+{
+	char	*builtin_name;
+	int		(*fn)(t_scmd *, t_data *);
+}				t_builtin;
+
+int	execute_builtin(int	(*fn)(t_scmd *, t_data *), t_scmd *cmd, t_data *data)
+{
+	//int			saved_stdout;
+	
+	if (data->to_close != -1)
+		close(data->to_close);
+	//saved_stdout = dup(STDIN_FILENO);
+	if (!set_red(cmd, data))
+		printf("redirection error\n");
+	fn(cmd->next_arg, data);
+	//dup2(saved_stdout, STDOUT_FILENO);
+	return (1);
+}
 
 /*check if this is a bultin and call the corresponding function*/
 int	is_builtins(t_scmd *cmd, t_data *data, int i)
 {
+	int			index;
+	char		*name;
+	const t_builtin	builtin[6] = {{"echo", &echo}, {"env", &env}, {"cd", &cd},
+	{"export", &export}, {"unset", &unset}, {"pwd", &pwd}};
+
+	index = 0;
 	(void)i;
-	if (!ft_strncmp(cmd->cmd_name->value, "export", 7))
-		export(cmd->next_arg, data);
-	else if (!ft_strncmp(cmd->cmd_name->value, "unset", 6))
-		unset(cmd->next_arg, data);
-	else if (!ft_strncmp(cmd->cmd_name->value, "env", 4))
-		env(cmd->next_arg, data);
-	else if (!ft_strncmp(cmd->cmd_name->value, "pwd", 4))
-		pwd(cmd->next_arg, data);
-	else if (!ft_strncmp(cmd->cmd_name->value, "cd", 3))
-		cd(cmd->next_arg, data);
-	else if (!ft_strncmp(cmd->cmd_name->value, "echo", 5))
-		echo(cmd->next_arg, data);
-	else
+	name = cmd->cmd_name->value;
+	while (index < 6)
 	{
-		//printf("builtin not found\n");
-		return (0);
+		if (!ft_strncmp(name, builtin[index].builtin_name, ft_strlen(name) + 1))
+		{	
+			execute_builtin(builtin[index].fn, cmd, data);
+			return(1);
+		}
+		index++;
 	}
-	return(1); //i need to return errorno
+	return(0);
 }
