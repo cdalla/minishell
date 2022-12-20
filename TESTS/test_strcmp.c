@@ -3,5 +3,5 @@
 
 int main(void)
 {
-	printf("%d\n", ft_strcmp("Apple_PubSub_Socket_Render", "TMPDIR"));
+	printf("%d\n", ft_strcmp("Apple_PubSub_Socket_Render", "HOME"));
 }

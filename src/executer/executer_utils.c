@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:52:49 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 12:47:54 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/20 16:39:49 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,24 @@ void	parent_close(int fd[2][2], int i, int n_pipes)
 	}
 }
 
-void	print_dsarry(char **array)//just for testing purpose !!!REMOVE!!!
+/*save std in and out, return 0 for err*/
+int save_std(int *in, int *out)
 {
-	int	i;
+	*in = dup(STDIN_FILENO);
+	if(*in == -1)
+		return (0);	
+	*out = dup(STDOUT_FILENO);
+	if (*out == -1)
+		return (0);
+	return(1);
+}
 
-	i = 0;
-	while (array[i])
-	{
-		printf("%s\n", array[i]);
-		i++;
-	}
+/*reset std in and out, return 0 for error*/
+int	reset_std(int in, int out)
+{
+	if (dup2(in, STDIN_FILENO) == -1)
+		return (0);
+	if (dup2(out, STDOUT_FILENO) == -1)
+		return (0);
+	return (1);
 }

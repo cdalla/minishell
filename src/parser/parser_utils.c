@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 11:44:27 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 22:57:55 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/20 15:25:38 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,48 +29,7 @@ int	count_pipes(t_token *token)
 	return (count);
 }
 
-/*add type infile and outfile to CMD redirection linked lists*/
-// int	parse_red(t_token *ptr, t_scmd *cmd)
-// {
-// 	int	ret;
-
-// 	ret = 0;
-// 	if (ptr->type == READ)
-// 		ret = add_infile(cmd, READ, ptr->next->word);
-// 	else if (ptr->type == HEREDOC)
-// 		ret = add_infile(cmd, HERED, ptr->next->word);
-// 	else if (ptr->type == REDO)
-// 		ret = add_outfile(cmd, WRITE, ptr->next->word);
-// 	else if (ptr->type == REDOA)
-// 		ret = add_outfile(cmd, APPEND, ptr->next->word);
-// 	return (ret);
-// }
-
 /*eval token content, set corresponding SCMD field*/
-// int	parse_single_token(t_token *ptr, t_scmd *cmd)
-// {
-// 	t_scmd	*arg;
-// 	int		ret;
-
-// 	ret = 0;
-// 	if (ptr->type == WORD)
-// 	{
-// 		arg = new_scmd(ARGUMENT);
-// 		if (!arg)
-// 			return (0);
-// 		set_scmd_value(arg, ptr->word);
-// 		add_scmd_arg(cmd, arg);
-// 		return (1); //success with 1 position to skip in token list	
-// 	}
-// 	else
-// 	{
-// 		ret = parse_red(ptr, cmd);
-// 		if (!ret)
-// 			return (0); //errors
-// 		return (2); //success and skip 2 position
-// 	}
-// }
-
 int	parse_single_token(t_token *ptr, t_scmd *cmd)
 {
 	t_scmd	*arg;

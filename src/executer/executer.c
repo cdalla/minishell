@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 22:56:03 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/20 18:35:45 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	set_fd(t_data *data, int fd[2][2], int i);
 void	parent_close(int fd[2][2], int i, int n_pipes);
+int 	save_std(int *in, int *out);
+int		reset_std(int in, int out);
+
 
 /*translate necessary list in array[], set red, execve with right info*/
 int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloced, path
@@ -22,20 +25,32 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 	char	**envp_ar;
 	char	**cmd_args;
 
-	if (data->to_close != -1)
-		close(data->to_close);
+	if ((data->to_close != -1))
+	{
+		if(close(data->to_close) == -1)
+			return (0);
+	}
 	if (!set_red(cmd->file, data))
-		printf("redirection error\n");
+		exit(0);//open or close error
 	cmd_path = check_path_cmd(cmd->cmd_name->value, data);
 	if (!cmd_path)
-		return (0);
+	{
+		printf("cmd path error\n");
+		return (0); //malloc error
+	}
 	envp_ar = ls_toarr_env(data->envp);
 	if (!envp_ar)
-		return (0);
+	{
+		printf("envp array error\n");
+		return (0); //malloc error
+	}
 	cmd_args = ls_toarr_args(cmd->next_arg, cmd_path);
 	if (!cmd_args)
-		return (0);
-	execve(cmd_path, cmd_args, envp_ar);
+	{
+		printf("cmd args array error\n");
+		return (0); //malloc error
+	}
+	printf("execve return = %d\n", execve(cmd_path, cmd_args, envp_ar));
 	//execve(check_path_cmd, ls_toarr_env, ls_toarr_args); //this is nice :) do not care about ret
 	return (0);
 }
@@ -44,22 +59,25 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 int	executer_single(t_scmd *cmd, t_data *data, int i, int multi)//need to call builtins here
 {
 	pid_t	child;
-	int		status;
+	//int		status;
 
 	child = fork();
 	if (child == 0)
 	{
 		if (multi)
 		{
-			if(is_builtins(cmd, data, 0))
-				exit(0);
+			if(!is_builtins(cmd, data, 0))
+				return(0);
 		}
-		cmd_start(cmd, data);
+		if (!cmd_start(cmd, data))
+			return (0);
 	}
 	else if (child > 0)
 	{
 		if (i == data->n_pipes)
 			waitpid(child, &status, 0);
+		if (status != 0)
+			return (0);
 	}
 	else if (child < 0)
 	{
@@ -81,10 +99,13 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 	while(ptr)
 	{
 		if (i < data->n_pipes)
-			pipe(fd[i % 2]);
+		{
+			if (pipe(fd[i % 2]) == -1)
+				return (0); //pipe error
+		}
 		set_fd(data, fd, i);
 		if (!executer_single(ptr, data, i, 1))
-				return (0);
+				return (0); //executer return 0 for error and errno will be set
 		parent_close(fd, i, data->n_pipes);
 		ptr = ptr->next_cmd;
 		i++;
@@ -99,23 +120,23 @@ int executer(t_scmd *cmd, t_data *data)
 	int saved_in;
 
 	if (data->n_pipes)
-		executer_multi(cmd, data);
+	{
+		if (!executer_multi(cmd, data))
+			return (0);
+	}
 	else
 	{
-		saved_in = dup(STDIN_FILENO);
-		saved_out = dup(STDOUT_FILENO);
-		data->to_close = -1;
-		data->to_read = -1;
-		data->to_write = -1;
-		if(!is_builtins(cmd, data, 0))
+		if (!save_std(&saved_in, &saved_out))
+			return (0); //error in dup
+		if(!is_builtins(cmd, data, 0)) //check better builtins return to catch error
 		{
 			if(!executer_single(cmd, data , 0, 0))
-				return(0);
+				return(0); //errno set by execve
 		}
 		else
 		{
-			dup2(saved_in, STDIN_FILENO);
-			dup2(saved_out, STDOUT_FILENO);
+			if (!reset_std(saved_in, saved_out))
+				return (0); //error in dup2
 		}
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 22:13:15 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/20 15:25:04 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd)
 		{
 			cmd_ptr->next_cmd = new_scmd(SIMPLE_CMD); //add next_cmd
 			if (!cmd_ptr->next_cmd)
-				return (0);
+				return (0); //malloc fail
 			cmd_ptr = cmd_ptr->next_cmd;//move pointer to next cmd
 		}
 		ret = parse_loop(cmd_ptr, &ptr, 1);
@@ -51,7 +51,7 @@ t_scmd	*parse_simple_command(t_token *token)
 
 	cmd = new_scmd(SIMPLE_CMD); //create head of cmd node
 	if (!token || !cmd)
-		return (0); //error
+		return (0); //malloc fail
 	if (!parse_loop(cmd, &token, 0))
 		return (0);
 	return (cmd);

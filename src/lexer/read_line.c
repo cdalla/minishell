@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/18 00:07:55 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/20 18:31:04 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@
 	called by main
 	prompt function call the prompt and pass the input 
 	need to stop with exit_builtin
-	maybe we can return a value to main for err handling
-		we should pass to this function the s_data
-		then call from here lexer
-	OR
-		we can pass back the string from input
-		in this case we can merge this with get_rl()
 */
 int executer(t_scmd *cmd, t_data *data);
 int	expander(t_data *data);
@@ -69,44 +63,66 @@ char	*get_rl(void)
 	return (line_read);
 }
 
-//check in case of only shell var assignation the return of lexer
-/*loop get input from command line, call every part of the program*/
-int	prompt_call(t_data *data)
+/*call different part of shell, return  exit_status*/
+int	input_interpreter(char *input, t_data *data)
 {
-	char	*input;
 	t_scmd	*cmd;
 
 	cmd = NULL;
+	if (!lexer(input, data))
+	{
+		printf("lexer error\n");
+		return (0); //return 0 only for malloc fail, also if quotes are still open
+	}
+	if (!expander(data))
+	{
+		printf("expander error\n");
+		return(0); //malloc error
+	}
+	if (!quote_removal(data->token))
+	{
+		printf("quote removal error\n");
+		return (0); //malloc fail
+	}
+	cmd = parser(data);
+	if (data->token)
+	{
+		if (!cmd)
+		{
+			printf("parser error\n");
+			return (0); //malloc fail
+		}
+		if (!executer(cmd, data))
+		{
+			printf("executer error\n");
+			return(0);
+		}
+		free_cmd(cmd);
+	}
+	return (1);
+}
+
+/*loop get input from command line, call intepreter, print exit status*/
+int	prompt_call(t_data *data)
+{
+	char	*input;
 	while (1)
 	{	
+		status = 0;
+		data->to_close = -1;
+		data->to_read = -1;
+		data->to_write = -1;
 		//signals();
 		input = get_rl();
 		if (!input)
-			exit(0); // return the correct msg
-		if (!lexer(input, data))
-			return (0); //stop and return
-		//print_tokens(data->token);
-		if (!expander(data))
-			return(0);
-		print_tokens(data->token);
-		if (!quote_removal(data->token))
-			return (0); //malloc fail
-		print_tokens(data->token);
-		cmd = parser(data);
-		if (data->token)
+			exit(0); // get exit or CTRL D by readline
+		if (!input_interpreter(input, data))
 		{
-			if (!cmd)
-			{
-				printf("parser error\n");
-				return (0);
-			}
-			if (!executer(cmd, data))
-			{
-				printf("executer error\n");
-				return(0);
-			}
+			if (errno)
+				printf("errno %s\n", strerror(errno));
+			if (status && status != 256)
+				printf("status %s\n", strerror(status));
 		}
-			free_tokens(data);
-			free_cmd(cmd);
+		free_tokens(data);
 	}
 }

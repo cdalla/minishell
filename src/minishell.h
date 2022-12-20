@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -18,6 +19,8 @@ enum	token_type
 	APPEND = 5,	//redirection out append >>
 	HEREDOC = 6,	//heredoc <<
 };
+
+int status;
 
 enum	cmd_type
 {
@@ -126,7 +129,7 @@ t_envp	*var_exist(t_envp *envp, char *name);
 int		update_var_value(t_envp *envp, t_envp *var, char *value, int type);
 int		add_var(t_data *data, char *str, enum var_type type);
 char 	*get_env_value(char *name, t_data *data);
-int	quote_removal(t_token *token);
+int		quote_removal(t_token *token);
 
 //STRUCT TOKEN
 int 	add_token(t_token **token, char *word, int type);

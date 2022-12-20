@@ -1,11 +1,14 @@
 #include <sys/types.h>
+#include <sys/param.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <fcntl.h>
 
 int main(void)
 {
 	pid_t child;
+	int fd;
 
 	child = fork();
 	if (child == 0)
@@ -14,6 +17,8 @@ int main(void)
 		while (i < 10)
 			printf("%d\n", i++);
 		printf("CHILD\n");
+		fd = open("test_file" , O_WRONLY | O_APPEND |  O_CREAT , 0777);
+		close(fd);
 		exit(0);
 	}
  	else if (child > 0)

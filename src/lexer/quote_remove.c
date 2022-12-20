@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/18 00:07:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/18 00:12:09 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/20 11:47:36 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	quote_removal(t_token *token)
 		{
 			new_word = trim_quotes(ptr->word, quote_count);
 			if(!new_word)
-				return (0);	
+				return (0);
 			free(ptr->word);
 			ptr->word = new_word;
 		}

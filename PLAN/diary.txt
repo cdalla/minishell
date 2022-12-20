@@ -62,9 +62,20 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	#quote removal
 	
 17/12	
-	print in order with export and print mpty var value with ""
+	#print in order with export and print mpty var value with ""
 	error checking
 	malloc fail check
 	errno
 	token empty after expander?
 	quote remove on '$PWD' not to expand
+
+20/12
+	do a special quote removal before checking the name of $var (not necessary)
+	fix heredoc in multi line (it does not create file)
+	errno propagation
+	signals in child
+	#malloc fail does not stop the program! after prompt call
+	builtins has to write in STDOUT_FILENO
+	check builtins return for correct return value
+	free cmd path free in case of failure (maybe not necessary)
+	close fd if child error

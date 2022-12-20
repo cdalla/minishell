@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:39:35 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:26:58 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/20 15:21:22 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	add_token(t_token **token, char *word, int type)
 
 	new = new_token(word, type);
 	if (!new)
-		return (0); //failure
+		return (0); //failure malloc
 	if (!*token) //if token list empty
 		*token = new;
 	else
