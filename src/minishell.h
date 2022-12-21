@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 #include <errno.h>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -13,7 +14,7 @@
 enum	token_type
 {
 	WORD = 1,
-	PIPE = 2,	// ||
+	PIPE = 2,	// |
 	READ = 3,	//redirection input <
 	WRITE = 4,	//redirection output >
 	APPEND = 5,	//redirection out append >>

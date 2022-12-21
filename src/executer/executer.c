@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/20 18:35:45 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/21 02:43:43 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,27 +28,33 @@ int	cmd_start(t_scmd *cmd, t_data *data)//probable leak in the 3 function malloc
 	if ((data->to_close != -1))
 	{
 		if(close(data->to_close) == -1)
-			return (0);
+		{
+			printf("close error in child\n");
+			exit (0);
+		}
 	}
 	if (!set_red(cmd->file, data))
+	{	
+		printf("redirection child error\n");
 		exit(0);//open or close error
+	}
 	cmd_path = check_path_cmd(cmd->cmd_name->value, data);
 	if (!cmd_path)
 	{
 		printf("cmd path error\n");
-		return (0); //malloc error
+		exit (0); //malloc error
 	}
 	envp_ar = ls_toarr_env(data->envp);
 	if (!envp_ar)
 	{
 		printf("envp array error\n");
-		return (0); //malloc error
+		exit (0); //malloc error
 	}
 	cmd_args = ls_toarr_args(cmd->next_arg, cmd_path);
 	if (!cmd_args)
 	{
 		printf("cmd args array error\n");
-		return (0); //malloc error
+		exit (0); //malloc error
 	}
 	printf("execve return = %d\n", execve(cmd_path, cmd_args, envp_ar));
 	//execve(check_path_cmd, ls_toarr_env, ls_toarr_args); //this is nice :) do not care about ret
@@ -66,8 +72,8 @@ int	executer_single(t_scmd *cmd, t_data *data, int i, int multi)//need to call b
 	{
 		if (multi)
 		{
-			if(!is_builtins(cmd, data, 0))
-				return(0);
+			if(is_builtins(cmd, data, 0))
+				exit(0);
 		}
 		if (!cmd_start(cmd, data))
 			return (0);
@@ -75,9 +81,15 @@ int	executer_single(t_scmd *cmd, t_data *data, int i, int multi)//need to call b
 	else if (child > 0)
 	{
 		if (i == data->n_pipes)
+		{
 			waitpid(child, &status, 0);
+			wait(NULL);
+		}
 		if (status != 0)
+		{
+			printf("execve error\n");
 			return (0);
+		}
 	}
 	else if (child < 0)
 	{
@@ -98,10 +110,14 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 	ptr = cmd;
 	while(ptr)
 	{
+		print_scmd(ptr);
 		if (i < data->n_pipes)
 		{
 			if (pipe(fd[i % 2]) == -1)
+			{
+				printf("pipe error\n");
 				return (0); //pipe error
+			}
 		}
 		set_fd(data, fd, i);
 		if (!executer_single(ptr, data, i, 1))

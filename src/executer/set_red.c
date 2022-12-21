@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/20 15:06:09 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/21 02:34:13 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ int	set_heredoc(char **del, t_data *data)
 
 	data->to_read = open("test_file" , O_WRONLY | O_APPEND |  O_CREAT , 0777);
 	if (data->to_read == -1)
+	{
+		printf("not open in heredoc\n");
 		return (0);//file not opened
+	}
 	else
 	{
 		while (1)
@@ -59,7 +62,7 @@ int	set_heredoc(char **del, t_data *data)
 			if (!ft_strncmp(*del, str, ft_strlen(*del) + 1))
 				break ;
 			if (write(data->to_read, str, ft_strlen(str)) == -1)
-				printf("%s\n", strerror(errno));
+				printf("in heredoc %s\n", strerror(errno));
 			write(data->to_read, "\n", 1);
 		}
 		free(*del);
@@ -73,18 +76,24 @@ int	set_heredoc(char **del, t_data *data)
 int	set_infile(t_file *file, t_data *data)
 {
 	if (data->to_read != -1)
+	{
 		if (close(data->to_read) == -1)
+			printf("close error infile\n");
+	}
 	if (file->type == HEREDOC)//check if we need to manage heredoc if something fails before
 	{
 		if (access("test_file", F_OK) == 0)
 			unlink("test_file");
 		if (!set_heredoc(&file->filename, data))
+		{
+			printf("file no opened in heredoc\n");
 			return (0);
+		}
 	}
 	data->to_read = open(file->filename, O_RDONLY);
 	if (data->to_read == -1)
 	{
-		printf("%s\n", strerror(errno));
+		printf("after open %s\n", strerror(errno));
 		return (0); //error
 	}
 	return (1);

@@ -18,6 +18,11 @@ int main(void)
 			printf("%d\n", i++);
 		printf("CHILD\n");
 		fd = open("test_file" , O_WRONLY | O_APPEND |  O_CREAT , 0777);
+		write(fd, "ciao", 4);
+		close(fd);
+		fd = open("test_file", O_RDONLY);
+		if (fd == -1)
+			printf("second open error\n");
 		close(fd);
 		exit(0);
 	}

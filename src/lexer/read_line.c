@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/20 18:31:04 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/21 02:04:35 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	input_interpreter(char *input, t_data *data)
 		return (0); //malloc fail
 	}
 	cmd = parser(data);
+	//print_multi_cmd(cmd, data->n_pipes);
 	if (data->token)
 	{
 		if (!cmd)
@@ -119,9 +120,9 @@ int	prompt_call(t_data *data)
 		if (!input_interpreter(input, data))
 		{
 			if (errno)
-				printf("errno %s\n", strerror(errno));
+				printf("errno %d = %s\n", errno, strerror(errno));
 			if (status && status != 256)
-				printf("status %s\n", strerror(status));
+				printf("status %d = %s\n", status, strerror(status));
 		}
 		free_tokens(data);
 	}

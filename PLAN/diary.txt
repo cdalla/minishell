@@ -79,3 +79,6 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	check builtins return for correct return value
 	free cmd path free in case of failure (maybe not necessary)
 	close fd if child error
+	with a pipe after heredoc something happens not correctly
+	divide executer_single
+	check if execve args can be created before fork and free then
