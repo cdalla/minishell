@@ -28,11 +28,11 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/structures/free_scmd.o\
 		obj/structures/free_token.o\
 		obj/executer/executer.o\
-		obj/executer/cmd_path.o\
-		obj/executer/list_to_array.o\
-		obj/executer/set_red.o\
-		obj/executer/executer_utils.o\
-		obj/executer/executer_builtins.o\
+		obj/executer/execve_cmd_path.o\
+		obj/executer/execve_array.o\
+		obj/executer/redirection.o\
+		obj/executer/fd.o\
+		obj/executer/builtin_execute.o\
 		obj/builtins/cd.o\
 		obj/builtins/echo.o\
 		obj/builtins/env.o\
@@ -61,11 +61,11 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/structures/free_scmd.c\
 		src/structures/free_token.c\
 		src/executer/executer.c\
-		src/executer/cmd_path.c\
-		src/executer/list_to_array.c\
-		src/executer/set_red.c\
-		src/executer/executer_utils.c\
-		src/executer/executer_builtins.c\
+		src/executer/execve_cmd_path.c\
+		src/executer/execve_array.c\
+		src/executer/redirection.c\
+		src/executer/fd.c\
+		src/executer/builtin_execute.c\
 		src/builtins/cd.c\
 		src/builtins/echo.c\
 		src/builtins/env.c\

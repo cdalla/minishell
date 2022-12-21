@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   list_to_array.c                                    :+:    :+:            */
+/*   execve_array.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:28 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 12:29:03 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/21 13:50:15 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*duplicate every list value in a array[]*/
-char	**cpy_list_env(t_envp *list, int size)
+char	**cpy_list_env(t_envp *ptr, int size)
 {
 	int		i;
-	t_envp	*ptr;
 	char	**array;
 
 	i = 0;
 	array = (char **)malloc((size + 1) * sizeof(char *));
 	if (!array)
 		return (0); //malloc error
-	ptr = list;
 	while (ptr && i < size)
 	{
 		array[i] = ft_strdup(ptr->input);
 		if (!array[i])
+		{
+			while (--i >= 0)
+				free(array[i]);
+			free(array);
 			return (0); //malloc error free
+		}
 		i++;
 		ptr = ptr->next;
 	}
@@ -53,10 +56,9 @@ char	**ls_toarr_env(t_envp *list)
 }
 
 /*duplicate every list value in a array[]*/
-char	**cpy_list_args(t_scmd *list, int size, char *cmd_name)
+char	**cpy_list_args(t_scmd *ptr, int size, char *cmd_name)
 {
 	int		i;
-	t_scmd	*ptr;
 	char	**array;
 
 	i = 1;
@@ -66,12 +68,16 @@ char	**cpy_list_args(t_scmd *list, int size, char *cmd_name)
 	array[0] = ft_strdup(cmd_name);
 	if (!array[0])
 		return (0);
-	ptr = list;
 	while (ptr && i <= size)
 	{
 		array[i] = ft_strdup(ptr->value);
 		if (!array[i])
+		{
+			while (--i >= 0)
+				free(array[i]);
+			free(array);
 			return (0); //malloc error free
+		}
 		i++;
 		ptr = ptr->next_arg;
 	}

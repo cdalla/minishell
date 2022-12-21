@@ -11,6 +11,8 @@
 #include <sys/param.h>
 #include "./libft/libft.h"
 
+int status;
+
 enum	token_type
 {
 	WORD = 1,
@@ -21,41 +23,17 @@ enum	token_type
 	HEREDOC = 6,	//heredoc <<
 };
 
-int status;
-
 enum	cmd_type
 {
 	SIMPLE_CMD = 1,	//head of a single command
 	ARGUMENT = 2,
 };
 
-// enum	red_type
-// {
-// 	APPEND = 1,
-// 	WRITE = 2,
-// 	HERED = 3,
-// 	READ = 4,
-// };
-
 enum	var_type
 {
 	SHELL = 1,
 	ENV = 2,
 };
-
-// typedef struct s_infile
-// {
-// 	char			*filename;
-// 	enum token_type	type;
-// 	struct s_infile *next;
-// }				t_infile;
-
-// typedef struct s_outfile
-// {
-// 	char 			*filename;
-// 	enum red_type 	type;
-// 	struct s_outfile *next;
-// }				t_outfile;
 
 typedef struct s_file
 {
@@ -71,9 +49,6 @@ typedef struct s_scmd
 	struct s_scmd	*next_cmd;
 	struct s_scmd	*cmd_name;
 	struct s_scmd	*next_arg;
-	struct s_scmd	*prev_arg;//unused
-	//t_infile		*infile;
-	//t_outfile 	*outfile;
 	t_file			*file;
 }				t_scmd;
 
@@ -95,7 +70,7 @@ typedef struct s_token
     struct s_token  	*next;
 }               t_token;
 
-typedef struct s_excode
+typedef struct s_excode //unused
 {
     int				code;
     char			*cmd;
@@ -105,9 +80,12 @@ typedef struct s_excode
 
 typedef struct s_data
 {
-    t_excode     *exit_code;
+    t_excode    	*exit_code; //unusued
     t_envp          *envp;
     t_token         *token;
+	char			*cmd_path;
+	char			**envp_ar;
+	char			**cmd_args;
 	int            	n_pipes;
 	int				to_write;
 	int				to_read;
@@ -140,10 +118,8 @@ void    print_tokens(t_token *token);
 t_scmd	*new_scmd(enum cmd_type type);
 int		add_scmd_arg(t_scmd *cmd, t_scmd *arg);
 int		set_scmd_value(t_scmd *cmd, char *value);
-void 	print_scmd(t_scmd *cmd);
-void 	print_multi_cmd(t_scmd *cmd_line, int n_pipes);
-//int		add_infile(t_scmd *cmd, enum red_type type, char *value);
-//int		add_outfile(t_scmd *cmd, enum red_type type, char *value);
+void 	print_scmd(t_scmd *cmd);//to remo
+void 	print_multi_cmd(t_scmd *cmd_line, int n_pipes);//to remo
 int		add_file(t_scmd *cmd, enum token_type type, char *value);
 void 	free_cmd(t_scmd *cmd);
 
@@ -155,15 +131,16 @@ int		parse_red(t_token *ptr, t_scmd *cmd);
 int		count_pipes(t_token *token);
 
 //EXECUTER
-char 	**split_paths(t_envp *envp);
-int		join_cmd_name(char *cmd_name, char **paths);
+char 	**split_paths(t_data *data);
+char	*join_cmd_name(char *cmd_name, char **paths);
 char 	*check_path_cmd(char *cmd_name, t_data *data);
 char 	**ls_toarr_args(t_scmd *list, char *cmd_name);
 char 	**cpy_list_args(t_scmd *list, int size, char *cmd_name);
 char 	**ls_toarr_env(t_envp *list);
 char 	**cpy_list_env(t_envp *list, int size);
-int		is_builtins(t_scmd *cmd, t_data *data, int i);
-int	set_red(t_file *file, t_data *data);
+int		is_builtin(t_scmd *cmd);
+int		execute_builtin(t_scmd *cmd, t_data *data);
+int		set_red(t_file *file, t_data *data);
 
 int	remove_envp(t_envp **envp, t_envp *to_rem);
 

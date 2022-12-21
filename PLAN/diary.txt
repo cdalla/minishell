@@ -70,15 +70,17 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	quote remove on '$PWD' not to expand
 
 20/12
+	#malloc fail does not stop the program! after prompt call
+	#close fd if child error
+	#divide executer_single
+	#check if execve args can be created before fork and free then 
+	#put execve args in data struct
+	#free cmd path free in case of failure (maybe not necessary)
+	
 	do a special quote removal before checking the name of $var (not necessary)
-	fix heredoc in multi line (it does not create file)
 	errno propagation
 	signals in child
-	#malloc fail does not stop the program! after prompt call
-	builtins has to write in STDOUT_FILENO
+	builtins has to write error STDERR_FILENO
 	check builtins return for correct return value
-	free cmd path free in case of failure (maybe not necessary)
-	close fd if child error
-	with a pipe after heredoc something happens not correctly
-	divide executer_single
-	check if execve args can be created before fork and free then
+	with a pipe after heredoc something happens not correctly (print fd to see), fix heredoc in multi line (it does not create file)
+	create function to set g_status as errno and return 0

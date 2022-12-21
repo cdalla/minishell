@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cmd_path.c                                         :+:    :+:            */
+/*   execve_cmd_path.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:15 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/20 16:44:04 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/21 14:15:32 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*str_split %PATH*/
-char	**split_paths(t_envp *envp)
+char	**split_paths(t_data *data)
 {
 	char	*path;
 	char	**split_path;
-	t_envp	*ptr;
 
-	ptr = envp;
-	while (ft_strncmp(ptr->env, "PATH", 5) && ptr)
-		ptr = ptr->next;
-	if (!ptr)
-		return (0); //$PATH has been deleted
-	path = ft_strdup(ptr->value);
+	if (!get_env_value("PATH", data))
+		return (0); //PATH DELETED
+	path = ft_strdup(get_env_value("PATH", data));
 	if (!path)
 		return (0); //malloc fail
 	split_path = ft_split(path, ':');
@@ -35,48 +31,53 @@ char	**split_paths(t_envp *envp)
 }
 
 /*str_join directory path with cmd_name*/
-int	join_cmd_name(char *cmd_name, char **paths)
+char	*join_cmd_name(char *cmd_name, char **paths)
 {
 	char	*tmp;
+	char	*cmd_path;
 	int		i;
 
 	i = 0;
+	cmd_path = 0;
+	tmp = ft_strjoin("/", cmd_name);
+	if (!tmp)
+		return (0); //error and free
 	while (paths[i])
 	{
-		tmp = ft_strjoin(paths[i], "/");
-		if (!tmp)
-			return (0); //error and free
-		free(paths[i]);
-		paths[i] = ft_strjoin(tmp, cmd_name);
-		if (!paths[i])
-			return (0);// error and free all path
-		free(tmp);
+		cmd_path = ft_strjoin(paths[i], tmp);
+		if (!cmd_path)
+			break ;
+		if (access(cmd_path, F_OK) == 0)
+			break ;
+		free(cmd_path);
+		cmd_path = 0;
 		i++;
 	}
-	return (1);
+	free(tmp);
+	return (cmd_path);
 }
 
 /*split $PATH, join with cmd_name, check CMD presence*/
 char	*check_path_cmd(char *cmd_name, t_data *data)
 {
 	char	**paths;
-	//char	*cmd_path;
+	char	*cmd_path;
 	int		i;
 
 	i = 0;
-	paths = split_paths(data->envp);
+	paths = split_paths(data);
 	if (!paths)
 		return (0);//error in split_paths nothing to free
-	join_cmd_name(cmd_name, paths); // if this fail return zero and free path
+	cmd_path = join_cmd_name(cmd_name, paths);
 	while (paths[i])
 	{
-		if (access(paths[i], F_OK) == 0)
-			return (paths[i]);
+		free(paths[i]);
 		i++;
 	}
-	// if (access(cmd_name, F_OK) == 0)
+	free(paths);
+	if (!cmd_path)
 		return (cmd_name);
-	//return (0); //no path found
+	return (cmd_path);
 }
 
 void	print_dsarry(char **array)//just for testing purpose !!!REMOVE!!!

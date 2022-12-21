@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/21 02:43:43 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/21 13:48:28 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	set_fd(t_data *data, int fd[2][2], int i);
 void	parent_close(int fd[2][2], int i, int n_pipes);
-int 	save_std(int *in, int *out);
-int		reset_std(int in, int out);
+int 	save_std_fd(int *in, int *out);
+int		reset_std_fd(int in, int out);
 
 
 /*translate necessary list in array[], set red, execve with right info*/
@@ -72,22 +72,28 @@ int	executer_single(t_scmd *cmd, t_data *data, int i, int multi)//need to call b
 	{
 		if (multi)
 		{
-			if(is_builtins(cmd, data, 0))
+			if(is_builtin(cmd))
+			{
+				execute_builtin(cmd, data);
 				exit(0);
+			}
 		}
 		if (!cmd_start(cmd, data))
-			return (0);
+		{
+			
+			exit (0);
+		}	
 	}
 	else if (child > 0)
 	{
 		if (i == data->n_pipes)
 		{
 			waitpid(child, &status, 0);
-			wait(NULL);
+			//wait(NULL);
 		}
 		if (status != 0)
 		{
-			printf("execve error\n");
+			printf("execve error process i = %d\n", i);
 			return (0);
 		}
 	}
@@ -110,7 +116,7 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 	ptr = cmd;
 	while(ptr)
 	{
-		print_scmd(ptr);
+		//print_scmd(ptr);
 		if (i < data->n_pipes)
 		{
 			if (pipe(fd[i % 2]) == -1)
@@ -121,7 +127,7 @@ int	executer_multi(t_scmd *cmd, t_data *data)
 		}
 		set_fd(data, fd, i);
 		if (!executer_single(ptr, data, i, 1))
-				return (0); //executer return 0 for error and errno will be set
+				return (0); //executer return 0 for error and errno will be set and close 
 		parent_close(fd, i, data->n_pipes);
 		ptr = ptr->next_cmd;
 		i++;
@@ -142,16 +148,20 @@ int executer(t_scmd *cmd, t_data *data)
 	}
 	else
 	{
-		if (!save_std(&saved_in, &saved_out))
+		if (!save_std_fd(&saved_in, &saved_out))
 			return (0); //error in dup
-		if(!is_builtins(cmd, data, 0)) //check better builtins return to catch error
+		if(!is_builtin(cmd)) //check better builtins return to catch error
 		{
 			if(!executer_single(cmd, data , 0, 0))
 				return(0); //errno set by execve
 		}
 		else
-		{
-			if (!reset_std(saved_in, saved_out))
+		{	
+			if (!execute_builtin(cmd, data))
+			{
+				printf("error execute builting in single\n");
+			}
+			if (!reset_std_fd(saved_in, saved_out))
 				return (0); //error in dup2
 		}
 	}

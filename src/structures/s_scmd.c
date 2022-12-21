@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 12:09:10 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 22:37:00 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/21 12:04:07 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	add_scmd_arg(t_scmd *cmd, t_scmd *arg)
 			while (ptr->next_arg)
 				ptr = ptr->next_arg;
 			ptr->next_arg = arg;
-			arg->prev_arg = ptr;
 		}
 	}
 	return (1); //succes
