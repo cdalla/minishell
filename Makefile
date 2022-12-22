@@ -30,6 +30,9 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/executer/executer.o\
 		obj/executer/execve_cmd_path.o\
 		obj/executer/execve_array.o\
+		obj/executer/execve_args.o\
+		obj/executer/executer_single.o\
+		obj/executer/executer_multi.o\
 		obj/executer/redirection.o\
 		obj/executer/fd.o\
 		obj/executer/builtin_execute.o\
@@ -63,6 +66,9 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/executer/executer.c\
 		src/executer/execve_cmd_path.c\
 		src/executer/execve_array.c\
+		src/executer/execve_args.c\
+		src/executer/executer_single.c\
+		src/executer/executer_multi.c\
 		src/executer/redirection.c\
 		src/executer/fd.c\
 		src/executer/builtin_execute.c\

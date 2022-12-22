@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   set_red.c                                          :+:    :+:            */
+/*   redirection.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/21 02:34:13 by lisa          ########   odam.nl         */
+/*   Updated: 2022/12/22 16:24:52 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,20 @@ int	set_heredoc(char **del, t_data *data)
 {
 	char	*str = NULL;
 
+	printf("in heredoc\n");
 	data->to_read = open("test_file" , O_WRONLY | O_APPEND |  O_CREAT , 0777);
+	dprintf(2, "data read in heredoc %d\n", data->to_read);
+	if (access("test_file", F_OK) == 0)
+		dprintf(2, "file exist\n");
 	if (data->to_read == -1)
 	{
-		printf("not open in heredoc\n");
+		write(1, "not open in heredoc\n", 21);
 		return (0);//file not opened
 	}
 	else
 	{
+		if (access("test_file", F_OK) == 0)
+		dprintf(2, "file exist 4\n");
 		while (1)
 		{
 			if (str) //if read_line is something
@@ -62,13 +68,21 @@ int	set_heredoc(char **del, t_data *data)
 			if (!ft_strncmp(*del, str, ft_strlen(*del) + 1))
 				break ;
 			if (write(data->to_read, str, ft_strlen(str)) == -1)
-				printf("in heredoc %s\n", strerror(errno));
+				printf("write in heredoc %s\n", strerror(errno));
 			write(data->to_read, "\n", 1);
+				if (access("test_file", F_OK) == 0)
+					dprintf(2, "file exist 5\n");
 		}
 		free(*del);
-		*del = "test_file";//save the tmp char
-		close(data->to_read);
+		*del = ft_strdup("test_file");//save the tmp char
+		printf("after writing in heredoc\n");
+		if (access("test_file", F_OK) == 0)
+			dprintf(2, "file exist 2\n");
+		if(close(data->to_read) == -1)
+			printf("error close in heredoc\n");
 	}
+	if (access("test_file", F_OK) == 0)
+		dprintf(2, "file exist 2\n");
 	return (1); //success
 }
 
@@ -86,10 +100,12 @@ int	set_infile(t_file *file, t_data *data)
 			unlink("test_file");
 		if (!set_heredoc(&file->filename, data))
 		{
-			printf("file no opened in heredoc\n");
+			printf("file not opened in heredoc\n");
 			return (0);
 		}
 	}
+	if (access("test_file", F_OK) == 0)
+		dprintf(2, "file exist 3\n");
 	data->to_read = open(file->filename, O_RDONLY);
 	if (data->to_read == -1)
 	{

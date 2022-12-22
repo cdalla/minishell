@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:52:49 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/21 10:11:05 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/22 14:48:48 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,25 @@ void	parent_close(int fd[2][2], int i, int n_pipes)
 	if (i % 2)
 	{
 		if (i < n_pipes)
+		{
+			//printf("parent close %d\n",fd[1][1]);
 			close(fd[1][1]);
+		}
+		//printf("parent close %d\n",fd[0][0]);
 		close(fd[0][0]);
 	}
 	else
 	{
 		if (i < n_pipes)
+		{
+			//printf("parent close %d\n",fd[0][1]);
 			close(fd[0][1]);
+		}
 		if (i != 0)
+		{
+			//printf("parent close %d\n",fd[1][0]);
 			close(fd[1][0]);
+		}
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:59:26 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:07:40 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/22 14:17:12 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	is_builtin(t_scmd *cmd)
 
 	index = 0;
 	name = cmd->cmd_name->value;
-		while (index < 6)
+	while (index < 6)
 	{
 		if (!ft_strncmp(name, builtin[index], ft_strlen(name) + 1))
 			return (1);
