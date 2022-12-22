@@ -76,7 +76,8 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	#check if execve args can be created before fork and free then 
 	#put execve args in data struct
 	#free cmd path free in case of failure (maybe not necessary)
-	
+
+22/12	
 	do a special quote removal before checking the name of $var (not necessary)
 	errno propagation
 	signals in child
@@ -84,3 +85,7 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	check builtins return for correct return value
 	with a pipe after heredoc something happens not correctly (print fd to see), fix heredoc in multi line (it does not create file)
 	create function to set g_status as errno and return 0
+	create heredoc file before execution of the command (check for the signals) in a child process
+	link the library libft
+	replace heredoc with a file
+	exit func

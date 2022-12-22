@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 16:24:52 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/22 19:50:48 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,53 +38,46 @@ int	set_outfile(t_file *file, t_data *data)
 	return (1);
 }
 
-/*open a temporary file, write with input save the file*/
-int	set_heredoc(char **del, t_data *data)
-{
-	char	*str = NULL;
+// int	write_in_file(int fd, char **del)
+// {
+// 	char	*str = NULL;
+		
+// 	while (1)
+// 	{
+// 		if (str) //if read_line is something
+// 		{
+// 			free(str);
+// 			str = NULL;
+// 		}
+// 		str = readline(">");
+// 		if (!ft_strncmp(*del, str, ft_strlen(*del) + 1))
+// 			break ;
+// 		if (write(fd, str, ft_strlen(str)) == -1)
+// 			printf("write in heredoc %s\n", strerror(errno));
+// 		write(fd, "\n", 1);
+// 	}
+// 	return (1);
+// }
 
-	printf("in heredoc\n");
-	data->to_read = open("test_file" , O_WRONLY | O_APPEND |  O_CREAT , 0777);
-	dprintf(2, "data read in heredoc %d\n", data->to_read);
-	if (access("test_file", F_OK) == 0)
-		dprintf(2, "file exist\n");
-	if (data->to_read == -1)
-	{
-		write(1, "not open in heredoc\n", 21);
-		return (0);//file not opened
-	}
-	else
-	{
-		if (access("test_file", F_OK) == 0)
-		dprintf(2, "file exist 4\n");
-		while (1)
-		{
-			if (str) //if read_line is something
-			{
-				free(str);
-				str = NULL;
-			}
-			str = readline(">");
-			if (!ft_strncmp(*del, str, ft_strlen(*del) + 1))
-				break ;
-			if (write(data->to_read, str, ft_strlen(str)) == -1)
-				printf("write in heredoc %s\n", strerror(errno));
-			write(data->to_read, "\n", 1);
-				if (access("test_file", F_OK) == 0)
-					dprintf(2, "file exist 5\n");
-		}
-		free(*del);
-		*del = ft_strdup("test_file");//save the tmp char
-		printf("after writing in heredoc\n");
-		if (access("test_file", F_OK) == 0)
-			dprintf(2, "file exist 2\n");
-		if(close(data->to_read) == -1)
-			printf("error close in heredoc\n");
-	}
-	if (access("test_file", F_OK) == 0)
-		dprintf(2, "file exist 2\n");
-	return (1); //success
-}
+// /*open a temporary file, write with input save the file*/
+// int	set_heredoc(char **del, t_data *data)
+// {
+// 	data->to_read = open("test_file" , O_WRONLY | O_APPEND |  O_CREAT , 0777);
+// 	if (data->to_read == -1)
+// 	{
+// 		write(1, "not open in heredoc\n", 21);
+// 		return (0);//file not opened
+// 	}
+// 	else
+// 	{
+// 		write_in_file(data->to_read, del);
+// 		free(*del);
+// 		*del = ft_strdup("test_file");//save the tmp char
+// 		if(close(data->to_read) == -1)
+// 			printf("error close in heredoc\n");
+// 	}
+// 	return (1); //success
+// }
 
 /*open infile or heredoc*/
 int	set_infile(t_file *file, t_data *data)
@@ -94,18 +87,17 @@ int	set_infile(t_file *file, t_data *data)
 		if (close(data->to_read) == -1)
 			printf("close error infile\n");
 	}
-	if (file->type == HEREDOC)//check if we need to manage heredoc if something fails before
-	{
-		if (access("test_file", F_OK) == 0)
-			unlink("test_file");
-		if (!set_heredoc(&file->filename, data))
-		{
-			printf("file not opened in heredoc\n");
-			return (0);
-		}
-	}
-	if (access("test_file", F_OK) == 0)
-		dprintf(2, "file exist 3\n");
+	// if (file->type == HEREDOC)//check if we need to manage heredoc if something fails before
+	// {
+	// 	if (access("test_file", F_OK) == 0)
+	// 		unlink("test_file");
+	// 	if (!set_heredoc(&file->filename, data))
+	// 	{
+	// 		printf("file not opened in heredoc\n");
+	// 		return (0);
+	// 	}
+	// }
+	printf("open file %s\n", file->filename);
 	data->to_read = open(file->filename, O_RDONLY);
 	if (data->to_read == -1)
 	{
@@ -123,8 +115,8 @@ int	dup_close(t_data *data)
 		dup2(data->to_read, STDIN_FILENO);
 		close(data->to_read);
 	}
-	if (access("test_file", F_OK) == 0)
-		unlink("test_file");
+	// if (access("test_file", F_OK) == 0)
+	// 	unlink("test_file");
 	if (data->to_write != -1)
 	{
 		dup2(data->to_write, STDOUT_FILENO);

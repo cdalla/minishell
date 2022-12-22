@@ -9,9 +9,8 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <sys/param.h>
+#include <sys/wait.h>
 #include "./libft/libft.h"
-
-int status;
 
 enum	token_type
 {

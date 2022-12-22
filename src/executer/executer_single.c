@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 12:42:42 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/22 19:29:51 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ int	child_process_single(t_scmd *cmd, t_data *data)
 	if ((data->to_close != -1))
 	{
 		if(close(data->to_close) == -1)
-			exit (0);
+			return(0);
 	}
 	if (!set_red(cmd->file, data))
-		exit(0);//open or close error
+		return(0);//open or close error
+	printf("4\n");
 	execve(data->cmd_path, data->cmd_args, data->envp_ar);
 	return (0);
 }
@@ -42,7 +43,9 @@ int	exec_in_child_single(t_scmd *cmd, t_data *data)
 	child = fork();
 	if (child == 0) //child
 	{
-		child_process_single(cmd, data);
+		if (!child_process_single(cmd, data))
+			exit(0);//i dont know if it returns
+		exit(0);
 	}
 	else if (child > 0) //parent
 	{

@@ -36,6 +36,7 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/executer/redirection.o\
 		obj/executer/fd.o\
 		obj/executer/builtin_execute.o\
+		obj/executer/heredoc.o\
 		obj/builtins/cd.o\
 		obj/builtins/echo.o\
 		obj/builtins/env.o\
@@ -72,6 +73,7 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/executer/redirection.c\
 		src/executer/fd.c\
 		src/executer/builtin_execute.c\
+		src/executer/heredoc.c\
 		src/builtins/cd.c\
 		src/builtins/echo.c\
 		src/builtins/env.c\

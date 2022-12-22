@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 16:14:00 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/22 16:36:50 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	prompt_call(t_data *data)
 	char	*input;
 	while (1)
 	{	
-		status = 0;
+		//status = 0;
 		data->to_close = -1;
 		data->to_read = -1;
 		data->to_write = -1;
@@ -121,8 +121,8 @@ int	prompt_call(t_data *data)
 		{
 			if (errno)
 				printf("errno %d = %s\n", errno, strerror(errno));
-			if (status && status != 256)
-				printf("status %d = %s\n", status, strerror(status));
+			// if (status && status != 256)
+			// 	printf("status %d = %s\n", status, strerror(status));
 		}
 		free_tokens(data);
 	}

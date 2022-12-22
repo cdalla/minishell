@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 15:40:24 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/22 19:54:33 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int		executer_single(t_scmd *cmd, t_data *data);
 /*wait exit status of last process*/
 int	wait_function(pid_t child, int i, t_data *data)
 {
+	int status;
+	
 	if (i == data->n_pipes)
 	{
 		waitpid(child, &status, 0);
@@ -26,10 +28,12 @@ int	wait_function(pid_t child, int i, t_data *data)
 			printf("execve error process i = %d\n", i);
 			return (0);
 		}
-		wait(NULL);
 	}
 	return (1);
 }
+
+int heredoc(t_data *data, t_scmd *cmd, int i);
+int destroy_heredoc(t_scmd *cmd);
 
 /*if n_pipes present call multi command, otherwise single*/
 int executer(t_scmd *cmd, t_data *data)
@@ -40,17 +44,17 @@ int executer(t_scmd *cmd, t_data *data)
 	data->cmd_path = 0;
 	data->envp_ar = 0;
 	data->cmd_args = 0;
+	ptr = cmd;
+	if (!heredoc(data, cmd, 0))
+		return (0);
 	if (data->n_pipes)
 	{
 		i = 0;
-		ptr = cmd;
-		while (ptr)
+		while (cmd)
 		{
-			write(1, ptr->cmd_name->value, ft_strlen( ptr->cmd_name->value));
-			write(1, "\n", 1);
-			if (!executer_multi(ptr, data, i))
+			if (!executer_multi(cmd, data, i))
 				return (0);
-			ptr = ptr->next_cmd;
+			cmd = cmd->next_cmd;
 			i++;
 		}
 	}
@@ -59,5 +63,6 @@ int executer(t_scmd *cmd, t_data *data)
 		if (!executer_single(cmd, data))
 			return (0);
 	}
+	destroy_heredoc(cmd);
 	return (1);
 }
