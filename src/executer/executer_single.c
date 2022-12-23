@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/23 11:23:25 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/23 13:39:01 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,24 @@ int	child_process_single(t_scmd *cmd, t_data *data)
 	return (0);
 }
 
+void	sigint_child(int signum)
+{
+	(void)signum;
+	exit(0);
+}
+
+void	sigquit_child(int signum)
+{
+	(void)signum;
+	exit(0);
+}
+
+void	signals_child(void)
+{
+		signal(SIGINT, sigint_child);
+		signal(SIGQUIT, sigquit_child);
+}
+
 /*fork a child process, call execution of single cmd*/
 int	exec_in_child_single(t_scmd *cmd, t_data *data)
 {
@@ -42,6 +60,7 @@ int	exec_in_child_single(t_scmd *cmd, t_data *data)
 	child = fork();
 	if (child == 0) //child
 	{
+		signals_child();
 		if (!child_process_single(cmd, data))
 			exit(0);//i dont know if it returns
 		exit(0);

@@ -89,7 +89,7 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	check builtins return for correct return value
 	builtins has to write error STDERR_FILENO
 	do a special quote removal before checking the name of $var (not necessary)
-
-
+	add signals for heredoc
+	signal SIGINT in heredoc quit heredoc (maybe do it in a child process)
 
 	LINK THE LIBRARY LIBFT!!!!!!!!

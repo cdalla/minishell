@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 16:36:50 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/23 13:30:47 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@ int	expander(t_data *data);
 /*handle the signal*/
 void	sigint_handler(int signum)
 {
-	//printf("\n");
-	write(1, "\n",1);
+	write(1, "\n", 1);
 	rl_on_new_line();
-	//rl_replace_line("", 0);
+	// rl_replace_line("", 0);
 	rl_redisplay();
 	(void)signum;
 }
@@ -109,11 +108,10 @@ int	prompt_call(t_data *data)
 	char	*input;
 	while (1)
 	{	
-		//status = 0;
 		data->to_close = -1;
 		data->to_read = -1;
 		data->to_write = -1;
-		//signals();
+		signals();
 		input = get_rl();
 		if (!input)
 			exit(0); // get exit or CTRL D by readline
