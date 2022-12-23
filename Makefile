@@ -91,7 +91,7 @@ $(NAME): $(LIBFT) $(OBJ)
 
 obj/%.o: src/%.c $(HEADER)
 	@mkdir -p $(dir $@)
-	$(CC) -c $(CFLAGS) -o $@ $< -I /Users/$(USER)/.brew/opt/readline/include/
+	$(CC) -c $(CFLAGS) -o $@ $< -I /Users/$(USER)/.brew/opt/readline/include/ -I $(LIBFT)
 
 $(LIBFT):
 	make -C ./src/libft

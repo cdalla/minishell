@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 19:54:33 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/23 11:21:21 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ int executer(t_scmd *cmd, t_data *data)
 		if (!executer_single(cmd, data))
 			return (0);
 	}
-	destroy_heredoc(cmd);
+	destroy_heredoc(ptr);
 	return (1);
 }

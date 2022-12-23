@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 18:34:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 19:53:48 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/23 11:37:30 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@
 	
 	at the end of the command delete heredoc files
 */
-
-// int	generate_file(t_scmd *cmd)
-// {
-	
-// }
 
 int	write_in_file(int fd, char **del)
 {
@@ -55,18 +50,20 @@ int	set_heredoc(char **del, char *filename)
 
 	fd = open(filename , O_WRONLY | O_APPEND |  O_CREAT , 0777);
 	if (fd == -1)
-	{
-		write(1, "not open in heredoc\n", 21);
 		return (0);//file not opened
-	}
 	else
 	{
 		write_in_file(fd, del);
 		free(*del);
 		*del = ft_strdup(filename);//save the tmp char
+		if (!*del)
+			return (0); //malloc error
 	}
 	if(close(fd) == -1)
+	{
 		printf("error close in heredoc\n");
+		return (0);
+	}
 	return (1); //success
 }
 
@@ -118,6 +115,7 @@ int destroy_heredoc(t_scmd *cmd)
 			}
 			cmd->file = cmd->file->next;
 		}
+		cmd = cmd->next_cmd;
 	}
 	return (1);
 }

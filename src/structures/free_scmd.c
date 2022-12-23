@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 14:11:11 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 22:38:25 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/23 11:53:34 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void	free_cmd(t_scmd *cmd)
 			free(ptr->cmd_name);
 		}
 		free_args(ptr);
-		// free_infile(ptr);
 		free_file(ptr);
 		free(ptr);
 		ptr = next_ptr;

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 19:29:51 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/23 11:23:25 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	child_process_single(t_scmd *cmd, t_data *data)
 	}
 	if (!set_red(cmd->file, data))
 		return(0);//open or close error
-	printf("4\n");
 	execve(data->cmd_path, data->cmd_args, data->envp_ar);
 	return (0);
 }

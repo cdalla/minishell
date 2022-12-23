@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:15 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/21 14:15:32 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/23 12:05:33 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*join_cmd_name(char *cmd_name, char **paths)
 	cmd_path = 0;
 	tmp = ft_strjoin("/", cmd_name);
 	if (!tmp)
-		return (0); //error and free
+		return (0);
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], tmp);
@@ -53,6 +53,8 @@ char	*join_cmd_name(char *cmd_name, char **paths)
 		cmd_path = 0;
 		i++;
 	}
+	if (!paths[i])
+		cmd_path = ft_strdup(cmd_name);
 	free(tmp);
 	return (cmd_path);
 }
@@ -76,7 +78,7 @@ char	*check_path_cmd(char *cmd_name, t_data *data)
 	}
 	free(paths);
 	if (!cmd_path)
-		return (cmd_name);
+		return (0);
 	return (cmd_path);
 }
 
