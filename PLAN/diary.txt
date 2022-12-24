@@ -93,3 +93,22 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	signal SIGINT in heredoc quit heredoc (maybe do it in a child process)
 
 	LINK THE LIBRARY LIBFT!!!!!!!!
+
+
+24/12
+	The exit () function is used to break out of a loop. 
+	This function causes an immediate termination of the 
+	entire program done by the operation system. 
+	void exit (int code); The value of the code is returned to the calling process, 
+	which is done by an operation system.
+
+
+	exit(0) indicates that the program terminated without errors. 
+	exit(1) indicates that there were an error. 
+	You can use different values other than 1 to 
+	differentiate between different kind of errors
+
+
+	PUT return (0) to interpreter for success
+	PUT return (code) to catch and print the error message
+	Write a function to print the correct error message relative to code

@@ -1,0 +1,42 @@
+//FUNCTION WHO RETURNS VALUE TO INTERPRET
+
+int		lexer(char	*input, t_data *data);
+int		expander(t_data *data);
+int		quote_removal(t_token *token);
+t_scmd	*parser(t_data *data);
+int executer(t_scmd *cmd, t_data *data);
+
+
+// LEXER
+int		tokenize(char *str, t_data *data); --> MALLOC FAIL
+int		check_token_syntax(t_token *token) --> SYNTAX ERROR
+int		check_shell_var(t_data	*data) --> MALLOC FAIL
+
+// EXPANDER
+int		expand_check(t_token *token, t_token *prev, t_data *data) --> MALLOC FAIL
+int		expand_in_str(t_token *token, t_data *data) --> MALLOC FAIL
+int		trim_join(t_token *token, t_data *data, char *str, int w_len) --> MALLOC FAIL
+char	*expand_value(char *var, t_token *prev, t_data *data)--> MALLOC FAIL
+
+// QUOTE REMOVAL
+char	*trim_quotes(char *str, int quote_count);--> MALLOC FAIL
+
+// PARSER
+t_scmd	*new_scmd(enum cmd_type type); --> MALLOC FAIL
+int	parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd) --> MALLOC FAIL
+t_scmd	*parse_simple_command(t_token *token) --> MALLOC FAIL
+
+//EXECUTER
+int heredoc(t_data *data, t_scmd *cmd); --> MALLOC FAIL, FORK FAIL,OPEN FAIL, CLOSE ERROR, WRITE ERROR, SIGNALS TO QUIT
+int	executer_multi(t_scmd *cmd, t_data *data, int i) --> catch exit status and return
+int	execve_param(t_scmd *cmd, t_data *data) --> MALLOC FAIL
+int	exec_in_child_multi(t_scmd *cmd, t_data *data, int i) --> return exit status
+int	child_process_multi(t_scmd *cmd, t_data *data) --> CLOSE FAIL, REDIRECTION FAIL, BUILTIN EXIT STATUS, EXECVE EXIT STATUS
+int	set_red(t_file *file, t_data *data) --> DUP2 FAIL, CLOSE FAIL, OPEN  FAIL
+
+
+int	executer_single(t_scmd *cmd, t_data *data) --> catch exit status and return
+int save_std_fd(int *in, int *out) --> DUP FAIL
+int	reset_std_fd(int in, int out) --> DUP2 FAIL
+int	exec_in_child_single(t_scmd *cmd, t_data *data) --> return  exit status
+int	child_process_single(t_scmd *cmd, t_data *data) --> REDIRECTION FAIL, EXECVE EXIT STATUS

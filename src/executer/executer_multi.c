@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:41 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 14:50:30 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/24 11:42:02 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	executer_multi(t_scmd *cmd, t_data *data, int i)
 		}
 	}
 	set_fd(data, fd, i);
-	//printf("after set fd %, read %d, ");
 	if (!is_builtin(cmd))
 	{
 		if (!execve_param(cmd, data))

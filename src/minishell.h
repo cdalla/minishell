@@ -143,4 +143,7 @@ int		set_red(t_file *file, t_data *data);
 
 int	remove_envp(t_envp **envp, t_envp *to_rem);
 
+
+
+
 #endif

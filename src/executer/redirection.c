@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/23 11:32:13 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/24 13:28:18 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,17 @@ int	dup_close(t_data *data)
 {
 	if (data->to_read != -1)
 	{
-		dup2(data->to_read, STDIN_FILENO);
-		close(data->to_read);
+		if (dup2(data->to_read, STDIN_FILENO) == -1)
+			return (0); //errno of dup2
+		if (close(data->to_read) == -1)
+			return (0); //errno of close
 	}
 	if (data->to_write != -1)
 	{
-		dup2(data->to_write, STDOUT_FILENO);
-		close(data->to_write);
+		if (dup2(data->to_write, STDOUT_FILENO) == -1)
+			return (0); //errno of dup2
+		if (close(data->to_write) == -1)
+			return (0); //errno of close
 	}
 	return (1);
 }
@@ -86,6 +90,7 @@ int	set_red(t_file *file, t_data *data)
 		}
 		file = file->next;
 	}
-	dup_close(data);
+	if (!dup_close(data))
+		return (0);
 	return(1);
 }

@@ -6,14 +6,14 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 16:36:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 22:34:18 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/24 12:24:21 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 char	*ft_strjoin_free(char *s1, char *s2);
-int	len_to_trim(char *str);
+int		len_to_trim(char *str);
 
 /*look for var_name in envp, return a copy of var->value*/
 char	*expand_value(char *var, t_token *prev, t_data *data)

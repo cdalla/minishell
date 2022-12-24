@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/23 13:30:47 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/24 12:33:19 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,23 @@ char	*get_rl(void)
 int	input_interpreter(char *input, t_data *data)
 {
 	t_scmd	*cmd;
+	int		ret;
 
 	cmd = NULL;
-	if (!lexer(input, data))
+	ret = lexer(input, data);
+	if (!ret)
 	{
 		printf("lexer error\n");
 		return (0); //return 0 only for malloc fail, also if quotes are still open
 	}
-	if (!expander(data))
+	ret = expander(data);
+	if (!ret)
 	{
 		printf("expander error\n");
 		return(0); //malloc error
 	}
-	if (!quote_removal(data->token))
+	ret = quote_removal(data->token);
+	if (!ret)
 	{
 		printf("quote removal error\n");
 		return (0); //malloc fail
@@ -92,14 +96,15 @@ int	input_interpreter(char *input, t_data *data)
 			printf("parser error\n");
 			return (0); //malloc fail
 		}
-		if (!executer(cmd, data))
+		ret = executer(cmd, data);
+		if (!ret)
 		{
 			printf("executer error\n");
 			return(0);
 		}
 		free_cmd(cmd);
 	}
-	return (1);
+	return (ret);
 }
 
 /*loop get input from command line, call intepreter, print exit status*/

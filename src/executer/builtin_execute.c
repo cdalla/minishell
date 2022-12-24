@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:59:26 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 14:17:12 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/24 11:38:24 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ int	is_builtin(t_scmd *cmd)
 	const char	*builtin[6] = {"echo", "env", "cd", "export", "unset", "pwd"};
 
 	index = 0;
-	name = cmd->cmd_name->value;
+	if (cmd->cmd_name)
+		name = cmd->cmd_name->value;
+	else
+		return (0); // return code is to not execute
 	while (index < 6)
 	{
 		if (!ft_strncmp(name, builtin[index], ft_strlen(name) + 1))
