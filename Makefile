@@ -44,6 +44,7 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/builtins/export_utils.o\
 		obj/builtins/pwd.o\
 		obj/builtins/unset.o\
+		obj/error/error_print.o\
 		obj/main.o\
 
 
@@ -81,6 +82,7 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/builtins/export_utils.c\
 		src/builtins/pwd.c\
 		src/builtins/unset.c\
+		src/error/error_print.c\
 		src/main.c\
 
 
@@ -99,7 +101,7 @@ $(LIBFT):
 clean:
 	rm -f $(OBJ)
 	make clean -C ./src/libft/
-	rmdir obj/lexer obj/parser obj/structures obj/executer obj/expander obj/builtins obj
+	rmdir obj/lexer obj/parser obj/structures obj/executer obj/expander obj/builtins obj/error obj
 
 fclean: clean
 	rm -f $(NAME)

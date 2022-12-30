@@ -27,9 +27,15 @@ int	parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd) --> MALLOC 
 t_scmd	*parse_simple_command(t_token *token) --> MALLOC FAIL
 
 //EXECUTER
-int heredoc(t_data *data, t_scmd *cmd); --> MALLOC FAIL, FORK FAIL,OPEN FAIL, CLOSE ERROR, WRITE ERROR, SIGNALS TO QUIT
+int heredoc(t_data *data, t_scmd *cmd); --> MALLOC FAIL --> set 107
+											FORK FAIL, --> errno set
+											OPEN FAIL, --> errno set
+											CLOSE ERROR, --> errno set
+											WRITE ERROR, --> errno set
+											SIGNALS TO QUIT --> DONT KNOW
+int	execve_param(t_scmd *cmd, t_data *data) --> MALLOC FAIL --> set 107
+
 int	executer_multi(t_scmd *cmd, t_data *data, int i) --> catch exit status and return
-int	execve_param(t_scmd *cmd, t_data *data) --> MALLOC FAIL
 int	exec_in_child_multi(t_scmd *cmd, t_data *data, int i) --> return exit status
 int	child_process_multi(t_scmd *cmd, t_data *data) --> CLOSE FAIL, REDIRECTION FAIL, BUILTIN EXIT STATUS, EXECVE EXIT STATUS
 int	set_red(t_file *file, t_data *data) --> DUP2 FAIL, CLOSE FAIL, OPEN  FAIL

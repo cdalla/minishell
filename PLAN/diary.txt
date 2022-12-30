@@ -113,3 +113,12 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	PUT return (code) to catch and print the error message
 	Write a function to print the correct error message relative to code
 	save the return value of interpreter in data->exit_status
+
+	ret = 0
+	exit(ret) = status = 0
+
+	ret = 1
+	exit(ret) = status = 256  
+
+	ret = n
+	exit(ret) = status = 256 * n

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/24 12:33:19 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/30 12:01:59 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@
 	prompt function call the prompt and pass the input 
 	need to stop with exit_builtin
 */
-int executer(t_scmd *cmd, t_data *data);
-int	expander(t_data *data);
+int 	executer(t_scmd *cmd, t_data *data);
+int		expander(t_data *data);
+void	print_error(int err_num);
 
 /*handle the signal*/
 void	sigint_handler(int signum)
@@ -70,22 +71,22 @@ int	input_interpreter(char *input, t_data *data)
 
 	cmd = NULL;
 	ret = lexer(input, data);
-	if (!ret)
+	if (ret)
 	{
-		printf("lexer error\n");
-		return (0); //return 0 only for malloc fail, also if quotes are still open
+		//printf("lexer error\n");
+		return (ret); //return 0 only for malloc fail, also if quotes are still open
 	}
 	ret = expander(data);
-	if (!ret)
+	if (ret)
 	{
-		printf("expander error\n");
-		return(0); //malloc error
+		//printf("expander error\n");
+		return(ret); //malloc error
 	}
 	ret = quote_removal(data->token);
-	if (!ret)
+	if (ret)
 	{
-		printf("quote removal error\n");
-		return (0); //malloc fail
+		//printf("quote removal error\n");
+		return (ret); //malloc fail
 	}
 	cmd = parser(data);
 	//print_multi_cmd(cmd, data->n_pipes);
@@ -93,14 +94,14 @@ int	input_interpreter(char *input, t_data *data)
 	{
 		if (!cmd)
 		{
-			printf("parser error\n");
-			return (0); //malloc fail
+			//printf("parser error\n");
+			return (107); //malloc fail
 		}
 		ret = executer(cmd, data);
-		if (!ret)
+		if (ret)
 		{
 			printf("executer error\n");
-			return(0);
+			return(ret);
 		}
 		free_cmd(cmd);
 	}
@@ -108,9 +109,12 @@ int	input_interpreter(char *input, t_data *data)
 }
 
 /*loop get input from command line, call intepreter, print exit status*/
+/*err_num become part of struct and be printed with $?*/
 int	prompt_call(t_data *data)
 {
 	char	*input;
+	int		err_num;
+	
 	while (1)
 	{	
 		data->to_close = -1;
@@ -120,13 +124,9 @@ int	prompt_call(t_data *data)
 		input = get_rl();
 		if (!input)
 			exit(0); // get exit or CTRL D by readline
-		if (!input_interpreter(input, data))
-		{
-			if (errno)
-				printf("errno %d = %s\n", errno, strerror(errno));
-			// if (status && status != 256)
-			// 	printf("status %d = %s\n", status, strerror(status));
-		}
+		err_num = input_interpreter(input, data);
+		if (err_num)
+			print_error(err_num);
 		free_tokens(data);
 	}
 }

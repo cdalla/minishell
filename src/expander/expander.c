@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 16:36:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/24 12:24:21 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/30 11:51:43 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ int	expander(t_data *data)
 		if (ptr->word[0] != '\'' && ft_strchr(ptr->word, '$'))
 		{
 			if (!expand_check(ptr, prev, data))
-				return (0); // malloc error
+				return (107); // malloc error
 		}
 		prev = ptr;
 		ptr = ptr->next;
 	}
-	return (1);
+	return (0);
 }

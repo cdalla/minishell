@@ -9,6 +9,7 @@ int main(void)
 {
 	pid_t child;
 	int fd;
+	int status;
 
 	child = fork();
 	if (child == 0)
@@ -24,13 +25,13 @@ int main(void)
 		if (fd == -1)
 			printf("second open error\n");
 		close(fd);
-		exit(0);
+		exit(107);
 	}
  	else if (child > 0)
 	{
 		//printf("PARENT\n");
-		wait(NULL);
-		printf("CHILD DIED");
+		waitpid(child, &status, 0);
+		printf("CHILD DIED, status = %d\n", status);
 	}
 	else
 		printf("ERROR\n");

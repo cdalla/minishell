@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/23 13:39:01 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2022/12/30 12:24:51 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,9 @@ int	executer_single(t_scmd *cmd, t_data *data)
 	else
 	{
 		if(!execve_param(cmd, data))
-			return(0);
+			return(107);
 		ret = exec_in_child_single(cmd, data);
+		printf("exec_in_child ret = %d\n", ret);
 		free_execve_param(data);
 	}
 	return (ret);
