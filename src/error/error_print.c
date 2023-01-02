@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 11:39:06 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/30 12:38:01 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 15:38:42 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,13 @@ void	print_error(int err_num)
 		printf("minishell: errno %d = %s\n", errno, strerror(errno));
 	else
 		printf("minishell: error: %s\n", err_msg(err_num));
+}
+
+int	print_err_msg(int exit_code)
+{
+	if (exit_code)
+	{
+		printf("error_code %d\n", exit_code);
+	}
+	return (exit_code);
 }

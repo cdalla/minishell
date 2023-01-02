@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/30 12:19:07 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:30:43 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,19 @@ int 	destroy_heredoc(t_scmd *cmd);
 /*wait exit status of last process*/
 int	wait_function(pid_t child, int i, t_data *data)
 {
-	int status;
+	int exit_child;
 	
+	exit_child = 0;
 	if (i == data->n_pipes)
 	{
-		waitpid(child, &status, 0);
-		if (status != 0)
+		waitpid(child, &exit_child, 0);
+		if (exit_child != 0)
 		{
-			printf("execve error process i = %d status = %d\n", i, status);
-			return (0);
+			printf("child error  n_cmd = %d status = %d\n", i, exit_child/256);
+			return (exit_child / 256);
 		}
 	}
-	return (1);
+	return (exit_child);
 }
 
 
@@ -39,6 +40,7 @@ int	wait_function(pid_t child, int i, t_data *data)
 int executer(t_scmd *cmd, t_data *data)
 {
 	int		i;
+	int		ret = 0;
 	t_scmd	*ptr;
 
 	data->cmd_path = 0;
@@ -52,17 +54,15 @@ int executer(t_scmd *cmd, t_data *data)
 		i = 0;
 		while (cmd)
 		{
-			if (!executer_multi(cmd, data, i))
-				return (1);
+			ret = executer_multi(cmd, data, i);
+			if (ret)
+				break ;
 			cmd = cmd->next_cmd;
 			i++;
 		}
 	}
 	else
-	{
-		if (!executer_single(cmd, data))
-			return (1);
-	}
+		ret = executer_single(cmd, data);
 	destroy_heredoc(ptr);
-	return (0);
+	return (ret);
 }

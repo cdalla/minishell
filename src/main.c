@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:47:04 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/21 13:39:26 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 15:36:31 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	data.envp = NULL;
 	data.token = NULL;
-	data.exit_code = NULL;
+	data.exit_code = 0;
+
 	if (!env_save(&data.envp, envp))
 		return (0); //malloc fail
 	if (!prompt_call(&data))

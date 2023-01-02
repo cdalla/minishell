@@ -34,6 +34,8 @@ int heredoc(t_data *data, t_scmd *cmd); --> MALLOC FAIL --> set 107
 											WRITE ERROR, --> errno set
 											SIGNALS TO QUIT --> DONT KNOW
 int	execve_param(t_scmd *cmd, t_data *data) --> MALLOC FAIL --> set 107
+											--> CMD NOT FOUND --> ret 127
+											--> CMD NOT EXECUTABLE
 
 int	executer_multi(t_scmd *cmd, t_data *data, int i) --> catch exit status and return
 int	exec_in_child_multi(t_scmd *cmd, t_data *data, int i) --> return exit status

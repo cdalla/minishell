@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/21 13:24:36 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/24 11:40:04 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 15:24:23 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,16 @@ int	execve_param(t_scmd *cmd, t_data *data)
 		return (1);
 	data->cmd_path = check_path_cmd(cmd->cmd_name->value, data);
 	if (!data->cmd_path)
-	{
-		printf("cmd path error\n");
-		return (0); //malloc error
-	}
+		return (12);
+	if (access(data->cmd_path, F_OK) == -1)
+		return(127);
+	else if (access(data->cmd_path, X_OK) == -1)
+		return (126);
 	data->envp_ar = ls_toarr_env(data->envp);
 	if (!data->envp_ar)
-	{
-		printf("envp array error\n");
-		free_execve_param(data);
-		return (0); //malloc error
-	}
+		return (12); //malloc error
 	data->cmd_args = ls_toarr_args(cmd->next_arg, data->cmd_path);
 	if (!data->cmd_args)
-	{
-		free_execve_param(data);
-		printf("cmd args array error\n");
-		return (0); //malloc error
-	}
-	return (1);
+		return (12); //malloc error
+	return (0);
 }	

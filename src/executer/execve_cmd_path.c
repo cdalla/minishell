@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:15 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/23 12:05:33 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 15:04:17 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*join_cmd_name(char *cmd_name, char **paths)
 	cmd_path = 0;
 	tmp = ft_strjoin("/", cmd_name);
 	if (!tmp)
-		return (0);
+		return (0); //malloc error
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], tmp);

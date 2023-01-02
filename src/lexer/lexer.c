@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/30 11:53:34 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 15:46:28 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,17 @@ int	tokenize(char *str, t_data *data)
 		if (ft_strlen(str))
 		{	
 			if (!count_word_len(&str, &w_len))
-				return (0); //quotes opened error
+				return (108); //quotes opened error
 			word = ft_substr(str, 0, w_len);
 			if (!word)
-				return (0); //failure error in substr
+				return (107); //failure error in substr
 			type = type_recogn(word);
 			if (!add_token(&data->token, word, type))
-				return (0); //failed malloc
+				return (107); //failed malloc
 			str += w_len;
 		}
 	}
-	return (1); //success
+	return (0); //success
 }
 
 /*control validity of token sequence*/
@@ -78,15 +78,9 @@ int	check_token_syntax(t_token *token)
 	{
 		if ((ptr->type == READ || ptr->type == WRITE || ptr->type == APPEND
 				|| ptr->type == HEREDOC) && (!ptr->next || ptr->next->type != WORD))
-		{
-			printf("syntax error\n");
 			return (0);
-		}
 		else if (ptr->type == PIPE && (!ptr->next || ptr->next->type == PIPE ))
-		{
-			printf("syntax error\n");
 			return (0);
-		}
 		ptr = ptr->next;
 	}
 	return (1);
@@ -96,8 +90,11 @@ int	check_token_syntax(t_token *token)
 /*call: input division in token, check var presence and syntax*/
 int	lexer(char	*input, t_data *data)
 {
-	if (!tokenize(input, data))
-		return (107);
+	int ret; 
+
+	ret = tokenize(input, data);
+	if (ret)
+		return (ret);
 	if (!check_token_syntax(data->token))
 		return (108);
 	check_shell_var(data);

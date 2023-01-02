@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/30 12:01:59 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 15:54:38 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,40 +72,24 @@ int	input_interpreter(char *input, t_data *data)
 	cmd = NULL;
 	ret = lexer(input, data);
 	if (ret)
-	{
-		//printf("lexer error\n");
-		return (ret); //return 0 only for malloc fail, also if quotes are still open
-	}
+		return (print_err_msg(ret)); //return 0 only for malloc fail, also if quotes are still open
 	ret = expander(data);
 	if (ret)
-	{
-		//printf("expander error\n");
-		return(ret); //malloc error
-	}
+		return(print_err_msg(ret)); //malloc error
 	ret = quote_removal(data->token);
 	if (ret)
-	{
-		//printf("quote removal error\n");
-		return (ret); //malloc fail
-	}
+		return (print_err_msg(ret)); //malloc fail
 	cmd = parser(data);
-	//print_multi_cmd(cmd, data->n_pipes);
 	if (data->token)
 	{
 		if (!cmd)
-		{
-			//printf("parser error\n");
-			return (107); //malloc fail
-		}
+			return (print_err_msg(ret)); //malloc fail
 		ret = executer(cmd, data);
-		if (ret)
-		{
-			printf("executer error\n");
-			return(ret);
-		}
 		free_cmd(cmd);
+		if (ret)
+			return(ret);
 	}
-	return (ret);
+	return (print_err_msg(ret));
 }
 
 /*loop get input from command line, call intepreter, print exit status*/
@@ -113,7 +97,6 @@ int	input_interpreter(char *input, t_data *data)
 int	prompt_call(t_data *data)
 {
 	char	*input;
-	int		err_num;
 	
 	while (1)
 	{	
@@ -123,10 +106,9 @@ int	prompt_call(t_data *data)
 		signals();
 		input = get_rl();
 		if (!input)
-			exit(0); // get exit or CTRL D by readline
-		err_num = input_interpreter(input, data);
-		if (err_num)
-			print_error(err_num);
+			exit(0); //CTRL D by readline
+		data->exit_code = input_interpreter(input, data);
+		printf("exit code in promptcall = %d\n", data->exit_code);
 		free_tokens(data);
 	}
 }

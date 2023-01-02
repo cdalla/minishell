@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:59:26 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/24 11:38:24 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:34:39 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct s_builtin
 int	execute_builtin(t_scmd *cmd, t_data *data)
 {	
 	int			i;
+	int			ret;
 	char		*name;
 	const t_builtin	builtin[6] = {{"echo", &echo}, {"env", &env}, {"cd", &cd},
 	{"export", &export}, {"unset", &unset}, {"pwd", &pwd}};
@@ -39,11 +40,9 @@ int	execute_builtin(t_scmd *cmd, t_data *data)
 	name = cmd->cmd_name->value;
 	if (data->to_close != -1)
 		close(data->to_close);
-	if (!set_red(cmd->file, data))
-	{
-		printf("redirection error in builtin\n");
-		return (0);
-	}
+	ret = set_red(cmd->file, data);
+	if (ret)
+		return (ret);
 	while (i < 6)
 	{
 		if (!ft_strncmp(name, builtin[i].name, ft_strlen(name) + 1))

@@ -79,7 +79,7 @@ typedef struct s_excode //unused
 
 typedef struct s_data
 {
-    t_excode    	*exit_code; //unusued
+    //t_excode    	*exit_code; //unusued
     t_envp          *envp;
     t_token         *token;
 	char			*cmd_path;
@@ -89,6 +89,7 @@ typedef struct s_data
 	int				to_write;
 	int				to_read;
 	int				to_close;
+	int				exit_code;
 }   t_data;
 
 //LEXER
@@ -142,6 +143,7 @@ int		execute_builtin(t_scmd *cmd, t_data *data);
 int		set_red(t_file *file, t_data *data);
 
 int	remove_envp(t_envp **envp, t_envp *to_rem);
+int	print_err_msg(int exit_code);
 
 
 

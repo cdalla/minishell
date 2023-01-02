@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:41 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/24 11:42:02 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:29:50 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,61 +14,56 @@
 
 int		wait_function(pid_t child, int i, t_data *data);
 int		execve_param(t_scmd *cmd, t_data *data);
+int		parent_close(int fd[2][2], int i, int n_pipes);
 void	free_execve_param(t_data *data);
 void	set_fd(t_data *data, int fd[2][2], int i);
-void	parent_close(int fd[2][2], int i, int n_pipes);
 
 /*check if execute builtin or call execve in child*/
 int	child_process_multi(t_scmd *cmd, t_data *data)
 {
+	int	ret;
 	if ((data->to_close != -1))
 	{
 		if(close(data->to_close) == -1)
-		{
-			printf("close error in child multi\n");
-			return (0);
-		}
+			exit(print_err_msg(errno));
 	}
 	if (is_builtin(cmd))
 	{
-		if (!execute_builtin(cmd, data))
-		{
-			printf("error execute builtin in multi\n");
-			return (0);
-		}
+		exit(execute_builtin(cmd, data));
 	}
 	else
 	{
-		if (!set_red(cmd->file, data))
-		{
-			printf("%s execve redirection error\n", cmd->cmd_name->value);
-			return(0);//open or close error
-		}
+		ret = set_red(cmd->file, data);
+		if (ret)
+			exit(ret);//open or close error or dup2
 		execve(data->cmd_path, data->cmd_args, data->envp_ar);
 	}
-	return (1);
+	exit(ret);
 }
 
 /*fork a child need to execute builtin inside*/
 int	exec_in_child_multi(t_scmd *cmd, t_data *data, int i)//need to call builtins here
 {
 	pid_t	child;
+	int		ret;
 
+	ret = 0;
 	child = fork();
 	if (child == 0) //child
 	{
-		if (!child_process_multi(cmd, data))
-			exit(0);//i dont know if it returns
-		exit(0);
+		//signals_child();
+		ret = child_process_multi(cmd, data);
+		// if (!child_process_multi(cmd, data))
+		// 	exit(0);//i dont know if it returns
+		// exit(0);
 	}
 	else if (child > 0) //parent
 	{
-		if (!wait_function(child, i, data))
-			return (0);
+		ret = wait_function(child, i, data);
 	}
 	else if (child < 0)
-		return (0); //error
-	return (1);
+		return (errno); //error fork
+	return (ret);
 }
 
 /*set pipes, set fd, call execution of every command, close fd*/
@@ -76,14 +71,12 @@ int	executer_multi(t_scmd *cmd, t_data *data, int i)
 {
 	int		fd[2][2];
 	int		ret;
+	int		ret2;
 
 	if (i < data->n_pipes)
 	{
 		if (pipe(fd[i % 2]) == -1)
-		{
-			printf("pipe error\n");
-			return (0); //pipe error
-		}
+			return (print_err_msg(errno)); //pipe eror
 	}
 	set_fd(data, fd, i);
 	if (!is_builtin(cmd))
@@ -94,6 +87,8 @@ int	executer_multi(t_scmd *cmd, t_data *data, int i)
 	ret = exec_in_child_multi(cmd, data, i);//executer return 0 for error and errno will be set and close
 	if (!is_builtin(cmd))
 		free_execve_param(data);
-	parent_close(fd, i, data->n_pipes);
+	ret2 = parent_close(fd, i, data->n_pipes);
+	if (ret2)
+		return (ret2);
 	return (ret);// success
 }

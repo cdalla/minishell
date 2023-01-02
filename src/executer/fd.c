@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:52:49 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/22 14:48:48 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:35:57 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,32 @@ void	set_fd(t_data *data, int fd[2][2], int i)
 }
 
 /*close correct fd based on index value*/
-void	parent_close(int fd[2][2], int i, int n_pipes)
+int	parent_close(int fd[2][2], int i, int n_pipes)
 {
 	if (i % 2)
 	{
 		if (i < n_pipes)
 		{
-			//printf("parent close %d\n",fd[1][1]);
-			close(fd[1][1]);
+			if (close(fd[1][1]) == -1)
+				return (print_err_msg(errno));
 		}
-		//printf("parent close %d\n",fd[0][0]);
-		close(fd[0][0]);
+		if (close(fd[0][0]) == -1)
+			return (print_err_msg(errno));
 	}
 	else
 	{
 		if (i < n_pipes)
 		{
-			//printf("parent close %d\n",fd[0][1]);
-			close(fd[0][1]);
+			if (close(fd[0][1]) == -1)
+				print_err_msg(errno);
 		}
 		if (i != 0)
 		{
-			//printf("parent close %d\n",fd[1][0]);
-			close(fd[1][0]);
+			if (close(fd[1][0]) == -1)
+				print_err_msg(errno);
 		}
 	}
+	return(0);
 }
 
 /*save std in and out, return 0 for err*/
