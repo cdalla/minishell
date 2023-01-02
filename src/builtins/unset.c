@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 11:32:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:31:56 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:57:35 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ int	unset(t_scmd *args, t_data *data)
 			remove_envp(&data->envp, to_rem);
 	}
 	else
-		printf("unset: syntax error\n");
-	return (1); //return errno
+		return (print_err_msg(108));
+	return (0); //return errno
 }

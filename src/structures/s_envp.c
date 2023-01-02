@@ -6,22 +6,12 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 13:23:06 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:40:18 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 char **split_var(char *str, char c);
-/*
-	pointer to the s_envp list in main struct
-	create a new node, check for valid input
-	add a new node to envp list, used to initialize it and add variables later
-	we can add an extra variable to set if the env is printable or not
-*/
-
-//not sure in we need to include '/' '.' ':' '-' '_' in the valid characters
-//NEED TO FIX THIS
-//IT IS WORKING BUT WE NEED TO INCLUDE ALL THE CHARACTERS POSSIBLE
 
 /*check var_name correct syntax*/
 int	check_var_syntax(char *str)

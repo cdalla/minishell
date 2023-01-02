@@ -21,7 +21,6 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/parser/parser_utils.o\
 		obj/structures/s_envp.o\
 		obj/structures/s_envp_utils.o\
-		obj/structures/s_exit_code.o\
 		obj/structures/s_redirection.o\
 		obj/structures/s_scmd.o\
 		obj/structures/s_token.o\
@@ -59,7 +58,6 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/parser/parser_utils.c\
 		src/structures/s_envp.c\
 		src/structures/s_envp_utils.c\
-		src/structures/s_exit_code.c\
 		src/structures/s_redirection.c\
 		src/structures/s_scmd.c\
 		src/structures/s_token.c\

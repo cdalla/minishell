@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 15:54:38 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:41:28 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int	input_interpreter(char *input, t_data *data)
 }
 
 /*loop get input from command line, call intepreter, print exit status*/
-/*err_num become part of struct and be printed with $?*/
 int	prompt_call(t_data *data)
 {
 	char	*input;

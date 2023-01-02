@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:30:43 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 17:14:41 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	wait_function(pid_t child, int i, t_data *data)
 		waitpid(child, &exit_child, 0);
 		if (exit_child != 0)
 		{
-			printf("child error  n_cmd = %d status = %d\n", i, exit_child/256);
+			//printf("child error  n_cmd = %d status = %d\n", i, exit_child/256);
 			return (exit_child / 256);
 		}
 	}

@@ -69,17 +69,8 @@ typedef struct s_token
     struct s_token  	*next;
 }               t_token;
 
-typedef struct s_excode //unused
-{
-    int				code;
-    char			*cmd;
-    struct s_excode	*next;
-    struct s_excode	*prev;
-}   			t_excode;
-
 typedef struct s_data
 {
-    //t_excode    	*exit_code; //unusued
     t_envp          *envp;
     t_token         *token;
 	char			*cmd_path;

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:50:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/20 11:44:05 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 17:13:34 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ int	export(t_scmd *args, t_data *data)
 	if (!args)
 	{
 		if (!order_envp(data->envp))
-			return (0); //malloc failed
+			return (print_err_msg(107)); //malloc failed
 	}
 	else if (!args->next_arg && check_var_syntax(args->value)) //update or add
 	{
 		if (!add_var(data, args->value, 2))
-			return (0); //malloc failed
+			return (print_err_msg(107)); //malloc failed
 	}
 	else if (!args->next_arg && !ft_strchr(args->value, '='))
 	{
@@ -74,6 +74,6 @@ int	export(t_scmd *args, t_data *data)
 			update_var_value(data->envp, to_export, 0, 1);
 	}
 	else
-		printf("export: syntax error\n");
-	return (1); //return errno
+		return(print_err_msg(108));
+	return (0); //return errno
 }

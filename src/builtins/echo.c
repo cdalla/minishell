@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/15 12:53:06 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 19:03:45 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:55:48 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,5 @@ int	echo(t_scmd *args, t_data *data)
 	}
 	if (!flag)
 		printf("\n");
-	return (1); //maybe return errno
+	return (0); //maybe return errno
 }

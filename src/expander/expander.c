@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 16:36:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/30 11:51:43 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 17:12:44 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*expand_value(char *var, t_token *prev, t_data *data)
 {
 	char	*var_name;
 
+	if (!strncmp("$?", var, 3))
+		return (ft_itoa(data->exit_code));
 	var_name = ft_substr(var, 1, ft_strlen(var) - 1);
 	if (!var_name)
 		return (0); //malloc error //qui mettere if token type redirection and value empty dont expand

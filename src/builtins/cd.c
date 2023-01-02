@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 11:45:20 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/16 12:39:05 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 17:07:00 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ int	update_old(t_data *data, char *cwd, char *new_wd)
 		{
 			free(cwd);
 			free(new_wd);
-			return (0); //malloc error
+			return (print_err_msg(107)); //malloc error
 		}
 	}
 	//free(cwd);
-	return(1);
+	return(0);
 }
 
 /*check if PWD var exist, add if not, update if exists*/
@@ -65,10 +65,10 @@ int	update_pwd(t_data *data, char *new_wd)
 		if (!add_env(&data->envp, ft_strjoin("PWD=", new_wd), 2))
 		{
 			free(new_wd);
-			return (0); //malloc error
+			return (print_err_msg(107)); //malloc error
 		}
 	}
-	return (1);
+	return (0);
 }
 
 /*change wd, if no arg $HOME is used*/
@@ -94,17 +94,22 @@ int	cd(t_scmd *args, t_data *data)
 {
 	char	*cwd = NULL;
 	char	*new_wd = NULL;
+	int		ret;
 
 	cwd = getcwd(cwd, MAXPATHLEN);
 	if (!cwd)
-		return (0);//error
+		return (print_err_msg(errno));//error
 	new_wd = change_dir(args, data, new_wd);
 	if (!new_wd)
 	{
 		free(cwd);
-		return (0);//error
+		return (print_err_msg(errno));//error
 	}
-	if (!update_old(data, cwd, new_wd) || !update_pwd(data, new_wd))
-		return (0);
-	return (1);
+	ret = update_old(data, cwd, new_wd);
+	if (ret)
+		return (ret);
+	ret = update_pwd(data, new_wd);
+	if (ret)
+		return (ret);
+	return (0);
 }

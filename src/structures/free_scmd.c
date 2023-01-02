@@ -6,30 +6,11 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 14:11:11 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/23 11:53:34 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/02 16:39:21 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// /*free SCMD intfile list*/
-// void	free_infile(t_scmd *ptr)
-// {
-// 	t_infile	*ptr_inf;
-// 	t_infile	*next_inf;
-
-// 	if (ptr->infile)
-// 	{
-// 		ptr_inf = ptr->infile;
-// 		while (ptr_inf->next)
-// 		{
-// 			next_inf = ptr_inf->next;
-// 			free(ptr_inf->filename);
-// 			free(ptr_inf);
-// 			ptr_inf = next_inf;
-// 		}
-// 	}
-// }
 
 /*free SCMD outfile list*/
 void	free_file(t_scmd *ptr)
