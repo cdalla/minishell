@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/20 15:25:04 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:58:19 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ int	parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd)
 	cmd_ptr = multi_cmd;
 	while (ptr && n_pipes >= 0)
 	{
-		if (multi_cmd->cmd_name) //if head already created
+		if (multi_cmd->cmd_name)
 		{
-			cmd_ptr->next_cmd = new_scmd(SIMPLE_CMD); //add next_cmd
+			cmd_ptr->next_cmd = new_scmd(SIMPLE_CMD);
 			if (!cmd_ptr->next_cmd)
-				return (0); //malloc fail
-			cmd_ptr = cmd_ptr->next_cmd;//move pointer to next cmd
+				return (0);
+			cmd_ptr = cmd_ptr->next_cmd;
 		}
 		ret = parse_loop(cmd_ptr, &ptr, 1);
 		if (!ret)
@@ -49,9 +49,9 @@ t_scmd	*parse_simple_command(t_token *token)
 {
 	t_scmd	*cmd;
 
-	cmd = new_scmd(SIMPLE_CMD); //create head of cmd node
+	cmd = new_scmd(SIMPLE_CMD);
 	if (!token || !cmd)
-		return (0); //malloc fail
+		return (0);
 	if (!parse_loop(cmd, &token, 0))
 		return (0);
 	return (cmd);
@@ -69,13 +69,13 @@ t_scmd	*parser(t_data *data)
 		if (!cmd)
 			return (0);
 		if (!parse_multi_cmd(&data->token, data->n_pipes, cmd))
-			return (0); //failed something free memory
+			return (0);
 	}
 	else
 	{
 		cmd = parse_simple_command(data->token);
 		if (!cmd)
-			return (0);//failed something memory to free
+			return (0);
 	}
 	return (cmd);
 }

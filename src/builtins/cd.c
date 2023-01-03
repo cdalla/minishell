@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 11:45:20 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 11:49:52 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:44:22 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,17 @@ int	update_old(t_data *data, char *cwd, char *new_wd)
 		{
 			free(cwd);
 			free(new_wd);
-			return (print_err_msg(107, "cd")); //malloc error
+			return (print_err_msg(107, "cd"));
 		}
 	}
-	//free(cwd);
-	return(0);
+	return (0);
 }
 
 /*check if PWD var exist, add if not, update if exists*/
 int	update_pwd(t_data *data, char *new_wd)
 {
 	t_envp	*new_pwd;
-	
+
 	new_pwd = var_exist(data->envp, "PWD");
 	if (new_pwd)
 		update_var_value(data->envp, new_pwd, new_wd, 0);
@@ -65,7 +64,7 @@ int	update_pwd(t_data *data, char *new_wd)
 		if (!add_env(&data->envp, ft_strjoin("PWD=", new_wd), 2))
 		{
 			free(new_wd);
-			return (print_err_msg(107, "cd")); //malloc error
+			return (print_err_msg(107, "cd"));
 		}
 	}
 	return (0);
@@ -76,34 +75,39 @@ char	*change_dir(t_scmd *arg, t_data *data, char *new_wd)
 {
 	char	*path;
 
-	if (!arg)//no arguments open $HOME
+	if (!arg)
 	{
 		path = get_env_value("HOME", data);
 		if (!path)
-			printf("HOME not set!!!\n");//maybe print msg error and return
+		{
+			write(2, "HOME not set!!!\n", 17);
+			return (0);
+		}
 	}
 	else
 		path = arg->value;
 	if (chdir(path) == -1)
-		return (0); //errno
+		return (0);
 	return (getcwd(new_wd, MAXPATHLEN));
 }
 
 /*save current wd, get new_path and change wd, update env*/
 int	cd(t_scmd *args, t_data *data)
 {
-	char	*cwd = NULL;
-	char	*new_wd = NULL;
+	char	*cwd;
+	char	*new_wd;
 	int		ret;
 
+	cwd = NULL;
+	new_wd = NULL;
 	cwd = getcwd(cwd, MAXPATHLEN);
 	if (!cwd)
-		return (print_err_msg(errno, "cd"));//error
+		return (print_err_msg(errno, "cd"));
 	new_wd = change_dir(args, data, new_wd);
 	if (!new_wd)
 	{
 		free(cwd);
-		return (print_err_msg(errno, "cd"));//error
+		return (print_err_msg(errno, "cd"));
 	}
 	ret = update_old(data, cwd, new_wd);
 	if (ret)

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 15:46:28 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:53:52 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	count_word_len(char **s, int *wl)
 	word = 0;
 	quote = 0;
 	dquote = 0;
-	while ((*(*s + *wl) && (!is_space(*(*s + *wl)) || quote || dquote))) //if it is not a space or quotes are opened
+	while ((*(*s + *wl) && (!is_space(*(*s + *wl)) || quote || dquote)))
 	{
 		if (*(*s + *wl) == '\'' || *(*s + *wl) == '\"')
 			quote_check(&quote, &dquote, *(*s + *wl));
@@ -36,7 +36,7 @@ int	count_word_len(char **s, int *wl)
 			break ;
 	}
 	if (quote || dquote)
-		return (0);// error open quotes
+		return (0);
 	return (*wl);
 }
 
@@ -50,22 +50,22 @@ int	tokenize(char *str, t_data *data)
 	while (*str)
 	{
 		w_len = 0;
-		while (is_space(*str) && *str) //skip all spaces at beginning
+		while (is_space(*str) && *str)
 			str++;
 		if (ft_strlen(str))
 		{	
 			if (!count_word_len(&str, &w_len))
-				return (108); //quotes opened error
+				return (108);
 			word = ft_substr(str, 0, w_len);
 			if (!word)
-				return (107); //failure error in substr
+				return (107);
 			type = type_recogn(word);
 			if (!add_token(&data->token, word, type))
-				return (107); //failed malloc
+				return (107);
 			str += w_len;
 		}
 	}
-	return (0); //success
+	return (0);
 }
 
 /*control validity of token sequence*/
@@ -77,9 +77,10 @@ int	check_token_syntax(t_token *token)
 	while (ptr)
 	{
 		if ((ptr->type == READ || ptr->type == WRITE || ptr->type == APPEND
-				|| ptr->type == HEREDOC) && (!ptr->next || ptr->next->type != WORD))
+				|| ptr->type == HEREDOC)
+			&& (!ptr->next || ptr->next->type != WORD))
 			return (0);
-		else if (ptr->type == PIPE && (!ptr->next || ptr->next->type == PIPE ))
+		else if (ptr->type == PIPE && (!ptr->next || ptr->next->type == PIPE))
 			return (0);
 		ptr = ptr->next;
 	}
@@ -90,7 +91,7 @@ int	check_token_syntax(t_token *token)
 /*call: input division in token, check var presence and syntax*/
 int	lexer(char	*input, t_data *data)
 {
-	int ret; 
+	int	ret;
 
 	ret = tokenize(input, data);
 	if (ret)

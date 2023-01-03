@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 11:39:35 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/20 15:21:22 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:59:20 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_token	*new_token(char *word, int type)
 
 	new_token = (t_token *)malloc(sizeof(t_token));
 	if (!new_token)
-		return (0); //failure
+		return (0);
 	new_token->word = word;
 	new_token->type = type;
 	new_token->next = 0;
@@ -34,8 +34,8 @@ int	add_token(t_token **token, char *word, int type)
 
 	new = new_token(word, type);
 	if (!new)
-		return (0); //failure malloc
-	if (!*token) //if token list empty
+		return (0);
+	if (!*token)
 		*token = new;
 	else
 	{
@@ -44,7 +44,7 @@ int	add_token(t_token **token, char *word, int type)
 			ptr = ptr->next;
 		ptr->next = new;
 	}
-	return (1); //success
+	return (1);
 }
 
 /*TO REMOVE*/
@@ -59,4 +59,3 @@ void	print_tokens(t_token *token)
 		ptr = ptr->next;
 	}
 }
-

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 18:34:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/24 11:34:27 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 16:04:46 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,20 +86,20 @@ int	fork_heredoc(char **del, char *filename)
 	int		status;
 
 	child = fork();
-	if (child == 0) //child
+	if (child == 0)
 	{
 		signals_heredoc();
 		if (!set_heredoc(del, filename))
-			exit(0);//i dont know if it returns
+			exit(0);
 		exit(0);
 	}
-	else if (child > 0) //parent
+	else if (child > 0)
 	{
 		waitpid(child, &status, 0);
 			return (status);
 	}
 	else if (child < 0)
-		return (0); //error
+		return (0);
 	return (1);
 }
 
@@ -127,9 +127,9 @@ int heredoc(t_data *data, t_scmd *cmd)
 				if (!set_heredoc(&ptr->filename, filename))
 					return (0);
 				free(ptr->filename);
-				ptr->filename = ft_strdup(filename);//save the tmp char
+				ptr->filename = ft_strdup(filename);
 				if (!ptr->filename)
-					return (0); //malloc error
+					return (0);
 			}
 			ptr = ptr->next;
 		}

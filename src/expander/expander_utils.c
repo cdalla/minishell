@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/15 12:06:05 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/15 12:34:36 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:46:05 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ int	len_to_trim(char *str)
 	int	w_len;
 
 	w_len = 0;
-	if(*str == '$') //count w_len var_name
+	if (*str == '$')
 	{
 		w_len++;
 		while (ft_isalpha(*(str + w_len)) || ft_isdigit(*(str + w_len)
-		&& *(str + w_len)) || *(str + w_len) == '_') //get var_name len, with var_name costraints
+				&& *(str + w_len)) || *(str + w_len) == '_')
 			w_len++;
 	}
-	else	//count w_len part in between
+	else
 	{
-		while(*(str + w_len) != '$' && *(str + w_len))//skip until $
+		while (*(str + w_len) != '$' && *(str + w_len))
 			w_len++;
 	}
 	return (w_len);

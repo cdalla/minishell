@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 11:44:27 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/20 15:25:38 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:58:40 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	parse_single_token(t_token *ptr, t_scmd *cmd)
 			return (0);
 		set_scmd_value(arg, ptr->word);
 		add_scmd_arg(cmd, arg);
-		return (1); //success with 1 position to skip in token list	
+		return (1);
 	}
 	else
 	{
 		if (!add_file(cmd, ptr->type, ptr->next->word))
-			return (0); //errors
-		return (2); //success and skip 2 position
+			return (0);
+		return (2);
 	}
 }
 
@@ -62,11 +62,11 @@ int	parse_loop(t_scmd *cmd, t_token **token, int line)
 
 	ret_line = 0;
 	ptr = *token;
-	while (ptr && ptr->type != PIPE) //put this loop in another function
+	while (ptr && ptr->type != PIPE)
 	{
 		ret = parse_single_token(ptr, cmd);
 		if (!ret)
-			return (0); //error free memory
+			return (0);
 		ret_line += ret;
 		while (ret-- != 0 && ptr)
 			ptr = ptr->next;

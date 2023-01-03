@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 12:59:12 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:05:28 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ int	child_process_single(t_scmd *cmd, t_data *data)
 	ret = set_red(cmd->file, data);
 	if (ret)
 		exit(ret);//open or close error or dup2 error
+	if (!cmd->cmd_name)
+		exit (0);
 	execve(data->cmd_path, data->cmd_args, data->envp_ar);
-	//printf("execve failed before return, errno = %d\n", errno);
 	exit(print_err_msg(errno, cmd->cmd_name->value));
 }
 

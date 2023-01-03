@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 11:32:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 11:50:47 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:38:33 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ int	unset(t_scmd *args, t_data *data)
 	}
 	else
 		return (print_err_msg(108, "unset"));
-	return (0); //return errno
+	return (0);
 }

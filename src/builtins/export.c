@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:50:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 11:50:28 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:40:18 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	order_envp(t_envp *envp)
 	if (size)
 		copy = fill_array(size, envp);
 	if (!copy)
-		return (0); //malloc failed (or not envp)
+		return (0);
 	print_declare(copy);
 	free(copy);
 	return (1);
@@ -60,12 +60,12 @@ int	export(t_scmd *args, t_data *data)
 	if (!args)
 	{
 		if (!order_envp(data->envp))
-			return (print_err_msg(107, "export")); //malloc failed
+			return (print_err_msg(107, "export"));
 	}
-	else if (!args->next_arg && check_var_syntax(args->value)) //update or add
+	else if (!args->next_arg && check_var_syntax(args->value))
 	{
 		if (!add_var(data, args->value, 2))
-			return (print_err_msg(107, "export")); //malloc failed
+			return (print_err_msg(107, "export"));
 	}
 	else if (!args->next_arg && !ft_strchr(args->value, '='))
 	{
@@ -74,6 +74,6 @@ int	export(t_scmd *args, t_data *data)
 			update_var_value(data->envp, to_export, 0, 1);
 	}
 	else
-		return(print_err_msg(108, "export"));
-	return (0); //return errno
+		return (print_err_msg(108, "export"));
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/17 11:38:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:39:46 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:59:55 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ t_file	*new_file(enum token_type type, char *value)
 
 	new_file = (t_file *)malloc(sizeof(t_file));
 	if (!new_file)
-		return (0); //malloc failed
+		return (0);
 	new_file->type = type;
 	new_file->next = 0;
 	new_file->filename = ft_strdup(value);
 	if (!new_file->filename)
-		return (0); //failed in strdup
+		return (0);
 	return (new_file);
 }
 
@@ -36,7 +36,7 @@ int	add_file(t_scmd *cmd, enum token_type type, char *value)
 		return (0);
 	new = new_file(type, value);
 	if (!new)
-		return (0); //failed in node creation
+		return (0);
 	if (!cmd->file)
 		cmd->file = new;
 	else
@@ -46,5 +46,5 @@ int	add_file(t_scmd *cmd, enum token_type type, char *value)
 			ptr = ptr->next;
 		ptr->next = new;
 	}
-	return (1); //success
+	return (1);
 }

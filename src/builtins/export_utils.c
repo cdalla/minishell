@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/20 11:39:34 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/20 11:43:08 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:39:46 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ t_envp	**fill_array(int size, t_envp *envp)
 	while (i < size)
 	{
 		ptr = envp;
-		min = find_min(envp, copy); //return first element not in array
+		min = find_min(envp, copy);
 		while (ptr)
 		{
 			if (ptr->type == ENV && !is_in_array(ptr, copy)
-				&& (ft_strcmp(ptr->env, min->env) < 0)) //if 
+				&& (ft_strcmp(ptr->env, min->env) < 0))
 				min = ptr;
 			ptr = ptr->next;
 		}

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 12:09:10 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/21 12:04:07 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:59:41 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_scmd	*new_scmd(enum cmd_type type)
 
 	new_scmd = (t_scmd *)malloc(sizeof(t_scmd));
 	if (!new_scmd)
-		return (0); //failure
+		return (0);
 	new_scmd->type = type;
 	new_scmd->cmd_name = 0;
 	new_scmd->next_cmd = 0;
@@ -35,7 +35,7 @@ int	add_scmd_arg(t_scmd *cmd, t_scmd *arg)
 	t_scmd	*ptr;
 
 	if (!cmd || !arg)
-		return (0); //error
+		return (0);
 	if (!cmd->cmd_name)
 		cmd->cmd_name = arg;
 	else
@@ -50,7 +50,7 @@ int	add_scmd_arg(t_scmd *cmd, t_scmd *arg)
 			ptr->next_arg = arg;
 		}
 	}
-	return (1); //succes
+	return (1);
 }
 
 /*fill value field of SCMD*/
@@ -62,9 +62,9 @@ int	set_scmd_value(t_scmd *cmd, char *value)
 	{
 		cmd->value = ft_strdup(value);
 		if (!cmd->value)
-			return (0); //strdup error
+			return (0);
 	}
-	return (1); //success
+	return (1);
 }
 
 /*TO REMOVE*/

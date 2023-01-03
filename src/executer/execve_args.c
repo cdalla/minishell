@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/21 13:24:36 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 15:24:23 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 14:47:09 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	free_execve_param(t_data *data)
 int	execve_param(t_scmd *cmd, t_data *data)
 {
 	if (!cmd->cmd_name)
-		return (1);
+		return (0);
 	data->cmd_path = check_path_cmd(cmd->cmd_name->value, data);
 	if (!data->cmd_path)
 		return (12);

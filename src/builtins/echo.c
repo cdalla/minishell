@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/15 12:53:06 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:55:48 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 15:41:19 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ int	is_printable(char *str, int *flag)
 	if (str[0] == '-')
 	{
 		i++;
-		while(str[i])
+		while (str[i])
 		{
 			if (str[i] != 'n')
 				return (1);
 			i++;
 		}
 		*flag = 1;
-		return(0);
+		return (0);
 	}
-	return(1);
+	return (1);
 }
 
 /*call flag check, print the args*/
@@ -54,5 +54,5 @@ int	echo(t_scmd *args, t_data *data)
 	}
 	if (!flag)
 		printf("\n");
-	return (0); //maybe return errno
+	return (0);
 }
