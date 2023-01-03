@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:32:40 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 12:59:12 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int		execve_param(t_scmd *cmd, t_data *data);
 void	free_execve_param(t_data *data);
 int 	save_std_fd(int *in, int *out);
 int		reset_std_fd(int in, int out);
+
+void	print_dsarry(char **array);
 
 int	wait_function(pid_t child, int i, t_data *data);
 
@@ -46,14 +48,14 @@ int	child_process_single(t_scmd *cmd, t_data *data)
 	if ((data->to_close != -1))
 	{
 		if(close(data->to_close) == -1)
-			exit(print_err_msg(errno));
+			exit(print_err_msg(errno, ""));
 	}
 	ret = set_red(cmd->file, data);
 	if (ret)
 		exit(ret);//open or close error or dup2 error
 	execve(data->cmd_path, data->cmd_args, data->envp_ar);
 	//printf("execve failed before return, errno = %d\n", errno);
-	exit(print_err_msg(errno));
+	exit(print_err_msg(errno, cmd->cmd_name->value));
 }
 
 /*fork a child process, call execution of single cmd*/
@@ -91,10 +93,10 @@ int	executer_single(t_scmd *cmd, t_data *data)
 	if (is_builtin(cmd))
 	{
 		if (!save_std_fd(&saved_in, &saved_out))
-			return (print_err_msg(errno)); //error in dup
+			return (print_err_msg(errno, cmd->cmd_name->value)); //error in dup
 		ret = execute_builtin(cmd, data);
 		if(!reset_std_fd(saved_in, saved_out))
-			return (print_err_msg(errno)); //error in dup2
+			return (print_err_msg(errno, cmd->cmd_name->value)); //error in dup2
 	}
 	else
 	{
@@ -102,7 +104,7 @@ int	executer_single(t_scmd *cmd, t_data *data)
 		if(ret)
 		{
 			free_execve_param(data);
-			return(print_err_msg(ret)); //malloc error
+			return(print_err_msg(ret, cmd->cmd_name->value)); //malloc error
 		}
 		ret = exec_in_child_single(cmd, data);
 		free_execve_param(data);

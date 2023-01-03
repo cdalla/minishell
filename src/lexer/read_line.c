@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:41:28 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 11:43:19 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ char	*get_rl(void)
 		line_read = NULL;
 	}
 	line_read = readline("pizzamandolino>");
-	if (!line_read || !ft_strncmp(line_read, "exit", 5))
+	//|| !ft_strncmp(line_read, "exit", 5)
+	if (!line_read)
 	{
 		ft_putendl_fd("exit", 1);
 		return (0);
@@ -72,24 +73,24 @@ int	input_interpreter(char *input, t_data *data)
 	cmd = NULL;
 	ret = lexer(input, data);
 	if (ret)
-		return (print_err_msg(ret)); //return 0 only for malloc fail, also if quotes are still open
+		return (print_err_msg(ret, "lexer")); //return 0 only for malloc fail, also if quotes are still open
 	ret = expander(data);
 	if (ret)
-		return(print_err_msg(ret)); //malloc error
+		return(print_err_msg(ret, "expander")); //malloc error
 	ret = quote_removal(data->token);
 	if (ret)
-		return (print_err_msg(ret)); //malloc fail
+		return (print_err_msg(ret, "quote removal")); //malloc fail
 	cmd = parser(data);
 	if (data->token)
 	{
 		if (!cmd)
-			return (print_err_msg(ret)); //malloc fail
+			return (print_err_msg(ret, "parser")); //malloc fail
 		ret = executer(cmd, data);
 		free_cmd(cmd);
 		if (ret)
 			return(ret);
 	}
-	return (print_err_msg(ret));
+	return (print_err_msg(ret, ""));
 }
 
 /*loop get input from command line, call intepreter, print exit status*/

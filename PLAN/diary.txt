@@ -122,3 +122,9 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 
 	ret = n
 	exit(ret) = status = 256 * n
+
+
+3/12
+	set error messages
+	increase shell lvl when open a new minishell
+	

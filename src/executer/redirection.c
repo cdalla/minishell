@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:07:34 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 11:47:40 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,19 @@ int	set_outfile(t_file *file, t_data *data)
 	if (data->to_write != -1)
 	{
 		if (close(data->to_write) == -1)
-			return (print_err_msg(errno));//close fd set previously
+			return (print_err_msg(errno, file->filename));//close fd set previously
 	}
 	if (file->type == APPEND)
 	{
 		data->to_write = open(file->filename, O_WRONLY | O_APPEND | O_CREAT , 0777);
 		if (data->to_write == -1)
-			return (print_err_msg(errno)); //error
+			return (print_err_msg(errno, file->filename)); //error
 	}
 	else
 	{
 		data->to_write = open(file->filename, O_WRONLY | O_CREAT , 0777);
 		if (data->to_write == -1)
-			return (print_err_msg(errno)); //error
+			return (print_err_msg(errno, file->filename)); //error
 	}
 	return (0);
 }
@@ -42,11 +42,11 @@ int	set_infile(t_file *file, t_data *data)
 	if (data->to_read != -1)
 	{
 		if (close(data->to_read) == -1)
-			return (print_err_msg(errno));
+			return (print_err_msg(errno, file->filename));
 	}
 	data->to_read = open(file->filename, O_RDONLY);
 	if (data->to_read == -1)
-		return (print_err_msg(errno)); //error
+		return (print_err_msg(errno, file->filename)); //error
 	return (0);
 }
 
@@ -56,16 +56,16 @@ int	dup_close(t_data *data)
 	if (data->to_read != -1)
 	{
 		if (dup2(data->to_read, STDIN_FILENO) == -1)
-			return (print_err_msg(errno)); //errno of dup2
+			return (print_err_msg(errno, "")); //errno of dup2
 		if (close(data->to_read) == -1)
-			return (print_err_msg(errno)); //errno of close
+			return (print_err_msg(errno, "")); //errno of close
 	}
 	if (data->to_write != -1)
 	{
 		if (dup2(data->to_write, STDOUT_FILENO) == -1)
-			return (print_err_msg(errno)); //errno of dup2
+			return (print_err_msg(errno, "")); //errno of dup2
 		if (close(data->to_write) == -1)
-			return (print_err_msg(errno)); //errno of close
+			return (print_err_msg(errno, "")); //errno of close
 	}
 	return (0);
 }

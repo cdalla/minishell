@@ -43,6 +43,7 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/builtins/export_utils.o\
 		obj/builtins/pwd.o\
 		obj/builtins/unset.o\
+		obj/builtins/exit.o\
 		obj/error/error_print.o\
 		obj/main.o\
 
@@ -80,6 +81,7 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/builtins/export_utils.c\
 		src/builtins/pwd.c\
 		src/builtins/unset.c\
+		src/builtins/exit.c\
 		src/error/error_print.c\
 		src/main.c\
 

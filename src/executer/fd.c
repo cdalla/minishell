@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:52:49 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:35:57 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 11:48:09 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,22 @@ int	parent_close(int fd[2][2], int i, int n_pipes)
 		if (i < n_pipes)
 		{
 			if (close(fd[1][1]) == -1)
-				return (print_err_msg(errno));
+				return (print_err_msg(errno, ""));
 		}
 		if (close(fd[0][0]) == -1)
-			return (print_err_msg(errno));
+			return (print_err_msg(errno, ""));
 	}
 	else
 	{
 		if (i < n_pipes)
 		{
 			if (close(fd[0][1]) == -1)
-				print_err_msg(errno);
+				print_err_msg(errno, "");
 		}
 		if (i != 0)
 		{
 			if (close(fd[1][0]) == -1)
-				print_err_msg(errno);
+				print_err_msg(errno, "");
 		}
 	}
 	return(0);

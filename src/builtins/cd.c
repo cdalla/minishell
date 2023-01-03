@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 11:45:20 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 17:07:00 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 11:49:52 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	update_old(t_data *data, char *cwd, char *new_wd)
 		{
 			free(cwd);
 			free(new_wd);
-			return (print_err_msg(107)); //malloc error
+			return (print_err_msg(107, "cd")); //malloc error
 		}
 	}
 	//free(cwd);
@@ -65,7 +65,7 @@ int	update_pwd(t_data *data, char *new_wd)
 		if (!add_env(&data->envp, ft_strjoin("PWD=", new_wd), 2))
 		{
 			free(new_wd);
-			return (print_err_msg(107)); //malloc error
+			return (print_err_msg(107, "cd")); //malloc error
 		}
 	}
 	return (0);
@@ -80,7 +80,7 @@ char	*change_dir(t_scmd *arg, t_data *data, char *new_wd)
 	{
 		path = get_env_value("HOME", data);
 		if (!path)
-			printf("HOME not set!!!\n");
+			printf("HOME not set!!!\n");//maybe print msg error and return
 	}
 	else
 		path = arg->value;
@@ -98,12 +98,12 @@ int	cd(t_scmd *args, t_data *data)
 
 	cwd = getcwd(cwd, MAXPATHLEN);
 	if (!cwd)
-		return (print_err_msg(errno));//error
+		return (print_err_msg(errno, "cd"));//error
 	new_wd = change_dir(args, data, new_wd);
 	if (!new_wd)
 	{
 		free(cwd);
-		return (print_err_msg(errno));//error
+		return (print_err_msg(errno, "cd"));//error
 	}
 	ret = update_old(data, cwd, new_wd);
 	if (ret)

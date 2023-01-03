@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 12:10:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 23:32:22 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 12:52:14 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	update_var_value(t_envp *envp, t_envp *var, char *value, int type)
 				ptr->type = ENV;
 			else
 			{
+				free(ptr->input);
 				free(ptr->value);
 				ptr->value = value;
 			}

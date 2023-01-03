@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:41 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:29:50 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 11:46:00 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	child_process_multi(t_scmd *cmd, t_data *data)
 	if ((data->to_close != -1))
 	{
 		if(close(data->to_close) == -1)
-			exit(print_err_msg(errno));
+			exit(print_err_msg(errno, cmd->cmd_name->value));
 	}
 	if (is_builtin(cmd))
 	{
@@ -76,7 +76,7 @@ int	executer_multi(t_scmd *cmd, t_data *data, int i)
 	if (i < data->n_pipes)
 	{
 		if (pipe(fd[i % 2]) == -1)
-			return (print_err_msg(errno)); //pipe eror
+			return (print_err_msg(errno, cmd->cmd_name->value)); //pipe eror
 	}
 	set_fd(data, fd, i);
 	if (!is_builtin(cmd))

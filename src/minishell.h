@@ -134,7 +134,7 @@ int		execute_builtin(t_scmd *cmd, t_data *data);
 int		set_red(t_file *file, t_data *data);
 
 int	remove_envp(t_envp **envp, t_envp *to_rem);
-int	print_err_msg(int exit_code);
+int	print_err_msg(int exit_code, char *str);
 
 
 

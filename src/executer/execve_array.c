@@ -6,11 +6,31 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:28 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/21 13:50:15 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/03 12:58:28 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	*env_string(t_envp *ptr)
+{
+	char	*str;
+	char	*tmp;
+
+	tmp = ft_strjoin(ptr->env, "=");
+	if (!tmp)
+		return (0);
+	if (ptr->value)
+	{
+		str = ft_strjoin(tmp, ptr->value);
+		free(tmp);
+		if (!str)
+			return (0);
+	}
+	else
+		return (tmp);
+	return (str);
+}
 
 /*duplicate every list value in a array[]*/
 char	**cpy_list_env(t_envp *ptr, int size)
@@ -24,7 +44,7 @@ char	**cpy_list_env(t_envp *ptr, int size)
 		return (0); //malloc error
 	while (ptr && i < size)
 	{
-		array[i] = ft_strdup(ptr->input);
+		array[i] = env_string(ptr); //here use actual value and name of envp
 		if (!array[i])
 		{
 			while (--i >= 0)
