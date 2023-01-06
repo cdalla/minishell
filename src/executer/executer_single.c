@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:05:28 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/06 13:51:04 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,20 @@ int	wait_function(pid_t child, int i, t_data *data);
 void	sigint_child(int signum)
 {
 	(void)signum;
-	exit(0);
+	exit(128);
 }
 
 void	sigquit_child(int signum)
 {
+	//write(STDERR_FILENO, "Quit: 3\n", 9);
 	(void)signum;
-	exit(0);
+	exit(129);
 }
 
 void	signals_child(void)
 {
-		signal(SIGINT, sigint_child);
-		signal(SIGQUIT, sigquit_child);
+	signal(SIGINT, sigint_child);
+	signal(SIGQUIT, sigquit_child);
 }
 
 /*set redirection, call execve*/
@@ -70,15 +71,10 @@ int	exec_in_child_single(t_scmd *cmd, t_data *data)
 	if (child == 0) //child
 	{
 		signals_child();
-		ret = child_process_single(cmd, data);
-		// if (!child_process_single(cmd, data)) //maybe i dont need to catch the return because it will never return here
-		// 	exit(0);//i dont know if it returns
-		// exit(0);
+		child_process_single(cmd, data);
 	}
 	else if (child > 0) //parent
-	{
 		ret = wait_function(child, 0, data);
-	}
 	else if (child < 0)
 		return (errno); //error fork
 	return (ret);

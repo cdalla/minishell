@@ -35,7 +35,6 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/executer/redirection.o\
 		obj/executer/fd.o\
 		obj/executer/builtin_execute.o\
-		obj/executer/heredoc.o\
 		obj/builtins/cd.o\
 		obj/builtins/echo.o\
 		obj/builtins/env.o\
@@ -45,6 +44,8 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/builtins/unset.o\
 		obj/builtins/exit.o\
 		obj/error/error_print.o\
+		obj/heredoc/heredoc.o\
+		obj/heredoc/heredoc_utils.o\
 		obj/main.o\
 
 
@@ -73,7 +74,6 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/executer/redirection.c\
 		src/executer/fd.c\
 		src/executer/builtin_execute.c\
-		src/executer/heredoc.c\
 		src/builtins/cd.c\
 		src/builtins/echo.c\
 		src/builtins/env.c\
@@ -83,6 +83,8 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/builtins/unset.c\
 		src/builtins/exit.c\
 		src/error/error_print.c\
+		src/heredoc/heredoc.c\
+		src/heredoc/heredoc_utils.c\
 		src/main.c\
 
 
@@ -101,7 +103,7 @@ $(LIBFT):
 clean:
 	rm -f $(OBJ)
 	make clean -C ./src/libft/
-	rmdir obj/lexer obj/parser obj/structures obj/executer obj/expander obj/builtins obj/error obj
+	rmdir obj/lexer obj/parser obj/structures obj/executer obj/expander obj/builtins obj/error obj/heredoc obj
 
 fclean: clean
 	rm -f $(NAME)

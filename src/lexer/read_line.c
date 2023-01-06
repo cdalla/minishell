@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:51:03 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/06 11:01:37 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	print_error(int err_num);
 /*handle the signal*/
 void	sigint_handler(int signum)
 {
+	rl_replace_line("", 0);
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();
@@ -100,8 +101,9 @@ int	prompt_call(t_data *data)
 		input = get_rl();
 		if (!input)
 			exit(0);
+		signal(SIGINT, SIG_IGN);
 		data->exit_code = input_interpreter(input, data);
-		printf("exit code in promptcall = %d\n", data->exit_code);
+		//printf("exit code in promptcall = %d\n", data->exit_code);
 		free_tokens(data);
 	}
 }

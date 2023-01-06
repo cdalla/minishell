@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:41 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 11:46:00 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/06 14:00:46 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,33 @@ int	exec_in_child_multi(t_scmd *cmd, t_data *data, int i)//need to call builtins
 
 	ret = 0;
 	child = fork();
-	if (child == 0) //child
+	if (child == 0)
 	{
 		//signals_child();
-		ret = child_process_multi(cmd, data);
-		// if (!child_process_multi(cmd, data))
-		// 	exit(0);//i dont know if it returns
-		// exit(0);
+		child_process_multi(cmd, data);
 	}
 	else if (child > 0) //parent
-	{
 		ret = wait_function(child, i, data);
-	}
 	else if (child < 0)
 		return (errno); //error fork
+	return (ret);
+}
+
+/*set param for execve if cmd not a builtin*/
+int	set_execve(t_data *data, t_scmd *cmd)
+{
+	int	ret;
+
+	ret = 0;
+	if (!is_builtin(cmd))
+	{
+		ret = execve_param(cmd, data);
+		if(ret)
+		{
+			free_execve_param(data);
+			return(print_err_msg(ret, cmd->cmd_name->value)); //malloc error
+		}
+	}
 	return (ret);
 }
 
@@ -79,16 +92,14 @@ int	executer_multi(t_scmd *cmd, t_data *data, int i)
 			return (print_err_msg(errno, cmd->cmd_name->value)); //pipe eror
 	}
 	set_fd(data, fd, i);
-	if (!is_builtin(cmd))
-	{
-		if (!execve_param(cmd, data))
-			return (0); //set errno and return FAILURE
-	}
-	ret = exec_in_child_multi(cmd, data, i);//executer return 0 for error and errno will be set and close
+	ret = set_execve(data, cmd);
+	if (ret)
+		return (ret);
+	ret = exec_in_child_multi(cmd, data, i);
 	if (!is_builtin(cmd))
 		free_execve_param(data);
 	ret2 = parent_close(fd, i, data->n_pipes);
 	if (ret2)
 		return (ret2);
-	return (ret);// success
+	return (ret);
 }

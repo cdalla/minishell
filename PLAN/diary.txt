@@ -124,7 +124,21 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	exit(ret) = status = 256 * n
 
 
-3/12
+3/1
 	set error messages
 	increase shell lvl when open a new minishell
 	
+
+6/1 
+	fix name heredoc before fork
+	check child return with signals in execution
+	free envp after finishing program
+	use return to end the program
+	exit only for child processes
+
+	check multi process pipe not printing, not processing last cmd if it is execve
+
+7/1
+	fix signals in multi cmd
+	check leaks
+	check functionalities

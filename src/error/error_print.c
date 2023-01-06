@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 11:39:06 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:44:46 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/06 11:47:07 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ char	*err_msg(int err_num)
 		return ("syntax error");
 	else if (err_num == 109)
 		return ("too many args");
-	else if (err_num == 127)
-		return ("command not found");
 	else if (err_num == 126)
 		return ("command not executable");
+	else if (err_num == 127)
+		return ("command not found");
+	else if (err_num == 128)
+		return ("sig int signal");
+	else if (err_num == 129)
+		return ("sig quit signal");
 	else
 		return ("error msg not found");
 }
