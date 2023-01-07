@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:15 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 15:04:17 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 13:28:03 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ char	**split_paths(t_data *data)
 	char	**split_path;
 
 	if (!get_env_value("PATH", data))
-		return (0); //PATH DELETED
+		return (0);
 	path = ft_strdup(get_env_value("PATH", data));
 	if (!path)
-		return (0); //malloc fail
+		return (0);
 	split_path = ft_split(path, ':');
 	free(path);
 	if (!split_path)
-		return (0); //malloc fail
+		return (0);
 	return (split_path);
 }
 
@@ -41,7 +41,7 @@ char	*join_cmd_name(char *cmd_name, char **paths)
 	cmd_path = 0;
 	tmp = ft_strjoin("/", cmd_name);
 	if (!tmp)
-		return (0); //malloc error
+		return (0);
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], tmp);
@@ -69,7 +69,7 @@ char	*check_path_cmd(char *cmd_name, t_data *data)
 	i = 0;
 	paths = split_paths(data);
 	if (!paths)
-		return (0);//error in split_paths nothing to free
+		return (0);
 	cmd_path = join_cmd_name(cmd_name, paths);
 	while (paths[i])
 	{

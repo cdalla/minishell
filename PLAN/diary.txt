@@ -142,3 +142,19 @@ NOTE THE CHANGES AND PROGRESS WE HAVE DONE WITH DATE
 	fix signals in multi cmd
 	check leaks
 	check functionalities
+
+
+child process
+	ctrl c -> 130
+	ctrl \ -> 131
+
+heredoc
+	ctrl c -> 1
+	ctrl d -> 0
+	ctrl \ -> do nothing
+
+8/1
+	check leaks
+	check return end of program
+	free envp list at before exiting
+	fix norminette header

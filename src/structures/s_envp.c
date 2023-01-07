@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 16:01:39 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 14:11:49 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_var_syntax(char *str)
 }
 
 /*create new envp node and fill some fiedls*/
-t_envp	*new_envp(char *arg, enum var_type type)
+t_envp	*new_envp(char *arg, enum e_var_type type)
 {
 	t_envp	*new_node;
 	char	**args;
@@ -57,7 +57,7 @@ t_envp	*new_envp(char *arg, enum var_type type)
 }
 
 /*add envp node to the list*/
-int	add_env(t_envp **envp, char *args, enum var_type type)
+int	add_env(t_envp **envp, char *args, enum e_var_type type)
 {
 	t_envp	*new;
 	t_envp	*ptr;

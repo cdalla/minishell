@@ -6,12 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:47:04 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/06 11:29:27 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 14:00:29 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*increase SHLVL in envp everytime ./minishell is called*/
 int	incr_shell_lvl(t_data *data)
 {
 	char	*old_lvl;
@@ -34,12 +35,12 @@ int	env_save(t_envp **s_envp, char **envp, t_data *data)
 	while (envp[i])
 	{
 		if (!add_env(s_envp, envp[i], 2))
-			return (0); //failure and free all the malloced mem
+			return (0);
 		i++;
 	}
 	if (!incr_shell_lvl(data))
 		return (0);
-	return (1); //success
+	return (1);
 }
 
 /*create data struct instance, fill envp, start cmd line*/
@@ -55,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 	data.token = NULL;
 	data.exit_code = 0;
 	if (!env_save(&data.envp, envp, &data))
-		return (0); //malloc fail
+		return (0);
 	if (!prompt_call(&data))
 		return (0);
 	exit(0);

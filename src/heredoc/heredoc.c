@@ -6,32 +6,15 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 18:34:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/06 12:51:36 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 13:25:35 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 #include <fcntl.h>
 
-int	write_in_file(int fd, char *del);
-
-void	quit(int signum)
-{
-	(void)signum;
-	exit(129) ;
-}
-
-void	inter(int signum)
-{
-	(void)signum;
-	exit(128) ;
-}
-
-void	signals_heredoc(void)
-{
-	signal(SIGINT, inter);
-	signal(SIGQUIT, quit);
-}
+int		write_in_file(int fd, char *del);
+void	signals_heredoc(void);
 
 /*open a temporary file, write with input save the file*/
 int	set_heredoc(char *del, char *filename)
@@ -40,14 +23,14 @@ int	set_heredoc(char *del, char *filename)
 	int		ret;
 
 	ret = 0;
-	fd = open(filename , O_WRONLY | O_APPEND |  O_CREAT , 0777);
+	fd = open(filename, O_WRONLY | O_APPEND | O_CREAT, 0777);
 	if (fd == -1)
-		exit (errno);//file not opened
+		exit (errno);
 	else
 		ret = write_in_file(fd, del);
-	if(close(fd) == -1)
-		exit (errno);//file not closed
-	exit(ret); //success
+	if (close(fd) == -1)
+		exit (errno);
+	exit(ret);
 }
 
 /*fork child process to save heredoc*/
@@ -89,10 +72,10 @@ int	loop_files_heredoc(t_file *ptr, char *filename)
 				unlink(filename);
 			del = ft_strdup(ptr->filename);
 			if (!del)
-				return (108); //malloc fail
+				return (108);
 			free(ptr->filename);
 			ptr->filename = filename;
-			ret = fork_heredoc(del, filename); //create file and fill it
+			ret = fork_heredoc(del, filename);
 			free(del);
 			if (ret)
 				return (ret);
@@ -103,7 +86,7 @@ int	loop_files_heredoc(t_file *ptr, char *filename)
 }
 
 /*create tmp files for all heredocs per command*/
-int heredoc(t_scmd *cmd)
+int	heredoc(t_scmd *cmd)
 {
 	t_file	*ptr;
 	int		ret;
@@ -115,7 +98,7 @@ int heredoc(t_scmd *cmd)
 	while (cmd)
 	{
 		ptr = cmd->file;
-		filename = ft_strjoin("heredoc", ft_itoa(i)); //create filename
+		filename = ft_strjoin("heredoc", ft_itoa(i));
 		if (!filename)
 			return (108);
 		ret = loop_files_heredoc(ptr, filename);

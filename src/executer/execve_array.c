@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:28 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 12:58:28 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 13:28:36 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ char	**cpy_list_env(t_envp *ptr, int size)
 	i = 0;
 	array = (char **)malloc((size + 1) * sizeof(char *));
 	if (!array)
-		return (0); //malloc error
+		return (0);
 	while (ptr && i < size)
 	{
-		array[i] = env_string(ptr); //here use actual value and name of envp
+		array[i] = env_string(ptr);
 		if (!array[i])
 		{
 			while (--i >= 0)
 				free(array[i]);
 			free(array);
-			return (0); //malloc error free
+			return (0);
 		}
 		i++;
 		ptr = ptr->next;
@@ -84,7 +84,7 @@ char	**cpy_list_args(t_scmd *ptr, int size, char *cmd_name)
 	i = 1;
 	array = (char **)malloc((size + 2) * sizeof(char *));
 	if (!array)
-		return (0); //malloc error
+		return (0);
 	array[0] = ft_strdup(cmd_name);
 	if (!array[0])
 		return (0);
@@ -96,7 +96,7 @@ char	**cpy_list_args(t_scmd *ptr, int size, char *cmd_name)
 			while (--i >= 0)
 				free(array[i]);
 			free(array);
-			return (0); //malloc error free
+			return (0);
 		}
 		i++;
 		ptr = ptr->next_arg;

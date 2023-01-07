@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/06 11:01:37 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 13:54:34 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,7 @@
 int		executer(t_scmd *cmd, t_data *data);
 int		expander(t_data *data);
 void	print_error(int err_num);
-
-/*handle the signal*/
-void	sigint_handler(int signum)
-{
-	rl_replace_line("", 0);
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_redisplay();
-	(void)signum;
-}
-
-/*catch the correct signal*/
-void	signals(void)
-{
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
-}
+void	signals_parent(void);
 
 /*get input from f_readline, add it history*/
 char	*get_rl(void)
@@ -97,7 +81,7 @@ int	prompt_call(t_data *data)
 		data->to_close = -1;
 		data->to_read = -1;
 		data->to_write = -1;
-		signals();
+		signals_parent();
 		input = get_rl();
 		if (!input)
 			exit(0);

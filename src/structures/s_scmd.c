@@ -6,14 +6,14 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/16 12:09:10 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:59:41 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 14:12:31 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*create new SCMD node*/
-t_scmd	*new_scmd(enum cmd_type type)
+t_scmd	*new_scmd(enum e_cmd_type type)
 {
 	t_scmd	*new_scmd;
 

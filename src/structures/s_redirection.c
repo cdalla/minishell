@@ -6,13 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/17 11:38:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:59:55 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 14:12:14 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_file	*new_file(enum token_type type, char *value)
+t_file	*new_file(enum e_token_type type, char *value)
 {
 	t_file	*new_file;
 
@@ -27,7 +27,7 @@ t_file	*new_file(enum token_type type, char *value)
 	return (new_file);
 }
 
-int	add_file(t_scmd *cmd, enum token_type type, char *value)
+int	add_file(t_scmd *cmd, enum e_token_type type, char *value)
 {
 	t_file	*new;
 	t_file	*ptr;

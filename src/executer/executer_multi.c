@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:41 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/06 14:00:46 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 13:34:07 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,16 @@ int		execve_param(t_scmd *cmd, t_data *data);
 int		parent_close(int fd[2][2], int i, int n_pipes);
 void	free_execve_param(t_data *data);
 void	set_fd(t_data *data, int fd[2][2], int i);
+void	signals_child(void);
 
 /*check if execute builtin or call execve in child*/
 int	child_process_multi(t_scmd *cmd, t_data *data)
 {
 	int	ret;
+
 	if ((data->to_close != -1))
 	{
-		if(close(data->to_close) == -1)
+		if (close(data->to_close) == -1)
 			exit(print_err_msg(errno, cmd->cmd_name->value));
 	}
 	if (is_builtin(cmd))
@@ -35,14 +37,14 @@ int	child_process_multi(t_scmd *cmd, t_data *data)
 	{
 		ret = set_red(cmd->file, data);
 		if (ret)
-			exit(ret);//open or close error or dup2
+			exit(ret);
 		execve(data->cmd_path, data->cmd_args, data->envp_ar);
 	}
 	exit(ret);
 }
 
 /*fork a child need to execute builtin inside*/
-int	exec_in_child_multi(t_scmd *cmd, t_data *data, int i)//need to call builtins here
+int	exec_in_child_multi(t_scmd *cmd, t_data *data, int i)
 {
 	pid_t	child;
 	int		ret;
@@ -51,13 +53,13 @@ int	exec_in_child_multi(t_scmd *cmd, t_data *data, int i)//need to call builtins
 	child = fork();
 	if (child == 0)
 	{
-		//signals_child();
+		signals_child();
 		child_process_multi(cmd, data);
 	}
-	else if (child > 0) //parent
+	else if (child > 0)
 		ret = wait_function(child, i, data);
 	else if (child < 0)
-		return (errno); //error fork
+		return (errno);
 	return (ret);
 }
 
@@ -70,10 +72,10 @@ int	set_execve(t_data *data, t_scmd *cmd)
 	if (!is_builtin(cmd))
 	{
 		ret = execve_param(cmd, data);
-		if(ret)
+		if (ret)
 		{
 			free_execve_param(data);
-			return(print_err_msg(ret, cmd->cmd_name->value)); //malloc error
+			return (print_err_msg(ret, cmd->cmd_name->value));
 		}
 	}
 	return (ret);
@@ -89,7 +91,7 @@ int	executer_multi(t_scmd *cmd, t_data *data, int i)
 	if (i < data->n_pipes)
 	{
 		if (pipe(fd[i % 2]) == -1)
-			return (print_err_msg(errno, cmd->cmd_name->value)); //pipe eror
+			return (print_err_msg(errno, cmd->cmd_name->value));
 	}
 	set_fd(data, fd, i);
 	ret = set_execve(data, cmd);

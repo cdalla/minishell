@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 12:39:13 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:49:40 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 14:11:26 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	remove_extra_pipe(t_data *data)
 }
 
 /*add or update var from token list*/
-int	add_var(t_data *data, char *str, enum var_type type)
+int	add_var(t_data *data, char *str, enum e_var_type type)
 {
 	char	**args;
 	t_envp	*to_update;

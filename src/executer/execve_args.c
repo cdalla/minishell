@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/21 13:24:36 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 14:47:09 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 13:29:30 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	free_envp_array(t_data *data)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	while(data->envp_ar[i])
+	while (data->envp_ar[i])
 	{
 		free(data->envp_ar[i]);
 		i++;
@@ -28,10 +28,10 @@ void	free_envp_array(t_data *data)
 
 void	free_cmd_args_array(t_data *data)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	while(data->cmd_args[i])
+	while (data->cmd_args[i])
 	{
 		free(data->cmd_args[i]);
 		i++;
@@ -62,14 +62,14 @@ int	execve_param(t_scmd *cmd, t_data *data)
 	if (!data->cmd_path)
 		return (12);
 	if (access(data->cmd_path, F_OK) == -1)
-		return(127);
+		return (127);
 	else if (access(data->cmd_path, X_OK) == -1)
 		return (126);
 	data->envp_ar = ls_toarr_env(data->envp);
 	if (!data->envp_ar)
-		return (12); //malloc error
+		return (12);
 	data->cmd_args = ls_toarr_args(cmd->next_arg, data->cmd_path);
 	if (!data->cmd_args)
-		return (12); //malloc error
+		return (12);
 	return (0);
-}	
+}

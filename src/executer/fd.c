@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:52:49 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 11:48:09 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 13:27:38 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	set_fd(t_data *data, int fd[2][2], int i)
 			data->to_close = fd[0][0];
 			data->to_write = fd[0][1];
 		}
-		if(i != 0)
+		if (i != 0)
 			data->to_read = fd[1][0];
 	}
 }
@@ -65,19 +65,19 @@ int	parent_close(int fd[2][2], int i, int n_pipes)
 				print_err_msg(errno, "");
 		}
 	}
-	return(0);
+	return (0);
 }
 
 /*save std in and out, return 0 for err*/
-int save_std_fd(int *in, int *out)
+int	save_std_fd(int *in, int *out)
 {
 	*in = dup(STDIN_FILENO);
-	if(*in == -1)
-		return (0);	
+	if (*in == -1)
+		return (0);
 	*out = dup(STDOUT_FILENO);
 	if (*out == -1)
 		return (0);
-	return(1);
+	return (1);
 }
 
 /*reset std in and out, return 0 for error*/

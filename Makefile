@@ -46,6 +46,7 @@ OBJ :=	obj/lexer/lexer_utils.o\
 		obj/error/error_print.o\
 		obj/heredoc/heredoc.o\
 		obj/heredoc/heredoc_utils.o\
+		obj/signals/signals.o\
 		obj/main.o\
 
 
@@ -85,6 +86,7 @@ SRC :=	src/lexer/lexer_utils.c\
 		src/error/error_print.c\
 		src/heredoc/heredoc.c\
 		src/heredoc/heredoc_utils.c\
+		src/signals/signals.c\
 		src/main.c\
 
 
@@ -103,7 +105,7 @@ $(LIBFT):
 clean:
 	rm -f $(OBJ)
 	make clean -C ./src/libft/
-	rmdir obj/lexer obj/parser obj/structures obj/executer obj/expander obj/builtins obj/error obj/heredoc obj
+	rmdir obj/lexer obj/parser obj/structures obj/executer obj/expander obj/builtins obj/error obj/heredoc obj/signals obj
 
 fclean: clean
 	rm -f $(NAME)

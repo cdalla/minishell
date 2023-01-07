@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/06 13:51:04 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 13:32:14 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,24 @@
 
 int		wait_function(pid_t child, int i, t_data *data);
 int		execve_param(t_scmd *cmd, t_data *data);
-void	free_execve_param(t_data *data);
-int 	save_std_fd(int *in, int *out);
+int		save_std_fd(int *in, int *out);
 int		reset_std_fd(int in, int out);
-
-void	print_dsarry(char **array);
-
-int	wait_function(pid_t child, int i, t_data *data);
-
-void	sigint_child(int signum)
-{
-	(void)signum;
-	exit(128);
-}
-
-void	sigquit_child(int signum)
-{
-	//write(STDERR_FILENO, "Quit: 3\n", 9);
-	(void)signum;
-	exit(129);
-}
-
-void	signals_child(void)
-{
-	signal(SIGINT, sigint_child);
-	signal(SIGQUIT, sigquit_child);
-}
+void	free_execve_param(t_data *data);
+void	signals_child(void);
 
 /*set redirection, call execve*/
 int	child_process_single(t_scmd *cmd, t_data *data)
 {
-	int ret;
-	
+	int	ret;
+
 	if ((data->to_close != -1))
 	{
-		if(close(data->to_close) == -1)
+		if (close(data->to_close) == -1)
 			exit(print_err_msg(errno, ""));
 	}
 	ret = set_red(cmd->file, data);
 	if (ret)
-		exit(ret);//open or close error or dup2 error
+		exit(ret);
 	if (!cmd->cmd_name)
 		exit (0);
 	execve(data->cmd_path, data->cmd_args, data->envp_ar);
@@ -68,15 +46,15 @@ int	exec_in_child_single(t_scmd *cmd, t_data *data)
 
 	ret = 0;
 	child = fork();
-	if (child == 0) //child
+	if (child == 0)
 	{
 		signals_child();
 		child_process_single(cmd, data);
 	}
-	else if (child > 0) //parent
+	else if (child > 0)
 		ret = wait_function(child, 0, data);
 	else if (child < 0)
-		return (errno); //error fork
+		return (errno);
 	return (ret);
 }
 
@@ -84,24 +62,24 @@ int	exec_in_child_single(t_scmd *cmd, t_data *data)
 int	executer_single(t_scmd *cmd, t_data *data)
 {
 	int	saved_out;
-	int saved_in;
+	int	saved_in;
 	int	ret;
 
 	if (is_builtin(cmd))
 	{
 		if (!save_std_fd(&saved_in, &saved_out))
-			return (print_err_msg(errno, cmd->cmd_name->value)); //error in dup
+			return (print_err_msg(errno, cmd->cmd_name->value));
 		ret = execute_builtin(cmd, data);
-		if(!reset_std_fd(saved_in, saved_out))
-			return (print_err_msg(errno, cmd->cmd_name->value)); //error in dup2
+		if (!reset_std_fd(saved_in, saved_out))
+			return (print_err_msg(errno, cmd->cmd_name->value));
 	}
 	else
 	{
 		ret = execve_param(cmd, data);
-		if(ret)
+		if (ret)
 		{
 			free_execve_param(data);
-			return(print_err_msg(ret, cmd->cmd_name->value)); //malloc error
+			return (print_err_msg(ret, cmd->cmd_name->value));
 		}
 		ret = exec_in_child_single(cmd, data);
 		free_execve_param(data);

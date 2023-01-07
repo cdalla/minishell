@@ -27,12 +27,7 @@ void	signals(void)
 	signal(SIGQUIT, sigquit_handler);
 }
 
-void	sigintc_handler(int signum)
-{
-	printf("signal child int\n");
-	(void)signum;
-	exit(0);
-}
+
 
 void	sigquitc_handler(int signum)
 {
@@ -41,49 +36,50 @@ void	sigquitc_handler(int signum)
 	exit(0);
 }
 
-void	signals_child(void)
-{
-	signal(SIGINT, sigintc_handler);
-	signal(SIGQUIT, sigquitc_handler);
-}
+// void	signals_child(void)
+// {
+// 	signal(SIGINT, sigintc_handler);
+// 	signal(SIGQUIT, sigquitc_handler);
+// }
 
-int main(void)
-{
-	pid_t child;
-	int fd;
-	int status;
-	struct sigaction parent;
-	struct sigaction child_h;
+// int main(void)
+// {
+// 	pid_t child;
+// 	int fd;
+// 	int status;
+// 	struct sigaction parent;
+// 	struct sigaction child_h;
 
-	parent.sa_handler = &sigint_handler;
-	sigaction(SIGINT, &parent, NULL);
-while(1)
-{
-	//signals();
-	child = fork();
-	if (child == 0)
-	{
-		printf("CHILD\n");
-		// signals_child();
-		// child_h.sa_handler = &sigintc_handler;
-		// sigaction(SIGINT, &child_h, NULL);
-		while(1)
-		{
+// 	parent.sa_handler = &sigint_handler;
+// 	sigaction(SIGINT, &parent, NULL);
+// while(1)
+// {
+// 	//signals();
+// 	signal(SIGINT, SIG_IGN);
+// 	child = fork();
+// 	if (child == 0)
+// 	{
+// 		printf("CHILD\n");
+// 		signals_child();
+// 		// child_h.sa_handler = &sigintc_handler;
+// 		// sigaction(SIGINT, &child_h, NULL);
+// 		while(1)
+// 		{
 
 
-		}
-	}
- 	else if (child > 0)
-	{
-		waitpid(child, &status, 0);
-		printf("PARENT\n");
-		printf("CHILD DIED, status = %d\n", status);
-	}
-	else
-		printf("ERROR\n");
-	return(0);
-}
-}
+// 		}
+// 	}
+//  	else if (child > 0)
+// 	{
+// 		waitpid(child, &status, 0);
+// 		printf("PARENT\n");
+// 		printf("CHILD DIED, status = %d\n", status);
+// 	}
+// 	else
+// 		printf("ERROR\n");
+// 	return(0);
+// }
+// }
 
 // #include <signal.h>
 // #include <stdio.h>
@@ -108,3 +104,33 @@ while(1)
 //        printf("New handler set.\n"); 
 // return (0);
 // }
+
+void	sigintc_handler(int signum)
+{
+	printf("signal child int\n");
+	(void)signum;
+	exit(130);
+}
+
+int main (void)
+{
+	pid_t child;
+	int status;
+
+	signal(SIGINT, SIG_IGN);
+	child = fork();
+	if (child == 0)
+	{
+		signal(SIGINT, sigintc_handler);
+		while (1)
+		{}
+	}
+	else if (child > 0)
+	{
+		waitpid(child, &status, 0);
+		printf("status  = %d\n", status/256);
+	}
+	else
+		printf("HORROR FORK\n");
+	return (0);
+}

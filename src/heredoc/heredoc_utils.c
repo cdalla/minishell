@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/06 12:46:05 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/06 12:49:57 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/07 13:58:31 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <readline/history.h>
 
 /*delete all heredoc tmp files created*/
-int destroy_heredoc(t_scmd *cmd)
+int	destroy_heredoc(t_scmd *cmd)
 {
 	while (cmd)
 	{
@@ -36,11 +36,12 @@ int destroy_heredoc(t_scmd *cmd)
 /*write in heredoc file*/
 int	write_in_file(int fd, char *del)
 {
-	char	*str = NULL;
-	
+	char	*str;
+
+	str = NULL;
 	while (1)
 	{
-		if (str) //if read_line is something
+		if (str)
 		{
 			free(str);
 			str = NULL;
@@ -49,7 +50,7 @@ int	write_in_file(int fd, char *del)
 		if (!str || !ft_strncmp(del, str, ft_strlen(del) + 1))
 			break ;
 		if (write(fd, str, ft_strlen(str)) == -1)
-			return(errno);
+			return (errno);
 		write(fd, "\n", 1);
 	}
 	return (0);
