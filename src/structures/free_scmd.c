@@ -6,13 +6,14 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 14:11:11 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/02 16:39:21 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/08 16:10:11 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*free SCMD outfile list*/
+/*free SCMD file list*/
+//here pointer to file is null and it doesnot free file name
 void	free_file(t_scmd *ptr)
 {
 	t_file	*ptr_file;
@@ -21,7 +22,7 @@ void	free_file(t_scmd *ptr)
 	if (ptr->file)
 	{
 		ptr_file = ptr->file;
-		while (ptr_file->next)
+		while (ptr_file)
 		{
 			next_file = ptr_file->next;
 			free(ptr_file->filename);

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/06 12:46:05 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 13:58:31 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/08 16:07:05 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,18 @@
 /*delete all heredoc tmp files created*/
 int	destroy_heredoc(t_scmd *cmd)
 {
+	t_file *ptr;
 	while (cmd)
 	{
-		while (cmd->file)
+		ptr = cmd->file;
+		while (ptr)
 		{
-			if (cmd->file->type == HEREDOC)
+			if (ptr->type == HEREDOC)
 			{
-				if (access(cmd->file->filename, F_OK) == 0)
-					unlink(cmd->file->filename);
+				if (access(ptr->filename, F_OK) == 0)
+					unlink(ptr->filename);
 			}
-			cmd->file = cmd->file->next;
+			ptr = ptr->next;
 		}
 		cmd = cmd->next_cmd;
 	}

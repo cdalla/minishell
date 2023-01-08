@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 18:34:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 13:25:35 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/08 15:01:14 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	heredoc(t_scmd *cmd)
 	t_file	*ptr;
 	int		ret;
 	int		i;
+	char	*num;
 	char	*filename;
 
 	ret = 0;
@@ -98,13 +99,18 @@ int	heredoc(t_scmd *cmd)
 	while (cmd)
 	{
 		ptr = cmd->file;
-		filename = ft_strjoin("heredoc", ft_itoa(i));
-		if (!filename)
+		num = ft_itoa(i);
+		if (!num)
 			return (108);
+		filename = ft_strjoin("heredoc", num);
+		if (!filename)
+			return (free(num), 108);
 		ret = loop_files_heredoc(ptr, filename);
 		if (ret)
-			return (ret);
+			return (free(num), free(filename), ret);
 		cmd = cmd->next_cmd;
+		free(num);
+		free(filename);
 		i++;
 	}
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 14:11:49 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/08 15:16:43 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,16 @@ t_envp	*new_envp(char *arg, enum e_var_type type)
 	args = split_var(arg, '=');
 	if (!args)
 		return (0);
-	new_node->env = args[0];
-	new_node->value = args[1];
+	new_node->env = ft_strdup(args[0]);
+	if (!new_node->env)
+		return (free(args), NULL);
+	new_node->value = ft_strdup(args[1]);
+	if (!new_node->value)
+		return (free(args[0]), free(args), NULL);
 	new_node->type = type;
 	new_node->next = 0;
 	new_node->prev = 0;
-	return (new_node);
+	return (free(args[0]), free(args[1]), free(args), new_node);
 }
 
 /*add envp node to the list*/

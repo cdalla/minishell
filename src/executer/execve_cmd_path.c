@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:15 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 13:28:03 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/08 14:42:15 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ char	*join_cmd_name(char *cmd_name, char **paths)
 }
 
 /*split $PATH, join with cmd_name, check CMD presence*/
+//check first if path exist and otherwise return cmd_name
 char	*check_path_cmd(char *cmd_name, t_data *data)
 {
 	char	**paths;
@@ -69,7 +70,11 @@ char	*check_path_cmd(char *cmd_name, t_data *data)
 	i = 0;
 	paths = split_paths(data);
 	if (!paths)
-		return (0);
+	{
+			return (0);
+		// cmd_path = ft_strdup(cmd_name);
+		// return (cmd_path);
+	}
 	cmd_path = join_cmd_name(cmd_name, paths);
 	while (paths[i])
 	{

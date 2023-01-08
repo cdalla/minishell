@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 16:04:13 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/08 16:00:01 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,12 @@ int	dup_close(t_data *data)
 }
 
 /*loop file list and call open file funct*/
-int	set_red(t_file *file, t_data *data)
+int	set_red(t_file *ptr, t_data *data)
 {
 	int	ret;
+	t_file *file;
 
+	file = ptr;
 	while (file)
 	{
 		if (file->type == READ || file->type == HEREDOC)

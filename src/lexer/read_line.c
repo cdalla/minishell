@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 13:54:34 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/01/08 16:16:55 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ char	*get_rl(void)
 		free(line_read);
 		line_read = NULL;
 	}
-	line_read = readline("pizzamandolino>");
+	rl_outstream = stderr;
+	line_read = readline("pizzamandolino> ");
 	if (!line_read)
 	{
-		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("exit", 2);
 		return (0);
 	}
 	else if (line_read && *line_read)
@@ -84,10 +85,11 @@ int	prompt_call(t_data *data)
 		signals_parent();
 		input = get_rl();
 		if (!input)
-			exit(0);
+			return(0);
 		signal(SIGINT, SIG_IGN);
 		data->exit_code = input_interpreter(input, data);
 		//printf("exit code in promptcall = %d\n", data->exit_code);
+		free(input);
 		free_tokens(data);
 	}
 }
