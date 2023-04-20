@@ -158,3 +158,14 @@ heredoc
 	check return end of program
 	free envp list at before exiting
 	fix norminette header
+
+
+20/4
+
+	- echo "$" should print dollar sign
+	- expander of empty variables leave the space with echo
+
+	-$digit problem $1 
+	-$1ciao trims $1 print ciao
+
+	-to solve echo with empty var leaving a blank

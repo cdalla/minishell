@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 16:36:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:48:07 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/20 13:53:04 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*expand_value(char *var, t_token *prev, t_data *data)
 {
 	char	*var_name;
 
-	if (!strncmp("$?", var, 3))
+	if (!ft_strncmp("$?", var, 3))
 		return (ft_itoa(data->exit_code));
 	var_name = ft_substr(var, 1, ft_strlen(var) - 1);
 	if (!var_name)
@@ -36,7 +36,7 @@ char	*expand_value(char *var, t_token *prev, t_data *data)
 }
 
 /*trim part from copy_str and join it with token->word,
-if it is var expand value*/
+if var expands value*/
 int	trim_join(t_token *token, t_data *data, char *str, int w_len)
 {
 	char	*tmp;
@@ -45,7 +45,7 @@ int	trim_join(t_token *token, t_data *data, char *str, int w_len)
 	to_join = ft_substr(str, 0, w_len);
 	if (!to_join)
 		return (0);
-	if (to_join[0] == '$')
+	if (to_join[0] == '$' && w_len > 1)
 	{
 		tmp = ft_strdup(to_join);
 		if (!tmp)
@@ -90,12 +90,12 @@ int	expand_in_str(t_token *token, t_data *data)
 	return (1);
 }
 
-/*check if expand in a str or only var name*/
+/*check if expand in a str(quoted) or only var name*/
 int	expand_check(t_token *token, t_token *prev, t_data *data)
 {
 	char	*new_value;
 
-	if (token->word[0] == '$')
+	if (token->word[0] == '$' && ft_strlen(token->word) > 1 && !ft_isdigit(token->word[1]))
 	{
 		new_value = expand_value(token->word, prev, data);
 		if (!new_value)

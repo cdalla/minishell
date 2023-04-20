@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/15 12:06:05 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:46:05 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/20 13:49:21 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int	len_to_trim(char *str)
 	int	w_len;
 
 	w_len = 0;
+	if (*str == '$' && *(str + 1) == '?')
+			return (2);
 	if (*str == '$')
 	{
 		w_len++;
