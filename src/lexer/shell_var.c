@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/09 12:39:13 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 14:11:26 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/24 18:07:40 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	add_var(t_data *data, char *str, enum e_var_type type)
 		update_var_value(data->envp, to_update, args[1], 0);
 	}
 	else
-	{	
+	{
 		free(args[0]);
 		if (args[1])
 			free(args[1]);

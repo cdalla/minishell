@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 12:10:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/08 13:30:51 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/24 18:33:10 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,19 @@ int	split_args(char **split, char *str, char c)
 	{
 		split[1] = ft_substr(str, 0, w_len);
 		if (!split[1])
-		{
-			free(split[0]);
-			return (0);
-		}
+			return (free(split[0]), 0);
 	}
-	else
-		split[1] = 0;
+	else // if there is no value, if there is = -> value == "\0", if no = value == NULL
+	{
+		if (*(str + w_len - 1) == '=')
+		{
+			split[1] = ft_strdup("\0");
+			if (!split[1])
+				return (free(split[0]), 0);
+		}
+		else
+			split[1] = 0;
+	}
 	return (1);
 }
 
@@ -86,7 +92,7 @@ int	update_var_value(t_envp *envp, t_envp *var, char *value, int type)
 		if (ptr == var)
 		{
 			if (type)
-				ptr->type = ENV;
+				ptr->type = type;
 			else
 			{
 				//free(ptr->input);
@@ -108,7 +114,7 @@ void	print_env_var(t_envp *envp)
 	ptr = envp;
 	while (ptr)
 	{
-		if (ptr->type == ENV)
+		if (ptr->type == ENV && ptr->value)
 		{
 			printf("%s=", ptr->env);
 			if (ptr->value)

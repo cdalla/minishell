@@ -6,11 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 13:56:32 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2022/12/17 22:31:20 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/24 14:38:12 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	len_to_trim(char *str);
 
 /*recognize token type*/
 int	type_recogn(char *word)
@@ -32,13 +34,13 @@ int	type_recogn(char *word)
 /*check special character for token trimming*/
 int	is_redirection(char *c)
 {
-	if ((*c == '<' && *(c + 1) != '<') || (*c == '>' && *(c + 1) != '>'))
+	if (*c == '$')
+		return (len_to_trim(c));
+	else if ((*c == '<' && *(c + 1) != '<') || (*c == '>' && *(c + 1) != '>'))
 		return (1);
 	else if (*c == '|')
 		return (1);
 	else if ((*c == '<' && *(c + 1) == '<') || (*c == '>' && *(c + 1) == '>'))
-		return (2);
-	else if (*c == '$' && *(c + 1) == '?')
 		return (2);
 	return (0);
 }

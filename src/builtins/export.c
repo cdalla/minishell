@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:50:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:40:18 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/24 18:29:13 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,9 @@ void	print_declare(t_envp **ptr)
 	{
 		if (ptr[i]->type == ENV)
 		{
-			printf("declare -x %s=", ptr[i]->env);
+			printf("declare -x %s", ptr[i]->env);
 			if (ptr[i]->value)
-				printf("\"%s\"\n", ptr[i]->value);
-			else
-				printf("\n");
+				printf("=\"%s\"\n", ptr[i]->value);
 		}
 		i++;
 	}
@@ -57,21 +55,23 @@ int	export(t_scmd *args, t_data *data)
 {
 	t_envp	*to_export;
 
-	if (!args)
+	if (!args) //print vars
 	{
 		if (!order_envp(data->envp))
 			return (print_err_msg(107, "export"));
 	}
-	else if (!args->next_arg && check_var_syntax(args->value))
+	else if (!args->next_arg && check_var_syntax(args->value)) //add new or update if there is =
 	{
 		if (!add_var(data, args->value, 2))
 			return (print_err_msg(107, "export"));
 	}
-	else if (!args->next_arg && !ft_strchr(args->value, '='))
+	else if (!args->next_arg && !ft_strchr(args->value, '=')) //update value
 	{
 		to_export = var_exist(data->envp, args->value);
 		if (to_export)
-			update_var_value(data->envp, to_export, 0, 1);
+			update_var_value(data->envp, to_export, 0, 2);
+		else if (!add_env(&data->envp, args->value, 2))
+			return (print_err_msg(107, "export"));
 	}
 	else
 		return (print_err_msg(108, "export"));

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 16:36:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/20 13:53:04 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/24 14:53:59 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ int	expand_check(t_token *token, t_token *prev, t_data *data)
 {
 	char	*new_value;
 
-	if (token->word[0] == '$' && ft_strlen(token->word) > 1 && !ft_isdigit(token->word[1]))
+	if (token->word[0] == '$' && ft_strlen(token->word) > 1
+		&& !ft_isdigit(token->word[1]))
 	{
 		new_value = expand_value(token->word, prev, data);
 		if (!new_value)

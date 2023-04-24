@@ -6,14 +6,14 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:46:17 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:53:52 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/24 14:38:31 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*trim and return single token value*/
-int	count_word_len(char **s, int *wl)
+int	count_token_len(char **s, int *wl)
 {
 	char	*word;
 	int		quote;
@@ -53,8 +53,8 @@ int	tokenize(char *str, t_data *data)
 		while (is_space(*str) && *str)
 			str++;
 		if (ft_strlen(str))
-		{	
-			if (!count_word_len(&str, &w_len))
+		{
+			if (!count_token_len(&str, &w_len))
 				return (108);
 			word = ft_substr(str, 0, w_len);
 			if (!word)

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 14:01:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 14:10:13 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/21 13:27:02 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ int		quote_removal(t_token *token);
 //STRUCT TOKEN
 int		add_token(t_token **token, char *word, int type);
 void	free_tokens(t_data *data);
+void	remove_token(t_token **token, t_token *to_rem);
+void	remove_empty_tokens(t_token **token);
 void	print_tokens(t_token *token);
 
 t_scmd	*new_scmd(enum e_cmd_type type);

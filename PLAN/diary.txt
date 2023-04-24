@@ -159,13 +159,32 @@ heredoc
 	free envp list at before exiting
 	fix norminette header
 
-
 20/4
 
-	- echo "$" should print dollar sign
 	- expander of empty variables leave the space with echo
 
 	-$digit problem $1 
 	-$1ciao trims $1 print ciao
 
 	-to solve echo with empty var leaving a blank
+
+	-token not splitted by $?
+
+
+	-print a space between token if first token result empty on echo
+
+
+21/4
+
+	-check line 8 - 9 tester
+	-check line 28 tester
+		split arguments between quotes in a different token
+
+
+24/4 
+
+	check malloc error on heredoc
+
+25/4
+
+	fix 25 lines in s_envp and s_envp utils
