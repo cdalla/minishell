@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:47:04 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/25 13:42:06 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 14:46:09 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ int	main(int argc, char **argv, char **envp)
 	data.exit_code = 0;
 	if (!env_save(&data.envp, envp, &data))
 		return (0);
-	// if (!prompt_call(&data))
-	// 	return (0);
 	prompt_call(&data);
 	free_envp(&data);
 	return (0);
