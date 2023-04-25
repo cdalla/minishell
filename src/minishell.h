@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 14:01:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/21 13:27:02 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 12:45:05 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct s_envp
 {
 	char			*env;
 	char			*value;
-	char			*input;
 	enum e_var_type	type;
 	struct s_envp	*next;
 	struct s_envp	*prev;

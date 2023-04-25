@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:55:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/24 18:34:04 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 12:32:12 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,55 +14,33 @@
 
 char	**split_var(char *str, char c);
 
-/*check var_name correct syntax*/
-int	check_var_syntax(char *str)
-{
-	int		i;
-
-	i = 0;
-	if (!ft_isalpha(str[0]) && str[0] != '_')
-		return (0);
-	while (str[i])
-	{	
-		if (str[i] == '=' && i > 0)
-			return (1);
-		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
-			return (0);
-		i++;
-	}
-	return (0);
-}
-
 /*create new envp node and fill some fields*/
 t_envp	*new_envp(char *arg, enum e_var_type type)
 {
-	t_envp	*new_node;
+	t_envp	*new;
 	char	**args;
 
-	new_node = (t_envp *)malloc(sizeof(t_envp));
-	if (!new_node)
-		return (0);
-	new_node->input = ft_strdup(arg);
-	if (!new_node->input)
+	new = (t_envp *)malloc(sizeof(t_envp));
+	if (!new)
 		return (0);
 	args = split_var(arg, '=');
 	if (!args)
 		return (0);
-	new_node->env = ft_strdup(args[0]);
-	if (!new_node->env)
-		return (free(args), NULL);
+	new->env = ft_strdup(args[0]);
+	if (!new->env)
+		return (free(args), free(args[1]), free(args), free(new), NULL);
 	if (args[1])
 	{
-		new_node->value = ft_strdup(args[1]);
-		if (!new_node->value)
-			return (free(args[0]), free(args), NULL);
+		new->value = ft_strdup(args[1]);
+		if (!new->value)
+			return (free(args[0]), free(args[1]), free(args), free(new), NULL);
 	}
 	else
-		new_node->value = NULL;
-	new_node->type = type;
-	new_node->next = 0;
-	new_node->prev = 0;
-	return (free(args[0]), free(args[1]), free(args), new_node);
+		new->value = NULL;
+	new->type = type;
+	new->next = 0;
+	new->prev = 0;
+	return (free(args[0]), free(args[1]), free(args), new);
 }
 
 /*add envp node to the list*/
@@ -107,24 +85,6 @@ int	remove_envp(t_envp **envp, t_envp *to_rem)
 	free(to_rem->env);
 	if (to_rem->value)
 		free(to_rem->value);
-	free(to_rem->input);
 	free(to_rem);
 	return (1);
-}
-
-/*return value of envp if it exists*/
-char	*get_env_value(char *name, t_data *data)
-{
-	t_envp	*ptr;
-
-	if (!name)
-		return (0);
-	ptr = data->envp;
-	while (ptr)
-	{
-		if (!ft_strncmp(ptr->env, name, ft_strlen(ptr->env) + 1))
-			return (ptr->value);
-		ptr = ptr->next;
-	}
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/03 10:47:04 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/24 15:58:01 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 13:42:06 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	free_envp(t_data *data)
 			free(ptr->env);
 		if (ptr->value)
 			free(ptr->value);
-		if (ptr->input)
-			free(ptr->input);
 		free(ptr);
 		ptr = next;
 	}

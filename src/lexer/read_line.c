@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/24 14:37:31 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 13:35:10 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	prompt_call(t_data *data)
 		if (!input)
 			return (0);
 		signal(SIGINT, SIG_IGN);
+		// if (*input != '\0')
 		data->exit_code = input_interpreter(input, data);
 		free(input);
 		free_tokens(data);

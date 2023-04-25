@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:58:19 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 13:41:02 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ t_scmd	*parse_simple_command(t_token *token)
 {
 	t_scmd	*cmd;
 
+	if (!token)
+		return (0);
 	cmd = new_scmd(SIMPLE_CMD);
-	if (!token || !cmd)
+	if (!cmd)
 		return (0);
 	if (!parse_loop(cmd, &token, 0))
 		return (0);

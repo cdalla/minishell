@@ -6,64 +6,29 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 12:10:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/24 18:33:10 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 12:25:46 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*split input str into the envp args[2]*/
-int	split_args(char **split, char *str, char c)
+/*check var_name correct syntax*/
+int	check_var_syntax(char *str)
 {
-	int		w_len;
+	int		i;
 
-	w_len = 0;
-	while (*(str + w_len) != c && *(str + w_len))
-		w_len++;
-	if (w_len)
-		split[0] = ft_substr(str, 0, w_len);
-	if (!split[0])
+	i = 0;
+	if (!ft_isalpha(str[0]) && str[0] != '_')
 		return (0);
-	str += (w_len + 1);
-	w_len = 0;
-	while (*(str + w_len))
-		w_len++;
-	if (w_len)
-	{
-		split[1] = ft_substr(str, 0, w_len);
-		if (!split[1])
-			return (free(split[0]), 0);
+	while (str[i])
+	{	
+		if (str[i] == '=' && i > 0)
+			return (1);
+		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
+			return (0);
+		i++;
 	}
-	else // if there is no value, if there is = -> value == "\0", if no = value == NULL
-	{
-		if (*(str + w_len - 1) == '=')
-		{
-			split[1] = ft_strdup("\0");
-			if (!split[1])
-				return (free(split[0]), 0);
-		}
-		else
-			split[1] = 0;
-	}
-	return (1);
-}
-
-/*create envp args[2] for name_env and value_env*/
-char	**split_var(char *str, char c)
-{
-	char	**split;
-
-	split = (char **)malloc(3 * sizeof(char *));
-	if (!split)
-		return (0);
-	split_args(split, str, c);
-	if (!split)
-	{
-		free(split);
-		return (0);
-	}
-	split[2] = 0;
-	return (split);
+	return (0);
 }
 
 /*loop envp list and return 1 if env exist*/
@@ -76,6 +41,23 @@ t_envp	*var_exist(t_envp *envp, char *name)
 	{
 		if (!ft_strncmp(ptr->env, name, ft_strlen(ptr->env) + 1))
 			return (ptr);
+		ptr = ptr->next;
+	}
+	return (0);
+}
+
+/*return value of envp if it exists*/
+char	*get_env_value(char *name, t_data *data)
+{
+	t_envp	*ptr;
+
+	if (!name)
+		return (0);
+	ptr = data->envp;
+	while (ptr)
+	{
+		if (!ft_strncmp(ptr->env, name, ft_strlen(ptr->env) + 1))
+			return (ptr->value);
 		ptr = ptr->next;
 	}
 	return (0);
@@ -95,7 +77,6 @@ int	update_var_value(t_envp *envp, t_envp *var, char *value, int type)
 				ptr->type = type;
 			else
 			{
-				//free(ptr->input);
 				free(ptr->value);
 				ptr->value = value;
 			}

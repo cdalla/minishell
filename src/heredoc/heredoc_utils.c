@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/06 12:46:05 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/24 14:39:08 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 12:33:45 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ int	write_in_file(int fd, char *del)
 		if (!str || !ft_strncmp(del, str, ft_strlen(del) + 1))
 			break ;
 		if (write(fd, str, ft_strlen(str)) == -1)
-			return (errno);
+			return (free(str), errno); //free here str
 		write(fd, "\n", 1);
 	}
-	return (0);
+	if (str)
+		free(str);
+	return (0); //free str here before returning
 }

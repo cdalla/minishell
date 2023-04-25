@@ -6,18 +6,20 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/15 12:53:06 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/24 14:34:44 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 12:37:56 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 /*check if the arg is a flag or a printable str*/
-int	is_printable(char *str, int *flag)
+int	is_printable(char *str, int *flag, int printed)
 {
 	int	i;
 
 	i = 0;
+	if (printed)
+		return (1);
 	if (str[0] == '-')
 	{
 		i++;
@@ -46,7 +48,7 @@ int	echo(t_scmd *args, t_data *data)
 	ptr = args;
 	while (ptr)
 	{
-		if (is_printable(ptr->value, &flag))
+		if (is_printable(ptr->value, &flag, printed))
 		{
 			if (ptr != args && printed)
 				write(STDOUT_FILENO, " ", 1);

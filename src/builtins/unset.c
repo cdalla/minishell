@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 11:32:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 15:38:33 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/25 14:08:04 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,20 @@
 int	unset(t_scmd *args, t_data *data)
 {
 	t_envp	*to_rem;
+	t_scmd	*ptr;
 
-	if (args->value && !args->next_arg)
+	ptr = args;
+	while (ptr)
 	{
-		to_rem = var_exist(data->envp, args->value);
-		if (to_rem)
-			remove_envp(&data->envp, to_rem);
+		if (ptr->value)
+		{
+			to_rem = var_exist(data->envp, ptr->value);
+			if (to_rem)
+				remove_envp(&data->envp, to_rem);
+		}
+		else
+			return (print_err_msg(108, "unset"));
+		ptr = ptr->next_arg;
 	}
-	else
-		return (print_err_msg(108, "unset"));
 	return (0);
 }
