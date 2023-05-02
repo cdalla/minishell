@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 14:01:25 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/25 12:45:05 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/02 17:25:49 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct s_data
 	char	*cmd_path;
 	char	**envp_ar;
 	char	**cmd_args;
+	pid_t	child;
 	int		n_pipes;
 	int		to_write;
 	int		to_read;

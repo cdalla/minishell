@@ -6,11 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 11:32:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/25 14:08:04 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/29 11:37:12 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	env_name_valid(char *str);
 
 /*if var exist, delete it from envp list*/
 int	unset(t_scmd *args, t_data *data)
@@ -21,7 +23,7 @@ int	unset(t_scmd *args, t_data *data)
 	ptr = args;
 	while (ptr)
 	{
-		if (ptr->value)
+		if (ptr->value && env_name_valid(ptr->value))
 		{
 			to_rem = var_exist(data->envp, ptr->value);
 			if (to_rem)

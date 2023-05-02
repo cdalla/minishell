@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 09:50:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/25 14:16:32 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/29 12:58:45 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 
 int		count_list_size(t_envp *envp);
 t_envp	**fill_array(int size, t_envp *envp);
+
+int	env_name_valid(char *str)
+{
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	return (1);
+}
 
 /*print in the correct format for export command*/
 void	print_declare(t_envp **ptr)
@@ -52,7 +59,7 @@ int	order_envp(t_envp *envp)
 	return (1);
 }
 
-int	export_with_args(t_scmd *args, t_data *data)
+int	export_with_args(t_scmd *args, t_data *data, int ret)
 {
 	t_envp	*to_export;
 	t_scmd	*ptr;
@@ -65,7 +72,7 @@ int	export_with_args(t_scmd *args, t_data *data)
 			if (!add_var(data, ptr->value, 2))
 				return (print_err_msg(107, "export"));
 		}
-		else if (!ft_strchr(ptr->value, '='))
+		else if (env_name_valid(ptr->value) && !ft_strchr(ptr->value, '='))
 		{
 			to_export = var_exist(data->envp, ptr->value);
 			if (to_export)
@@ -74,10 +81,10 @@ int	export_with_args(t_scmd *args, t_data *data)
 				return (print_err_msg(107, "export"));
 		}
 		else
-			return (print_err_msg(108, "export"));
+			ret = print_err_msg(108, "export");
 		ptr = ptr->next_arg;
 	}
-	return (0);
+	return (ret);
 }
 
 /*no args print, <key> update type, <key>=<value> add new envp*/
@@ -89,6 +96,6 @@ int	export(t_scmd *args, t_data *data)
 			return (print_err_msg(107, "export"));
 	}
 	else
-		return (export_with_args(args, data));
+		return (export_with_args(args, data, 0));
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/25 13:35:10 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/02 15:14:41 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,20 @@ int	input_interpreter(char *input, t_data *data)
 	ret = lexer(input, data);
 	if (ret)
 		return (print_err_msg(ret, "lexer"));
+	//print_tokens(data->token);
 	ret = expander(data);
 	if (ret)
 		return (print_err_msg(ret, "expander"));
+	//printf("after expansion\n");
+	//print_tokens(data->token);
 	remove_empty_tokens(&data->token);
 	ret = quote_removal(data->token);
 	if (ret)
 		return (print_err_msg(ret, "quote removal"));
+	//printf("after quote rem\n");
+	//print_tokens(data->token);
 	cmd = parser(data);
+	//print_multi_cmd(cmd, data->n_pipes);
 	if (data->token)
 	{
 		if (!cmd)
@@ -90,8 +96,8 @@ int	prompt_call(t_data *data)
 		if (!input)
 			return (0);
 		signal(SIGINT, SIG_IGN);
-		// if (*input != '\0')
-		data->exit_code = input_interpreter(input, data);
+		if (*input != '\0')
+			data->exit_code = input_interpreter(input, data);
 		free(input);
 		free_tokens(data);
 	}

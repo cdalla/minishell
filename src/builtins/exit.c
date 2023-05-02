@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/02 17:29:10 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/03 14:59:13 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/28 12:06:48 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exit_f(t_scmd *args, t_data *data)
 
 	(void)data;
 	value = 0;
-	printf("exit\n");
+	write(2, "exit\n", 5);
 	if (args && args->next_arg)
 		return (print_err_msg(109, "exit"));
 	else if (args && args->value)

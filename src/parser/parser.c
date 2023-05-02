@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/15 16:49:42 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/25 13:41:02 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/29 11:23:38 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@
 	create an array of single commands
 	create a head node SIMPLE_CMD for each and fill his fields
 */
-int	parse_multi_cmd(t_token **token, int n_pipes, t_scmd *multi_cmd)
+int	parse_multi_cmd(t_token **token, int n_pipes, int init_npip, t_scmd *mu_cmd)
 {
 	t_scmd	*cmd_ptr;
 	t_token	*ptr;
 	int		ret;
 
 	ptr = *token;
-	cmd_ptr = multi_cmd;
+	cmd_ptr = mu_cmd;
 	while (ptr && n_pipes >= 0)
 	{
-		if (multi_cmd->cmd_name)
+		if (mu_cmd->cmd_name || n_pipes < init_npip)
 		{
 			cmd_ptr->next_cmd = new_scmd(SIMPLE_CMD);
 			if (!cmd_ptr->next_cmd)
@@ -65,12 +65,13 @@ t_scmd	*parser(t_data *data)
 	t_scmd	*cmd;
 
 	data->n_pipes = count_pipes(data->token);
+	//printf("n_pipes = %d\n", data->n_pipes);
 	if (data->n_pipes)
 	{
 		cmd = new_scmd(SIMPLE_CMD);
 		if (!cmd)
 			return (0);
-		if (!parse_multi_cmd(&data->token, data->n_pipes, cmd))
+		if (!parse_multi_cmd(&data->token, data->n_pipes, data->n_pipes, cmd))
 			return (0);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/25 11:40:00 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/25 12:08:24 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/29 14:40:30 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ int	trim_arg2(char **split, char *str)
 	int		w_len;
 
 	w_len = 0;
-	while (*(str + w_len))
+	while (*(str) && *(str + w_len + 1))
 		w_len++;
 	if (w_len)
 	{
-		split[1] = ft_substr(str, 0, w_len);
+		split[1] = ft_substr(str, 1, w_len);
 		if (!split[1])
 			return (0);
 	}
 	else
 	{
-		if (*(str + w_len - 1) == '=')
+		if (*str == '=')
 		{
 			split[1] = ft_strdup("\0");
 			if (!split[1])
@@ -66,7 +66,7 @@ char	**split_var(char *str, char c)
 	if (!trim_arg1(split, str, c))
 		return (NULL);
 	else
-		str += (ft_strlen(split[0]) + 1);
+		str += (ft_strlen(split[0]));
 	if (!trim_arg2(split, str))
 		return (free(split[0]), NULL);
 	split[2] = 0;

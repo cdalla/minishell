@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/30 11:39:06 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 12:37:27 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/29 12:43:26 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*err_msg(int err_num)
 		return ("syntax error");
 	else if (err_num == 109)
 		return ("too many args");
+	else if (err_num == 125)
+		return ("ambiguous redirect");
 	else if (err_num == 126)
 		return ("command not executable");
 	else if (err_num == 127)

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 13:28:29 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/21 13:26:40 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/28 11:44:47 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ void	set_next_token(t_token **token, t_token *ptr, t_token *prev)
 	if (ptr->next && ptr->next->type == PIPE)
 	{
 		if (prev)
-			prev->next = ptr->next->next;
+			prev->next = ptr->next;
 		else
+		{
 			*token = ptr->next->next;
-		free_token(ptr->next);
+			free_token(ptr->next);
+		}
 	}
 	else
 	{

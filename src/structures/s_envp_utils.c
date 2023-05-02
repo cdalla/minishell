@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/11 12:10:52 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/25 12:25:46 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/04/26 13:48:59 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,12 @@ char	*get_env_value(char *name, t_data *data)
 	while (ptr)
 	{
 		if (!ft_strncmp(ptr->env, name, ft_strlen(ptr->env) + 1))
-			return (ptr->value);
+		{
+			if (ptr->value)
+				return (ptr->value);
+			else
+				return ("\0");
+		}
 		ptr = ptr->next;
 	}
 	return (0);

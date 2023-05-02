@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:41 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 13:34:07 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/02 17:27:04 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ void	signals_child(void);
 int	child_process_multi(t_scmd *cmd, t_data *data)
 {
 	int	ret;
+	int	fd;
 
+	fd = 3;
 	if ((data->to_close != -1))
 	{
 		if (close(data->to_close) == -1)
@@ -38,9 +40,14 @@ int	child_process_multi(t_scmd *cmd, t_data *data)
 		ret = set_red(cmd->file, data);
 		if (ret)
 			exit(ret);
+		while (fd <= 10240)
+		{
+			close(fd);
+			fd++;
+		}
 		execve(data->cmd_path, data->cmd_args, data->envp_ar);
 	}
-	exit(ret);
+	exit(0);
 }
 
 /*fork a child need to execute builtin inside*/
@@ -49,15 +56,18 @@ int	exec_in_child_multi(t_scmd *cmd, t_data *data, int i)
 	pid_t	child;
 	int		ret;
 
+	(void)i;
 	ret = 0;
 	child = fork();
+	data->child = child;
 	if (child == 0)
 	{
 		signals_child();
 		child_process_multi(cmd, data);
 	}
-	else if (child > 0)
-		ret = wait_function(child, i, data);
+	// else if (child > 0)
+	// 	ret = wait_function(child, i, data);
+	
 	else if (child < 0)
 		return (errno);
 	return (ret);
@@ -87,7 +97,7 @@ int	executer_multi(t_scmd *cmd, t_data *data, int i)
 	int		fd[2][2];
 	int		ret;
 	int		ret2;
-
+	
 	if (i < data->n_pipes)
 	{
 		if (pipe(fd[i % 2]) == -1)

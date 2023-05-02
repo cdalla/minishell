@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 16:36:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/24 14:53:59 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/02 11:27:56 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	*ft_strjoin_free(char *s1, char *s2);
 int		len_to_trim(char *str);
+int		multi_var(char *str);
 
 /*look for var_name in envp, return a copy of var->value*/
 char	*expand_value(char *var, t_token *prev, t_data *data)
@@ -80,7 +81,7 @@ int	expand_in_str(t_token *token, t_data *data)
 	while (*copy)
 	{
 		w_len = len_to_trim(copy);
-		if (w_len)
+		if (w_len && !(w_len == 1 && *copy == '$' && ((*(copy + 1) == '\'') || *(copy + 1) == '\"')))
 		{
 			if (!trim_join(token, data, copy, w_len))
 				return (0);
@@ -96,7 +97,7 @@ int	expand_check(t_token *token, t_token *prev, t_data *data)
 	char	*new_value;
 
 	if (token->word[0] == '$' && ft_strlen(token->word) > 1
-		&& !ft_isdigit(token->word[1]))
+		&& ft_isalpha(token->word[1]) && !multi_var(token->word))
 	{
 		new_value = expand_value(token->word, prev, data);
 		if (!new_value)
@@ -122,7 +123,7 @@ int	expander(t_data *data)
 	prev = 0;
 	while (ptr)
 	{
-		if (ptr->word[0] != '\'' && ft_strchr(ptr->word, '$'))
+		if (ft_strchr(ptr->word, '$'))
 		{
 			if (!expand_check(ptr, prev, data))
 				return (107);

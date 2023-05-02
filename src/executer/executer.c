@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/08 16:10:31 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/02 17:26:37 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@ int	wait_function(pid_t child, int i, t_data *data)
 	if (i == data->n_pipes)
 	{
 		waitpid(child, &exit_child, 0);
+		// while (i > 0)
+		// {
+		// 	i--;
+		// 	waitpid(child, NULL, 0);
+		// }
+		while (wait(NULL) > 0)
+			continue ;
 		if (exit_child == 2)
 			return (130);
 		else if (exit_child == 3)
@@ -44,7 +51,7 @@ int	loop_multi_cmd(t_data *data, t_scmd *cmd)
 {
 	int	i;
 	int	ret;
-
+	
 	i = 0;
 	ret = 0;
 	while (cmd)
@@ -55,6 +62,7 @@ int	loop_multi_cmd(t_data *data, t_scmd *cmd)
 		cmd = cmd->next_cmd;
 		i++;
 	}
+	ret = wait_function(data->child, i, data);
 	return (ret);
 }
 

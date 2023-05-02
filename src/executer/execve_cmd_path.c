@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/25 12:50:15 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/24 14:55:19 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/02 10:48:32 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ char	*check_path_cmd(char *cmd_name, t_data *data)
 	int		i;
 
 	i = 0;
+	if (!get_env_value("PATH", data))
+		return(ft_strdup(cmd_name));
 	paths = split_paths(data);
 	if (!paths)
 	{
