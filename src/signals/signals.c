@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/07 13:30:43 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/07 13:58:13 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/02 23:09:29 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 void	sig_int_parent(int signum)
 {
 	(void)signum;
-	rl_replace_line("", 0);
+	//rl_replace_line("", 0);
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();

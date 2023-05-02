@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/01/08 15:52:47 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/03 00:57:35 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ int	exec_in_child_single(t_scmd *cmd, t_data *data)
 		signals_child();
 		child_process_single(cmd, data);
 	}
-	else if (child > 0)
-		ret = wait_function(child, 0, data);
 	else if (child < 0)
 		return (errno);
 	return (ret);
