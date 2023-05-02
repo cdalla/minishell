@@ -6,13 +6,13 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/05/03 00:57:35 by lisa          ########   odam.nl         */
+/*   Updated: 2023/05/03 01:08:23 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		wait_function(pid_t child, int i, t_data *data);
+int		wait_function(pid_t child, t_data *data);
 int		execve_param(t_scmd *cmd, t_data *data);
 int		save_std_fd(int *in, int *out);
 int		reset_std_fd(int in, int out);
@@ -24,6 +24,7 @@ int	child_process_single(t_scmd *cmd, t_data *data)
 {
 	int	ret;
 
+	signals_child();
 	if ((data->to_close != -1))
 	{
 		if (close(data->to_close) == -1)
@@ -45,15 +46,20 @@ int	exec_in_child_single(t_scmd *cmd, t_data *data)
 	int		ret;
 
 	ret = 0;
+
+	ret = execve_param(cmd, data);
+	if (ret)
+	{
+		free_execve_param(data);
+		return (print_err_msg(ret, cmd->cmd_name->value));
+	}
 	child = fork();
 	if (child == 0)
-	{
-		signals_child();
 		child_process_single(cmd, data);
-	}
-	else if (child < 0)
+	else if (child < 0) //probably have to free param
 		return (errno);
-	return (ret);
+	free_execve_param(data);
+	return (wait_function(child, data));
 }
 
 /*builtin->save and reset std_fd, execve->create and free param*/
@@ -72,15 +78,15 @@ int	executer_single(t_scmd *cmd, t_data *data)
 			return (print_err_msg(errno, cmd->cmd_name->value));
 	}
 	else
-	{
-		ret = execve_param(cmd, data);
-		if (ret)
-		{
-			free_execve_param(data);
-			return (print_err_msg(ret, cmd->cmd_name->value));
-		}
-		ret = exec_in_child_single(cmd, data);
-		free_execve_param(data);
-	}
+	// {
+	// 	ret = execve_param(cmd, data);
+	// 	if (ret)
+	// 	{
+	// 		free_execve_param(data);
+	// 		return (print_err_msg(ret, cmd->cmd_name->value));
+	// 	}
+	ret = exec_in_child_single(cmd, data);
+	// 	free_execve_param(data);
+	// }
 	return (ret);
 }

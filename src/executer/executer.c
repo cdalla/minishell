@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/05/03 00:56:00 by lisa          ########   odam.nl         */
+/*   Updated: 2023/05/03 01:07:42 by lisa          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	wait_function(pid_t child, t_data *data)
 		exit_child = (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 		exit_child = WTERMSIG(status) + 128;
-	while (data->n_pipes)
+	while (data->n_pipes > 0)
 	{
 		wait(NULL);
 		data->n_pipes--;
