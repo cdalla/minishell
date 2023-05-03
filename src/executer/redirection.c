@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/29 19:46:09 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/04/29 12:44:30 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/03 10:29:41 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ int	set_red(t_file *ptr, t_data *data)
 	file = ptr;
 	while (file)
 	{
-		if (!check_file_name(file->filename))
-			return (print_err_msg(125, file->filename));
+		// if (!check_file_name(file->filename))
+		// 	return (print_err_msg(125, file->filename));
 		if (file->type == READ || file->type == HEREDOC)
 		{
 			ret = set_infile(file, data);

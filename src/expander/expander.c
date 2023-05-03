@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/13 16:36:22 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/05/02 11:27:56 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/03 11:34:49 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int		multi_var(char *str);
 char	*expand_value(char *var, t_token *prev, t_data *data)
 {
 	char	*var_name;
+	char	*ret;
 
 	if (!ft_strncmp("$?", var, 3))
 		return (ft_itoa(data->exit_code));
@@ -30,10 +31,14 @@ char	*expand_value(char *var, t_token *prev, t_data *data)
 	{
 		if (prev && (prev->type == READ || prev->type == WRITE
 				|| prev->type == APPEND))
-			return (ft_strdup(var));
-		return (ft_strdup(""));
+			ret = ft_strdup(var);
+		else
+			ret = (ft_strdup(""));
 	}
-	return (ft_strdup(get_env_value(var_name, data)));
+	else
+		ret = ft_strdup(get_env_value(var_name, data));
+	free(var_name);
+	return (ret);
 }
 
 /*trim part from copy_str and join it with token->word,
@@ -49,12 +54,11 @@ int	trim_join(t_token *token, t_data *data, char *str, int w_len)
 	if (to_join[0] == '$' && w_len > 1)
 	{
 		tmp = ft_strdup(to_join);
+		free(to_join);
 		if (!tmp)
-		{
-			free(to_join);
 			return (0);
-		}
 		to_join = expand_value(tmp, 0, data);
+		free(tmp);
 		if (!to_join)
 			return (0);
 	}
@@ -71,23 +75,27 @@ int	trim_join(t_token *token, t_data *data, char *str, int w_len)
 int	expand_in_str(t_token *token, t_data *data)
 {
 	char	*copy;
+	char	*keep_copy;
 	int		w_len;
 
 	copy = ft_strdup(token->word);
 	if (!copy)
 		return (0);
+	keep_copy = copy;
 	free(token->word);
 	token->word = 0;
 	while (*copy)
 	{
 		w_len = len_to_trim(copy);
-		if (w_len && !(w_len == 1 && *copy == '$' && ((*(copy + 1) == '\'') || *(copy + 1) == '\"')))
+		if (w_len && !(w_len == 1 && *copy == '$'
+				&& ((*(copy + 1) == '\'') || *(copy + 1) == '\"')))
 		{
 			if (!trim_join(token, data, copy, w_len))
-				return (0);
+				return (free(keep_copy), 0);
 		}
 		copy += w_len;
 	}
+	free(keep_copy);
 	return (1);
 }
 

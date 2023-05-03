@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/22 15:07:21 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/05/03 01:07:42 by lisa          ########   odam.nl         */
+/*   Updated: 2023/05/03 10:38:27 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,34 @@ int		executer_single(t_scmd *cmd, t_data *data);
 int		heredoc(t_scmd *cmd);
 int		destroy_heredoc(t_scmd *cmd);
 
+
+/*wait exit status of last process*/
+// int	wait_function(pid_t child, int i, t_data *data)
+// {
+// 	int	exit_child;
+
+// 	exit_child = 0;
+// 	if (i == data->n_pipes)
+// 	{
+// 		waitpid(child, &exit_child, 0);
+// 		while (wait(NULL) > 0)
+// 			continue ;
+// 		if (exit_child == 2)
+// 			return (130);
+// 		else if (exit_child == 3)
+// 		{
+// 			write(2, "Quit: 3\n", 9);
+// 			return (131);
+// 		}
+// 		else if (exit_child != 0)
+// 			return (exit_child / 256);
+// 	}
+// 	return (exit_child);
+// }
+
 /*wait exit status of last process*/
 int	wait_function(pid_t child, t_data *data)
 {
-	// int	exit_child;
-
-	// exit_child = 0;
-	// if (i == data->n_pipes)
-	// {
-	// 	waitpid(child, &exit_child, 0);
-	// 	while (wait(NULL))
-	// 		continue ;
-	// 	if (exit_child == 2)
-	// 		return (130);
-	// 	else if (exit_child == 3)
-	// 	{
-	// 		write(2, "Quit: 3\n", 9);
-	// 		return (131);
-	// 	}
-	// 	else if (exit_child != 0)
-	// 		return (exit_child / 256);
-	// }
 	int	status;
 	int	exit_child;
 

@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:58 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/05/03 01:08:23 by lisa          ########   odam.nl         */
+/*   Updated: 2023/05/03 10:42:24 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ int	exec_in_child_single(t_scmd *cmd, t_data *data)
 	pid_t	child;
 	int		ret;
 
-	ret = 0;
-
 	ret = execve_param(cmd, data);
 	if (ret)
 	{
@@ -78,15 +76,35 @@ int	executer_single(t_scmd *cmd, t_data *data)
 			return (print_err_msg(errno, cmd->cmd_name->value));
 	}
 	else
-	// {
-	// 	ret = execve_param(cmd, data);
-	// 	if (ret)
-	// 	{
-	// 		free_execve_param(data);
-	// 		return (print_err_msg(ret, cmd->cmd_name->value));
-	// 	}
-	ret = exec_in_child_single(cmd, data);
-	// 	free_execve_param(data);
-	// }
+		ret = exec_in_child_single(cmd, data);
 	return (ret);
 }
+
+// /*builtin->save and reset std_fd, execve->create and free param*/
+// int	executer_single(t_scmd *cmd, t_data *data)
+// {
+// 	int	saved_out;
+// 	int	saved_in;
+// 	int	ret;
+
+// 	if (is_builtin(cmd))
+// 	{
+// 		if (!save_std_fd(&saved_in, &saved_out))
+// 			return (print_err_msg(errno, cmd->cmd_name->value));
+// 		ret = execute_builtin(cmd, data);
+// 		if (!reset_std_fd(saved_in, saved_out))
+// 			return (print_err_msg(errno, cmd->cmd_name->value));
+// 	}
+// 	else
+// 	{
+// 		ret = execve_param(cmd, data);
+// 		if (ret)
+// 		{
+// 			free_execve_param(data);
+// 			return (print_err_msg(ret, cmd->cmd_name->value));
+// 		}
+// 		ret = exec_in_child_single(cmd, data);
+// 		free_execve_param(data);
+// 	}
+// 	return (ret);
+// }

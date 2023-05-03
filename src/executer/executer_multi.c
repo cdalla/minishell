@@ -6,11 +6,12 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/12/22 12:38:41 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/05/03 00:55:10 by lisa          ########   odam.nl         */
+/*   Updated: 2023/05/03 10:30:33 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 int		wait_function(pid_t child, t_data *data);
 int		execve_param(t_scmd *cmd, t_data *data);
 int		parent_close(int fd[2][2], int i, int n_pipes);
