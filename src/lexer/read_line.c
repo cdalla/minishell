@@ -6,7 +6,7 @@
 /*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 11:08:46 by cdalla-s      #+#    #+#                 */
-/*   Updated: 2023/05/02 15:14:41 by cdalla-s      ########   odam.nl         */
+/*   Updated: 2023/05/06 12:51:48 by cdalla-s      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ int	input_interpreter(char *input, t_data *data)
 	ret = lexer(input, data);
 	if (ret)
 		return (print_err_msg(ret, "lexer"));
-	//print_tokens(data->token);
+	print_tokens(data->token);
 	ret = expander(data);
 	if (ret)
 		return (print_err_msg(ret, "expander"));
-	//printf("after expansion\n");
-	//print_tokens(data->token);
+	printf("after expansion\n");
+	print_tokens(data->token);
 	remove_empty_tokens(&data->token);
 	ret = quote_removal(data->token);
 	if (ret)
