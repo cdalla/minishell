@@ -1,0 +1,102 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   executer_multi.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cdalla-s <cdalla-s@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/12/22 12:38:41 by cdalla-s      #+#    #+#                 */
+/*   Updated: 2023/05/06 12:23:16 by cdalla-s      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+
+int		wait_function(pid_t child, t_data *data);
+int		execve_param(t_scmd *cmd, t_data *data);
+int		parent_close(int fd[2][2], int i, int n_pipes);
+void	free_execve_param(t_data *data);
+void	set_fd(t_data *data, int fd[2][2], int i);
+void	signals_child(void);
+
+/*set param for execve if cmd not a builtin*/
+int	set_execve(t_data *data, t_scmd *cmd)
+{
+	int	ret;
+
+	ret = 0;
+	if (!is_builtin(cmd))
+	{
+		ret = execve_param(cmd, data);
+		if (ret)
+		{
+			free_execve_param(data);
+			return (print_err_msg(ret, cmd->cmd_name->value));
+		}
+	}
+	return (ret);
+}
+
+/*check if execute builtin or call execve in child*/
+int	child_process_multi(t_scmd *cmd, t_data *data)
+{
+	int	ret;
+
+	signals_child();
+	if ((data->to_close != -1))
+	{
+		if (close(data->to_close) == -1)
+			exit(print_err_msg(errno, cmd->cmd_name->value));
+	}
+	if (is_builtin(cmd))
+		exit(execute_builtin(cmd, data));
+	else
+	{
+		ret = set_red(cmd->file, data);
+		if (ret)
+			exit(ret);
+		execve(data->cmd_path, data->cmd_args, data->envp_ar);
+	}
+	exit(0);
+}
+
+int	set_pipe(t_data *data, t_scmd *cmd, int i, int fd[2][2])
+{
+	if (i < data->n_pipes)
+	{
+		if (pipe(fd[i % 2]) == -1)
+			return (print_err_msg(errno, cmd->cmd_name->value));
+	}
+	set_fd(data, fd, i);
+	return (0);
+}
+
+/*set pipes, set fd, call execution of every command, close fd*/
+int	loop_multi_cmd(t_data *data, t_scmd *cmd, int i)
+{
+	int		ret;
+	int		fd[2][2];
+	pid_t	child;
+
+	while (cmd)
+	{
+		ret = set_pipe(data, cmd, i, fd);
+		if (ret)
+			return (ret);
+		ret = set_execve(data, cmd);
+		if (ret)
+			return (ret);
+		child = fork();
+		if (child == 0)
+			child_process_multi(cmd, data);
+		else if (child < 0)
+			return (print_err_msg(errno, cmd->cmd_name->value));
+		free_execve_param(data);
+		ret = parent_close(fd, i, data->n_pipes);
+		if (ret)
+			return (ret);
+		cmd = cmd->next_cmd;
+		i++;
+	}
+	return (wait_function(child, data));
+}
